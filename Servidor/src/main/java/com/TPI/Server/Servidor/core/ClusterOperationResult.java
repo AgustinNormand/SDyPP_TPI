@@ -13,6 +13,9 @@ public class ClusterOperationResult {
     @Getter
     private String resource;
 
+    @Getter
+    private String resultContent;
+
     public ClusterOperationResult(String jobId, String resource) {
         this.jobId = jobId;
         this.resource = resource;
@@ -28,5 +31,9 @@ public class ClusterOperationResult {
 
     public void setErrorStatus() {
         this.status = ResultStatus.ERROR;
+    }
+
+    public void setResultContent(String resultContent) {
+        this.resultContent = resultContent;
     }
 }
