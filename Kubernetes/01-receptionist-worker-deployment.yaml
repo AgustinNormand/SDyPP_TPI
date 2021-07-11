@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: receptionist
+  namespace: default
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      role: receptionist
+  template:
+    metadata:
+      labels:
+        role: receptionist
+    spec:
+      containers:
+      - image: agustinnormand/tpi_receptionist:0.4
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          initialDelaySeconds: 15
+          periodSeconds: 20
+          tcpSocket:
+            port: 8080
+        name: receptionist
+        ports:
+        - containerPort: 8080
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
