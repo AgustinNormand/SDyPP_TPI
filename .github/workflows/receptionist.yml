@@ -24,7 +24,7 @@ jobs:
         run:
           mvn clean package --file pom.xml
       - name: Move jar to Dockerfile context
-        run: mv ./target/Receptionist-0.0.1-SNAPSHOT.jar ../../Docker/Receptionist/Receptionist.jar
+        run: mv ./target/Receptionist-0.0.1-SNAPSHOT.jar ../Docker/Receptionist/Receptionist.jar
  
       - name: Login to DockerHub
         uses: docker/login-action@v1
