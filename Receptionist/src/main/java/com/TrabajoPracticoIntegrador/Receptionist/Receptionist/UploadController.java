@@ -25,7 +25,7 @@ public class UploadController {
 
     @GetMapping("/")
     public String index(){
-        return "IndexV1";
+        return "IndexV1.";
     }
 
     @PostMapping("/upload") // //new annotation since 4.3
