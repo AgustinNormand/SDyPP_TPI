@@ -2,3 +2,4 @@
 !Dockerfile
 !README.md
 !.gitignore
+!kubeconfig.yaml
