@@ -64,7 +64,7 @@ jobs:
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       run: |
-       cd ../../kustomize/
+       cd ../kustomize/
        kustomize edit set image tpi_receptionist=$DOCKER_USERNAME/tpi_receptionist:$GITHUB_SHA
        cat kustomization.yaml
 
