@@ -24,7 +24,7 @@ jobs:
         run:
           mvn clean package --file pom.xml
       - name: Move jar to Dockerfile context
-        run: mv ./target/Receptionist-0.0.1-SNAPSHOT.jar ../../Docker/Receptionist/Receptionist.jar
+        run: mv ./target/Receptionist-0.0.1-SNAPSHOT.jar ../Docker/Receptionist/Receptionist.jar
  
       - name: Login to DockerHub
         uses: docker/login-action@v1
@@ -32,11 +32,17 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
 
+      - name: Create credentials file
+        uses: "finnp/create-file-action@master"
+        env:
+          FILE_NAME: "Docker/Receptionist/credentials.json"
+          FILE_DATA: ${{ secrets.GOOGLE_CREDENTIALS }}
+
       - name: build and push Docker image
         uses: docker/build-push-action@v2
         with:
           context: ./Docker/Receptionist/
-          file: .Docker/Receptionist/Dockerfile
+          file: ./Docker/Receptionist/Dockerfile
           push: true
           tags: agustinnormand/tpi_receptionist:latest, agustinnormand/tpi_receptionist:${{ github.sha }}
         
@@ -58,7 +64,7 @@ jobs:
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       run: |
-       cd ../../kustomize/
+       cd ../kustomize/
        kustomize edit set image tpi_receptionist=$DOCKER_USERNAME/tpi_receptionist:$GITHUB_SHA
        cat kustomization.yaml
 
