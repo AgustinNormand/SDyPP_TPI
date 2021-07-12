@@ -4,7 +4,7 @@ metadata:
   name: receptionist
   namespace: default
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       role: receptionist
@@ -14,7 +14,7 @@ spec:
         role: receptionist
     spec:
       containers:
-      - image: agustinnormand/tpi_receptionist:0.4
+      - image: agustinnormand/tpi_receptionist:98d69f161ff45f5dcfb25a90b8c5c91c634aefdb
         imagePullPolicy: IfNotPresent
         livenessProbe:
           initialDelaySeconds: 15
