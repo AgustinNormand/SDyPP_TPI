@@ -1,0 +1,80 @@
+name: Publisher
+
+on:
+  push:
+    paths:
+    - 'Receptionist/**'
+    - 'Docker/Receptionist/**'
+
+defaults:
+  run:
+    working-directory: Receptionist/
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: 15
+      - name: Build with Maven
+        run:
+          mvn clean package --file pom.xml
+      - name: Move jar to Dockerfile context
+        run: mv ./target/Receptionist-0.0.1-SNAPSHOT.jar ../../Docker/Receptionist/Receptionist.jar
+ 
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+
+      - name: build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: ./Docker/Receptionist/
+          file: .Docker/Receptionist/Dockerfile
+          push: true
+          tags: agustinnormand/tpi_receptionist:latest, agustinnormand/tpi_receptionist:${{ github.sha }}
+        
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Setup Kustomize
+      uses: imranismail/setup-kustomize@v1
+      with:
+        kustomize-version: "3.6.1"
+
+    - name: Update Kubernetes resources
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      run: |
+       cd ../../kustomize/
+       kustomize edit set image tpi_receptionist=$DOCKER_USERNAME/tpi_receptionist:$GITHUB_SHA
+       cat kustomization.yaml
+
+    - name: 'Kustomize Build'
+      uses: karancode/kustomize-github-action@master
+      with:
+        kustomize_version: '3.0.0'
+        kustomize_build_dir: './kustomize/'
+        kustomize_comment: true
+        kustomize_output_file: "Kubernetes/receptionist-worker-deployment.yaml"
+        kustomize_build_options: "--load_restrictor none"
+        enable_alpha_plugins: true
+      env:
+        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+        
+    - uses: EndBug/add-and-commit@v7
+      with:
+        default_author: github_actions
+        path: './Kubernetes'
