@@ -17,7 +17,7 @@ public class DebugService {
     public List<NodeInfo> getNodesInfo() {
         return commandProcessor.executeAndMapResponse("get nodes", result -> Arrays
                 .stream(result.split("\r\n"))
-                .map(NodeInfo::build)
+                .map(NodeInfo::build) // ToDo: considerar que el estado puede ser "error"
                 .collect(Collectors.toList()));
     }
 }
