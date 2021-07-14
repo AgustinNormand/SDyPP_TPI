@@ -15,19 +15,38 @@
 7. Ejecutar los comandos `terraform init` y `terraform apply -auto-approve` dentro del directorio `Terraform/ManagementCluster/` 
    y luego dentro de `Terraform/ManagementDeploy/`.   
 
-Una vez ejecutados estos pasos, tendremos corriendo el clúster de *management* y el de *deploy*. [Ampliar sobre terraform y lo que permite???]
+Una vez ejecutados estos pasos, tendremos corriendo el clúster de *management* y el de *deployment*. [Ampliar sobre terraform y lo que permite???]
 
 ## Acceso al cluster creado
 1. Instalar [gcloud](https://cloud.google.com/sdk/docs/install). 
 2. Logearse en gcloud: `gcloud auth login`.
 3. Crear el archivo kube config del cluster de *management* ejecutando el siguiente comando
-   ```gcloud container clusters get-credentials $(terraform output -raw kubernetes_cluster_name) --region $(terraform output -raw region)```
-   dentro del directorio `Terraform/ManagementCluster/`. Luego,guardar una copia del archivo de configuración del cluster
-   ejecutando `cp $HOME/.kube/config config.management`.
+   ```
+   gcloud container clusters get-credentials $(terraform output -raw kubernetes_cluster_name) --region $(terraform output -raw region)
+   ```
+   dentro del directorio `Terraform/ManagementCluster/`. Luego, guardar una copia del archivo de configuración del cluster
+   ejecutando `cp $HOME/.kube/config $HOME/.kube/config.management`.
 4. Volver a ejecutar el comando del punto 3. esta vez en el directorio `Terraform/DeployCluster/`, guardando el archivo 
-   de configuración mediante el comando `cp $HOME/.kube/config config.deployment`
+   de configuración mediante el comando `cp $HOME/.kube/config $HOME/.kube/config.deployment`.
+
+Una vez ejecutados estos pasos, tendremos las credenciales de cada cluster para poder cambiar de contexto según las necesidades.   
+
+## Establecer el cluster actual
+Al ejecutar el comando `kubectl`, el cluster accedido es el correspondiente al archivo de configuración `$HOME/.kube/config`.
+Para cambiar de contexto, tendremos que colocar el archivo generado en la sección anterior para cada uno de los clusters creados, según corresponda.
+
+### Cambiar al cluster de *management*
+1. Copiar archivo de configuración al directorio de kubectl con el comando:
+```
+cp $HOME/.kube/config.management $HOME/.kube/config 
+```
+
+### Cambiar al cluster de *deployment*
+1. Copiar archivo de configuración al directorio de kubectl con el comando:
+```
+cp $HOME/.kube/config.deployment $HOME/.kube/config 
+```
    
-Una vez ejecutados estos pasos, tendremos las credenciales de cada cluster para poder cambiar de contexto según las necesidades.
 
 ## Referencias
 
