@@ -9,7 +9,7 @@ variable "region" {
 provider "google" {
   project = var.project_id
   region  = var.region
-  credentials = "${file("/usr/src/googleCredentials/credentials.json")}"
+  credentials = "${file("/usr/src/google_credentials/credentials.json")}"
 }
 
 # VPC

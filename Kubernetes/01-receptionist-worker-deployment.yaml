@@ -14,7 +14,7 @@ spec:
         role: receptionist
     spec:
       containers:
-      - image: agustinnormand/tpi_receptionist:6817d43441214397f6a8076b2042abcb11ffc980
+      - image: agustinnormand/tpi_receptionist:fbb36f9f428d84c09817044953052a8c6496a992
         imagePullPolicy: IfNotPresent
         livenessProbe:
           initialDelaySeconds: 15
