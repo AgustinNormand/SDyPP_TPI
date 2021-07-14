@@ -36,6 +36,6 @@ En esta sección se linkea a los readme del propio repo.
 
 - La documentación para el usuario final: esta sería cómo usar el FW
 
-![GraficoCICD](Imagenes/ideas-final-sdypp-Github Actions.png?raw=true "GraficoCICD")
+![GraficoCICD](Imagenes/ideas-final-sdypp-Github-Actions.png)
 
 
