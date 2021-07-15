@@ -45,7 +45,6 @@ public class CoreProcessor {
 
         if (!splitterApplyResult.isOk()) {
             rollback(jobId, worker, joiner, splitter);
-            return ProcessResult.of(workerApplyResult, joinerApplyResult, splitterApplyResult);
         }
 
         return ProcessResult.of(workerApplyResult, joinerApplyResult, splitterApplyResult);

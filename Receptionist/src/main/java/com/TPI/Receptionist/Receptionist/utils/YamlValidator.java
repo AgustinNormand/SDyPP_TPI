@@ -20,4 +20,8 @@ public class YamlValidator {
             return false;
         }
     }
+
+    public boolean isInvalid(MultipartFile multipartFile) {
+        return !this.isValid(multipartFile);
+    }
 }

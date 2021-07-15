@@ -38,7 +38,7 @@ public class YamlProcessorService implements ProcessorService {
         YamlProcessResult result = new YamlProcessResult();
 
         List<MultipartFile> invalidFiles = multipartFiles.parallelStream()
-                .filter(yamlValidator::isValid).collect(Collectors.toList());
+                .filter(yamlValidator::isInvalid).collect(Collectors.toList());
 
         if (invalidFiles.isEmpty()) {
             List<Script> files = new ArrayList<>();
