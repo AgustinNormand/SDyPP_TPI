@@ -2,8 +2,8 @@ package com.TPI.Receptionist.Receptionist.service.yaml;
 
 import com.TPI.Receptionist.Receptionist.core.CoreProcessor;
 import com.TPI.Receptionist.Receptionist.core.ProcessRequestFactory;
-import com.TPI.Receptionist.Receptionist.core.ProcessResult;
 import com.TPI.Receptionist.Receptionist.core.Script;
+import com.TPI.Receptionist.Receptionist.core.dto.ProcessResultDto;
 import com.TPI.Receptionist.Receptionist.service.ProcessorService;
 import com.TPI.Receptionist.Receptionist.utils.YamlValidator;
 import com.TPI.Receptionist.Receptionist.exceptions.InvalidYamlProcessRequestException;
@@ -41,17 +41,15 @@ public class YamlProcessorService implements ProcessorService {
                 .filter(yamlValidator::isInvalid).collect(Collectors.toList());
 
         if (invalidFiles.isEmpty()) {
-            List<Script> files = new ArrayList<>();
-            for (MultipartFile file : multipartFiles) {
+            List<Script> scripts = new ArrayList<>();
+            multipartFiles.forEach(file -> {
                 try {
-                    files.add(new Script(file.getOriginalFilename(), file.getInputStream()));
+                    scripts.add(new Script(file.getOriginalFilename(), file.getBytes()));
+                } catch (IOException e) {
+                    logger.error("There's been an error reading file content - {}", e.getMessage());
                 }
-                catch (IOException e){
-                    logger.error("Error reading from file: {}", e.getMessage());
-                    throw new InvalidYamlProcessRequestException(String.format("Error reading from file: %s", file.getOriginalFilename()));
-                }
-            }
-            ProcessResult processResult = coreProcessor.process(ProcessRequestFactory.createProcessRequest(files));
+            });
+            ProcessResultDto processResult = coreProcessor.process(ProcessRequestFactory.createProcessRequest(scripts));
             result.setProcessResult(processResult);
         }
         else {

@@ -5,6 +5,7 @@ import com.TPI.Receptionist.Receptionist.utils.TempFileHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -17,10 +18,16 @@ public class ClusterApplier {
 
     public static final int OK_EXIT_VALUE = 0;
 
-    Logger logger = LoggerFactory.getLogger(ClusterApplier.class);
+    private Logger logger = LoggerFactory.getLogger(ClusterApplier.class);
 
     @Autowired
-    TempFileHelper tempFileHelper;
+    private TempFileHelper tempFileHelper;
+
+    /**
+     * Flag to stop the applier from actually applying a script in the cluster, for testing purposes
+     */
+    @Value("${cluster.applier.script.deactivate:false}")
+    private boolean deactivateApplier;
 
     /**
      * Applies synchronously the given script to the k8s cluster
@@ -48,18 +55,25 @@ public class ClusterApplier {
             String commandToExecute = String.format("kubectl %s", command);
             logger.debug("Executing '{}' in cluster", commandToExecute);
 
-            Process process = Runtime.getRuntime()
-                    .exec(commandToExecute)
-                    .onExit().get();
+            if (!deactivateApplier) {
 
-            result.setResultContent(ClusterOpResultMapper.getProcessResult(process));
+                Process process = Runtime.getRuntime()
+                        .exec(commandToExecute)
+                        .onExit().get();
 
-            if (process.exitValue() == OK_EXIT_VALUE) {
-                result.setOkStatus();
-            } else {
-                result.setErrorStatus();
+                result.setResultContent(ClusterOpResultMapper.getProcessResult(process));
+
+                if (process.exitValue() == OK_EXIT_VALUE) {
+                    result.setOkStatus();
+                } else {
+                    result.setErrorStatus();
+                }
+
             }
-
+            else {
+                logger.debug("Cluster execution is deactivated. Activate it by removing the cluster.applier.script.deactivate property");
+                result.setOkStatus();
+            }
         } catch (IOException | InterruptedException | ExecutionException e) {
             logger.error("Error performing '{}' on cluster - {}", command, e.getMessage());
             logger.debug(Arrays.toString(e.getStackTrace()));

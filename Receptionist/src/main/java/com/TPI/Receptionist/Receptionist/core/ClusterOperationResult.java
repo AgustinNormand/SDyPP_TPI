@@ -3,17 +3,17 @@ package com.TPI.Receptionist.Receptionist.core;
 import com.TPI.Receptionist.Receptionist.core.enums.ResultStatus;
 import lombok.Getter;
 
+import java.util.Objects;
+
+@Getter
 public class ClusterOperationResult {
 
-    @Getter
     private String jobId;
 
     private ResultStatus status;
 
-    @Getter
     private String resource;
 
-    @Getter
     private String resultContent;
 
     public ClusterOperationResult(String jobId, String resource) {
@@ -22,7 +22,7 @@ public class ClusterOperationResult {
     }
 
     public boolean isOk() {
-        return status.equals(ResultStatus.OK);
+        return Objects.nonNull(this.status) && status.equals(ResultStatus.OK);
     }
 
     public void setOkStatus() {
