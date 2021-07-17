@@ -1,11 +1,10 @@
 # Creación de imagenes Docker
 
-Dado que el *Receptionist* aplica archivos .yaml en el cluster de *Deployments*, esta app necesita tener kubectl instalado, y tener las credenciales válidas del cluster de *Deployments*.
+Dado que el *Receptionist* aplica archivos .yaml en el cluster de *Deployments*, esta app necesita tener *kubectl* instalado, y tener las credenciales válidas del cluster de *Deployments*.
 
 La resolución de dichos objetivos es la que se documentará en este README.
 
-Cabe destacar que si usted establece en el repositorio el pipeline CICD que se encuentra documentado en el README de la raiz del proyecto, no es necesario realizar 
-todos los pasos documentados en este readme, ya que, gran parte de estos pasos, se realizarán de forma automatizada.
+Cabe destacar que si usted establece en el repositorio el pipeline CICD que se encuentra documentado en el README de la raiz del proyecto, no es necesario realizar todos los pasos documentados en este archivo, ya que, gran parte de estos pasos, se realizarán de forma automatizada.
 
 # Kubectl
 
@@ -23,8 +22,11 @@ Es por esto que resolvimos el problema, evitando la autenticación con *gcloud* 
 Unicamente es necesario estar autenticado con gcloud en la maquina en la cual se desarrolla y generar el archivo de credenciales que usarán los conenedores.
 
 # Explicación de la generación del archivo kubeconfig.yaml
+Leer el readme ubicado en Docker/Receptionist/README.md
 
 # Explicación de la generación del archivo .jar
+1. Usando una terminal, posicionarse en /Receptionist
+2. mvn clean package
 
 # Paso a paso para la creación de las imagenes
 
