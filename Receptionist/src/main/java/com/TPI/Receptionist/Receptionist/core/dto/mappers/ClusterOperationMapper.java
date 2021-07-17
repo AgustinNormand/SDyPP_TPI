@@ -10,6 +10,7 @@ public class ClusterOperationMapper {
         response.setJobId(result.getJobId());
         response.setResultContent(result.getResultContent());
         response.setStatus(result.getStatus());
+        response.setRolledBack(response.isRolledBack());
         return response;
     }
 }

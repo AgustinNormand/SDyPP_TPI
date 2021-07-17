@@ -1,6 +1,7 @@
 package com.TPI.Receptionist.Receptionist.core;
 
-import com.TPI.Receptionist.Receptionist.utils.ClusterOpResultMapper;
+import com.TPI.Receptionist.Receptionist.core.enums.ResultStatus;
+import com.TPI.Receptionist.Receptionist.utils.ClusterOpResultReader;
 import com.TPI.Receptionist.Receptionist.utils.TempFileHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,23 +62,23 @@ public class ClusterApplier {
                         .exec(commandToExecute)
                         .onExit().get();
 
-                result.setResultContent(ClusterOpResultMapper.getProcessResult(process));
-
                 if (process.exitValue() == OK_EXIT_VALUE) {
-                    result.setOkStatus();
+                    result.setResultContent(ClusterOpResultReader.getProcessResult(process));
+                    result.setStatus(ResultStatus.OK);
                 } else {
-                    result.setErrorStatus();
+                    result.setResultContent(ClusterOpResultReader.getProcessError(process));
+                    result.setStatus(ResultStatus.ERROR);
                 }
 
             }
             else {
                 logger.debug("Cluster execution is deactivated. Activate it by removing the cluster.applier.script.deactivate property");
-                result.setOkStatus();
+                result.setStatus(ResultStatus.OK);
             }
         } catch (IOException | InterruptedException | ExecutionException e) {
             logger.error("Error performing '{}' on cluster - {}", command, e.getMessage());
             logger.debug(Arrays.toString(e.getStackTrace()));
-            result.setErrorStatus();
+            result.setStatus(ResultStatus.ERROR);
         }
 
         return result;
@@ -93,7 +94,9 @@ public class ClusterApplier {
      * @return a {@link ClusterOperationResult} indicating whether the script could be applied
      */
     protected ClusterOperationResult rollback(UUID jobId, Script script) {
-        return performScriptOperationOnCluster("delete", jobId, script);
+        ClusterOperationResult result = performScriptOperationOnCluster("delete", jobId, script);
+        result.setRolledBack(true);
+        return result;
     }
 
     /**
@@ -110,12 +113,14 @@ public class ClusterApplier {
         try {
             String pathname = tempFileHelper.save(jobId.toString(), script);
 
-            result = this.execute(jobId, String.format("%s -f %s", operation, pathname));
+            ClusterOperationResult clusterExecResult = this.execute(jobId, String.format("%s -f %s", operation, pathname));
+            result.setResultContent(clusterExecResult.getResultContent());
+            result.setStatus(clusterExecResult.getStatus());
 
         } catch (IOException e) {
             logger.error("Error performing {} operation script on cluster - {}", operation, e.getMessage());
             logger.debug(Arrays.toString(e.getStackTrace()));
-            result.setErrorStatus();
+            result.setStatus(ResultStatus.ERROR);
         }
 
         return result;

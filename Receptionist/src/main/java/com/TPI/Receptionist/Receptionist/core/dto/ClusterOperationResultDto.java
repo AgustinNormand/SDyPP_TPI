@@ -21,4 +21,7 @@ public class ClusterOperationResultDto {
     @JsonProperty("result_content")
     private String resultContent;
 
+    @JsonProperty("rolled_back")
+    private boolean rolledBack;
+
 }

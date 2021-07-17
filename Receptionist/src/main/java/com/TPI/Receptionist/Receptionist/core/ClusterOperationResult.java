@@ -16,6 +16,8 @@ public class ClusterOperationResult {
 
     private String resultContent;
 
+    private boolean rolledBack;
+
     public ClusterOperationResult(String jobId, String resource) {
         this.jobId = jobId;
         this.resource = resource;
@@ -25,15 +27,15 @@ public class ClusterOperationResult {
         return Objects.nonNull(this.status) && status.equals(ResultStatus.OK);
     }
 
-    public void setOkStatus() {
-        this.status = ResultStatus.OK;
-    }
-
-    public void setErrorStatus() {
-        this.status = ResultStatus.ERROR;
-    }
-
     public void setResultContent(String resultContent) {
         this.resultContent = resultContent;
+    }
+
+    public void setStatus(ResultStatus status) {
+        this.status = status;
+    }
+
+    public void setRolledBack(boolean rolledBack) {
+        this.rolledBack = rolledBack;
     }
 }
