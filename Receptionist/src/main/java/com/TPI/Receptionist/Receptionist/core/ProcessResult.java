@@ -3,6 +3,7 @@ package com.TPI.Receptionist.Receptionist.core;
 import com.TPI.Receptionist.Receptionist.core.enums.ResultStatus;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,6 +15,11 @@ public class ProcessResult {
     private List<ClusterOperationResult> applied;
 
     private List<ClusterOperationResult> failed;
+
+    public ProcessResult() {
+        this.applied = new ArrayList<>();
+        this.failed = new ArrayList<>();
+    }
 
     /**
      * Builds a {@link ProcessResult} from the given {@link ClusterOperationResult} objects, classifying each as an applied

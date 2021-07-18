@@ -3,18 +3,20 @@ package com.TPI.Receptionist.Receptionist.core;
 import com.TPI.Receptionist.Receptionist.core.enums.ResultStatus;
 import lombok.Getter;
 
+import java.util.Objects;
+
+@Getter
 public class ClusterOperationResult {
 
-    @Getter
     private String jobId;
 
     private ResultStatus status;
 
-    @Getter
     private String resource;
 
-    @Getter
     private String resultContent;
+
+    private boolean rolledBack;
 
     public ClusterOperationResult(String jobId, String resource) {
         this.jobId = jobId;
@@ -22,18 +24,18 @@ public class ClusterOperationResult {
     }
 
     public boolean isOk() {
-        return status.equals(ResultStatus.OK);
-    }
-
-    public void setOkStatus() {
-        this.status = ResultStatus.OK;
-    }
-
-    public void setErrorStatus() {
-        this.status = ResultStatus.ERROR;
+        return Objects.nonNull(this.status) && status.equals(ResultStatus.OK);
     }
 
     public void setResultContent(String resultContent) {
         this.resultContent = resultContent;
+    }
+
+    public void setStatus(ResultStatus status) {
+        this.status = status;
+    }
+
+    public void setRolledBack(boolean rolledBack) {
+        this.rolledBack = rolledBack;
     }
 }

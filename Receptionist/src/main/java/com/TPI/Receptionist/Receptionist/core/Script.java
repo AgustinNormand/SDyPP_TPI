@@ -1,26 +1,24 @@
 package com.TPI.Receptionist.Receptionist.core;
 
+import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 
 /**
  * Represents a k8s script that can be applied in the cluster
  */
+@Data
 public class Script {
 
-    private final String filename;
+    private String filename;
 
-    private final InputStream file;
+    private byte[] fileBytes;
 
-    public Script(String originalFilename, InputStream inputStream) {
-        this.filename = originalFilename;
-        this.file = inputStream;
-    }
-
-    public String getFilename() {
-        return this.filename;
-    }
-
-    public InputStream getInputStream() {
-        return this.file;
+    public Script(String filename, byte[] fileBytes) {
+        this.filename = filename;
+        this.fileBytes = fileBytes;
     }
 }

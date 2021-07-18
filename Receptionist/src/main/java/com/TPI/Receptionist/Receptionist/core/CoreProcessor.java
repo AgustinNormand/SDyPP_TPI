@@ -1,5 +1,7 @@
 package com.TPI.Receptionist.Receptionist.core;
 
+import com.TPI.Receptionist.Receptionist.core.dto.ProcessResultDto;
+import com.TPI.Receptionist.Receptionist.core.dto.mappers.ProcessResultMapper;
 import com.TPI.Receptionist.Receptionist.exceptions.InvalidProcessRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,11 +17,15 @@ public class CoreProcessor {
 
     /**
      * Processes the given request. Creates the required resources in the cluster and rollbacks all of them if there's
-     * at least an error in one of them
+     * any error
      * @param processRequest the processing request
      * @return A {@link ProcessResult} indicating the status of the resources
      */
-    public ProcessResult process(ProcessRequest processRequest) throws InvalidProcessRequestException {
+    public ProcessResultDto process(ProcessRequest processRequest) throws InvalidProcessRequestException {
+        return ProcessResultMapper.map(this.processRequest(processRequest));
+    }
+
+    private ProcessResult processRequest(ProcessRequest processRequest) throws InvalidProcessRequestException {
         preValidate(processRequest);
 
         UUID jobId = UUID.randomUUID();
@@ -45,7 +51,6 @@ public class CoreProcessor {
 
         if (!splitterApplyResult.isOk()) {
             rollback(jobId, worker, joiner, splitter);
-            return ProcessResult.of(workerApplyResult, joinerApplyResult, splitterApplyResult);
         }
 
         return ProcessResult.of(workerApplyResult, joinerApplyResult, splitterApplyResult);
