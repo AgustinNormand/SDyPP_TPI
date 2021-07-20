@@ -66,7 +66,11 @@ gcloud compute networks subnets create sdypp-316414-subnet-management --project=
 
 https://registry.terraform.io/modules/terraform-google-modules/kubernetes-engine/google/latest/submodules/private-cluster
 
-Documentar: HPA, Cluster auto sclaer, preemtible instances.
+Documentar: HPA, Cluster auto sclaer, preemtible instances
+
+Que es y porque creamos un cluster privado?
+Como lo creamos?
+Como se accede a los nodos desde internet?
 
 gcloud container clusters get-credentials gke-resources-cluster --region us-central1 --project sdypp-316414
 
