@@ -58,19 +58,29 @@ cp $HOME/.kube/config.deployment $HOME/.kube/config
 
 ## TO ADD
 
-gcloud compute networks create sdypp-316414-vpc-deployment-resources --project=sdypp-316414 --subnet-mode=custom --mtu=1460 --bgp-routing-mode=regional
-gcloud compute networks subnets create sdypp-316414-subnet-deployment-resources --project=sdypp-316414 --range=10.0.0.0/9 --network=sdypp-316414-vpc-deployment-resources --region=us-central1 --secondary-range=sdypp-316414-subnet-deployment-resources-pods=10.140.0.0/20,sdypp-316414-subnet-deployment-resources-services=10.141.0.0/20
+gcloud compute networks create sdypp-316414-vpc-resources --project=sdypp-316414 --subnet-mode=custom --mtu=1460 --bgp-routing-mode=regional 
 
-gcloud compute networks create sdypp-316414-vpc-management --project=sdypp-316414 --subnet-mode=custom --mtu=1460 --bgp-routing-mode=regional
-gcloud compute networks subnets create sdypp-316414-subnet-management --project=sdypp-316414 --range=10.0.0.0/9 --network=sdypp-316414-vpc-management --region=us-central1 --secondary-range=sdypp-316414-subnet-management-pods=10.140.0.0/20,sdypp-316414-subnet-management-services=10.141.0.0/20
+gcloud compute networks subnets create sdypp-316414-subnet-resources --project=sdypp-316414 --range=10.0.0.0/9 --network=sdypp-316414-vpc-resources --region=us-central1 --secondary-range=sdypp-316414-subnet-resources-pods=10.140.0.0/20,sdypp-316414-subnet-resources-services=10.141.0.0/20
+
+gcloud compute networks create sdypp-316414-vpc-deployment --project=sdypp-316414 --subnet-mode=custom --mtu=1460 --bgp-routing-mode=regional 
+
+gcloud compute networks subnets create sdypp-316414-subnet-deployment --project=sdypp-316414 --range=11.0.0.0/9 --network=sdypp-316414-vpc-deployment --region=us-central1 --secondary-range=sdypp-316414-subnet-deployment-pods=10.142.0.0/20,sdypp-316414-subnet-deployment-services=10.143.0.0/20
+
+gcloud compute networks create sdypp-316414-vpc-management --project=sdypp-316414 --subnet-mode=custom --mtu=1460 --bgp-routing-mode=regional 
+
+gcloud compute networks subnets create sdypp-316414-subnet-management --project=sdypp-316414 --range=12.0.0.0/9 --network=sdypp-316414-vpc-management --region=us-central1 --secondary-range=sdypp-316414-subnet-management-pods=10.144.0.0/20,sdypp-316414-subnet-management-services=10.145.0.0/20
+
+gcloud compute --project=sdypp-316414 firewall-rules create deployments-resources --direction=INGRESS --priority=1000 --network=sdypp-316414-vpc-resources --action=ALLOW --rules=all --source-ranges=11.0.0.0/9
+
+gcloud compute --project=sdypp-316414 firewall-rules create resources-deployments --direction=INGRESS --priority=1000 --network=sdypp-316414-vpc-deployment --action=ALLOW --rules=all --source-ranges=10.0.0.0/9
 
 https://registry.terraform.io/modules/terraform-google-modules/kubernetes-engine/google/latest/submodules/private-cluster
 
-Documentar: HPA, Cluster auto sclaer, preemtible instances
+Documentar: HPA, Cluster auto sclaer, preemtible instances, Router, NAT, VPC Peering, reglas de firewall
 
 Que es y porque creamos un cluster privado?
 Como lo creamos?
-Como se accede a los nodos desde internet?
+Como se accede a los nodos desde internet? 
 
 gcloud container clusters get-credentials gke-resources-cluster --region us-central1 --project sdypp-316414
 
