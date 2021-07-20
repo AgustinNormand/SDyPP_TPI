@@ -53,3 +53,17 @@ cp $HOME/.kube/config.deployment $HOME/.kube/config
 [Provision a GKE Cluster learn guide](https://learn.hashicorp.com/terraform/kubernetes/provision-gke-cluster)
 
 [Terraform container cluster](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_cluster)
+
+
+
+## TO ADD
+
+gcloud compute networks create sdypp-316414-vpc-deployment-resources --project=sdypp-316414 --subnet-mode=custom --mtu=1460 --bgp-routing-mode=regional
+gcloud compute networks subnets create sdypp-316414-subnet-deployment-resources --project=sdypp-316414 --range=10.0.0.0/9 --network=sdypp-316414-vpc-deployment-resources --region=us-central1 --secondary-range=sdypp-316414-subnet-deployment-resources-pods=10.140.0.0/20,sdypp-316414-subnet-deployment-resources-services=10.141.0.0/20
+
+gcloud compute networks create sdypp-316414-vpc-management --project=sdypp-316414 --subnet-mode=custom --mtu=1460 --bgp-routing-mode=regional
+gcloud compute networks subnets create sdypp-316414-subnet-management --project=sdypp-316414 --range=10.0.0.0/9 --network=sdypp-316414-vpc-management --region=us-central1 --secondary-range=sdypp-316414-subnet-management-pods=10.140.0.0/20,sdypp-316414-subnet-management-services=10.141.0.0/20
+
+https://registry.terraform.io/modules/terraform-google-modules/kubernetes-engine/google/latest/submodules/private-cluster
+
+Documentar: HPA, Cluster auto sclaer, preemtible instances.
