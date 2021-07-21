@@ -12,9 +12,27 @@ de naturaleza distribuida haciendo uso de recursos de soporte tales como RabbitM
 
 
 ### Arquitectura de la solución
+![GraficoArquitectura](Imagenes/ideas-final-sdypp-Arquitectura.png)
 
-Poner grafico de la arqui
+La arquitectura de la aplicación consta de 3 clusters. Un cluster de *deployments* otro de *resources* y otro de *management*. Dichos cluster poseen *nodos privados*, es decir, que no tienen direcciones ip publicas, ya que estas son caras, y además, no las necesitabamos. 
 
+Cada cluster tiene configurada una *VPC* o *Virtual Private Cloud*, donde se alojan los *nodos*, *pods* y *servicios* de cada cluster.
+
+Para lograr que los nodos tengan acceso a internet, fue necesario configurar un *Cloud Router* en cada una de las *vpc* de los cluster, que realice un enmascaramiento de la dirección ip privada por una publica. Esto se logró utilizando *Cloud NAT*.
+
+También, las instancias son de tipo *preemptible*, también conocidas como *instancias spot* en AWS, ya que este tipo de instancias tienen un costo reducido, con la desventaja de que duran 24 horas como máximo.
+
+El cluster de *deployments* y el de *resources* deben poder comunicarse, ya que las aplicaciones que se encuentren en el cluster de *deployments* deben poder consumir los servicios que proveen los recursos, del cluster de *resources*.
+
+Para esto, fue necesario configurar *VPC Peering*, para habilitar el routeo entre las *vpcs* del cluster de *deployments* y el de *resources*.
+
+Además, se agregaron las respectivas reglas de *firewall* para permitir el tráfico entre las *vpc* mencionadas anteriormente.
+
+Todos los clusters se encuentran configurados con *cluster auto scaler* y *horizontal pod autoscaler*.
+
+![GraficoComunicacion](Imagenes/ideas-final-sdypp-ServiciosInternos.png)
+
+Para lograr comunicar a las aplicaciones del cluster de *deployments* con los recursos alojados en el cluster de *resources*, fué necesario levantar servicios de tipo "internal", ya que de lo contrario, los pods de las aplicaciones no podían acceder a los servicios, por mas que se encuentren en *vpcs* emparejadas, con el tráfico permitido a travez del firewall.
 
 #### Componentes 
 
