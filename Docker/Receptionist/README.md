@@ -13,7 +13,7 @@ GET_CMD="gcloud container clusters describe [CLUSTER] --zone=[ZONE]"
 
 Ej: 
 ``` 
-GET_CMD="gcloud container clusters describe sdypp-316414-gke --zone=southamerica-east1" 
+GET_CMD="gcloud container clusters describe gke-deployments-cluster --region=us-central1"
 ```
 
 * Generar el archivo kubeconfig.yaml

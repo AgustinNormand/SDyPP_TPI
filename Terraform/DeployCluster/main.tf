@@ -24,6 +24,7 @@ module "gke" {
   enable_private_endpoint    = false
   enable_private_nodes       = true
   master_ipv4_cidr_block     = "10.0.0.0/28"
+  identity_namespace         = "sdypp-316414.svc.id.goog"
   cluster_autoscaling        = {
     enabled       = true
     min_cpu_cores = 1
@@ -45,9 +46,10 @@ module "gke" {
       image_type                = "COS"
       auto_repair               = true
       auto_upgrade              = true
-      service_account           = "sdypp-677@sdypp-316414.iam.gserviceaccount.com"
+      service_account           = "serviceaccount@sdypp-316414.iam.gserviceaccount.com"
       preemptible               = true
       initial_node_count        = 3
+      node_metadata             = "GKE_METADATA_SERVER"
     },
   ]
 
@@ -56,6 +58,7 @@ module "gke" {
 
     default-node-pool = [
       "https://www.googleapis.com/auth/cloud-platform",
+      "https://www.googleapis.com/auth/ndev.clouddns.readwrite"
     ]
   }
 

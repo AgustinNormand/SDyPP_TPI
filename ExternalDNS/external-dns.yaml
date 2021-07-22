@@ -1,0 +1,70 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: kubernetes-sa
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: service-account
+  namespace: kubernetes-sa
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: external-dns
+rules:
+  - apiGroups: [""]
+    resources: ["services", "endpoints", "pods"]
+    verbs: ["get", "watch", "list"]
+  - apiGroups: ["extensions", "networking.k8s.io"]
+    resources: ["ingresses"]
+    verbs: ["get", "watch", "list"]
+  - apiGroups: [""]
+    resources: ["nodes"]
+    verbs: ["list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: external-dns-viewer
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: external-dns
+subjects:
+  - kind: ServiceAccount
+    name: service-account
+    namespace: kubernetes-sa
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: external-dns
+  namespace: kubernetes-sa
+spec:
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: external-dns
+  template:
+    metadata:
+      labels:
+        app: external-dns
+    spec:
+      containers:
+        - args:
+            - --source=ingress
+            - --source=service
+            - --domain-filter=framework-services.gcp.com.ar
+            - --provider=google
+            - --google-project=sdypp-316414
+            - --registry=txt
+            - --txt-owner-id=my-identifier
+          image: k8s.gcr.io/external-dns/external-dns:v0.8.0
+          name: external-dns
+      securityContext:
+        fsGroup: 65534
+        runAsUser: 65534
+      serviceAccountName: service-account
