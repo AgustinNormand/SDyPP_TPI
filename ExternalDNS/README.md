@@ -40,3 +40,6 @@ kubectl annotate serviceaccount \
 https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity#authenticating_to
 
 https://github.com/kubernetes-sigs/external-dns/blob/master/docs/tutorials/gke.md
+
+
+Me parece que no andaba, porque terraform no le da bola a la cuenta que le pongo en el main.tf. Crea unas nuevas. Y yo las habia borrado porque pensé que habian quedado ahi y ya no estaban siendo usadas. Entonces capaz se intentaba autenticar y no tenia ninguna cuenta. Habria que probarlo.
