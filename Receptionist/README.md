@@ -2,7 +2,7 @@
 
 El objetivo es explicar cómo funciona el servicio, el flujo entre los componentes y el punta a punta desde que el cliente 
 envía sus archivos.
-
+ 
 ### Arquitectura
 
 ![Componentes receptionist](/images/ideas-final-sdypp-Receptionist.png)
