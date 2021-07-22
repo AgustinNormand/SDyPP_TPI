@@ -65,7 +65,7 @@ jobs:
           kustomize_version: '3.0.0'
           kustomize_build_dir: './kustomize/'
           kustomize_comment: true
-          kustomize_output_file: "Kubernetes/01-receptionist-worker-deployment.yaml"
+          kustomize_output_file: "Kubernetes/Management/01-receptionist-worker-deployment.yaml"
           kustomize_build_options: "--load_restrictor none"
           enable_alpha_plugins: true
         env:
