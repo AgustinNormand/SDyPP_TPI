@@ -4,7 +4,7 @@ El objetivo es explicar cómo funciona el servicio, el flujo entre los component
 envía sus archivos.
 
 ### Arquitectura
-
+ 
 ![Componentes receptionist](/images/ideas-final-sdypp-Receptionist.png)
 
 ### Capas
