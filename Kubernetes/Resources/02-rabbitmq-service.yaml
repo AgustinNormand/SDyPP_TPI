@@ -4,7 +4,7 @@ metadata:
   name: rabbitmq-service
   annotations:
     networking.gke.io/load-balancer-type: "Internal"
-    external-dns.alpha.kubernetes.io/hostname: rabbitmq-service.framework-services.gcp.com.ar.
+    external-dns.alpha.kubernetes.io/hostname: rabbitmq-service.framework.services.gcp.com.ar.
   labels:
     component: rabbitmq
 spec:

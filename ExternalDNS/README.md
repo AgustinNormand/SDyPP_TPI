@@ -2,6 +2,8 @@ Cluster de resources levantado
 
 Crear una service account que se llame "serviceaccount" con permisos de admin.
 
+No crearle una clave, sino no funciona.
+
 ```bash
 gcloud container clusters get-credentials gke-resources-cluster --zone us-central1 --project sdypp-316414
 ```

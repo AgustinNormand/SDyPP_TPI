@@ -57,7 +57,7 @@ spec:
         - args:
             - --source=ingress
             - --source=service
-            - --domain-filter=framework-services.gcp.com.ar
+            - --domain-filter=framework.services.gcp.com.ar
             - --provider=google
             - --google-project=sdypp-316414
             - --registry=txt
