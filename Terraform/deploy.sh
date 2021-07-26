@@ -20,6 +20,41 @@ instalar_argo(){
     cd -
 }
 
+instalar_external_dns(){
+    kubectl create namespace kubernetes-sa
+    kubectl create serviceaccount --namespace kubernetes-sa service-account
+    gcloud iam service-accounts add-iam-policy-binding --role roles/iam.workloadIdentityUser --member "serviceAccount:"$(get_value "project_id")".svc.id.goog[kubernetes-sa/service-account]" $(get_service_account_name $(get_value "service_account"))
+    kubectl annotate serviceaccount --namespace kubernetes-sa service-account iam.gke.io/gcp-service-account=$(get_service_account_name $(get_value "service_account"))
+    DNS_ZONE_DOMAIN=$(get_value 'dns_zone_domain' | sed 's/.$//')
+    PROJECT_ID=$(get_value 'project_id')
+    cd ../ExternalDNS/
+    cat external-dns.yaml | sed "s/DOMAIN/$DNS_ZONE_DOMAIN/g" | sed "s/PROJECT/$PROJECT_ID/g">newexternal.yaml
+    mv newexternal.yaml ../Kubernetes/Resources/external-dns.yaml
+    cd -
+}
+
+replace_domain_in_resources_yaml(){
+    DNS_ZONE_DOMAIN=$(get_value 'dns_zone_domain')
+    cd ../Kubernetes/Resources/
+    cat 02-rabbitmq-service.yaml | sed "s/DOMAIN/$DNS_ZONE_DOMAIN/g">02-rabbitmq-service.yaml.new
+    mv 02-rabbitmq-service.yaml.new 02-rabbitmq-service.yaml
+
+    cat 04-redis-service.yaml | sed "s/DOMAIN/$DNS_ZONE_DOMAIN/g">04-redis-service.yaml.new
+    mv 04-redis-service.yaml.new 04-redis-service.yaml
+    cd -
+}
+
+commit_changes(){
+    git add ../Docker/Receptionist/kubeconfig.yaml
+    #git add ../Kubernetes/Resources/.
+
+    git commit -m "Updated deployment files"
+
+    git pull origin main
+
+    git push origin main
+}
+
 #echo "First, login and accept Terms of Service"
 
 #gcloud auth login
@@ -56,13 +91,13 @@ instalar_argo(){
 
 export GOOGLE_APPLICATION_CREDENTIALS=$(pwd)'/credentials.json'
 
-#terraform init
+terraform init
 
-#terraform apply --auto-approve
+terraform apply --auto-approve
 
-#gh secret set GOOGLE_CREDENTIALS --body=$(echo credentials.json)
+gh secret set GOOGLE_CREDENTIALS < credentials.json
 
-#gcloud container clusters get-credentials $(get_value "deployments_cluster_name") --region $(get_value "deployments_region")
+gcloud container clusters get-credentials $(get_value "deployments_cluster_name") --region $(get_value "deployments_region")
 
 export GET_CMD="gcloud container clusters describe $(get_value "deployments_cluster_name") --region=$(get_value "deployments_region")"
 
@@ -79,17 +114,21 @@ clusters:
     certificate-authority-data: "$(eval "$GET_CMD --format='value(masterAuth.clusterCaCertificate)'")"
 EOF
 
-mv kubeconfig.yaml ../../Docker/Receptionist/kubeconfig.yaml
+mv kubeconfig.yaml ../Docker/Receptionist/kubeconfig.yaml
 
-#wget https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+wget https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
-#instalar_argo "Deployments"
+instalar_argo "Deployments"
 
-#rm ~/.kube/config
+rm ~/.kube/config
 
-#gcloud container clusters get-credentials $(get_value "resources_cluster_name") --region $(get_value "resources_region")
+gcloud container clusters get-credentials $(get_value "resources_cluster_name") --region $(get_value "resources_region")
 
-#instalar_argo "Resources"
+instalar_argo "Resources"
+
+instalar_external_dns
+
+#replace_domain_in_resources_yaml
 
 rm ~/.kube/config
 
@@ -97,15 +136,8 @@ gcloud container clusters get-credentials $(get_value "management_cluster_name")
 
 instalar_argo "Management"
 
-git add ../Docker/Receptionist/kubeconfig.yaml
-
-git commit -m "Updated kubeconfig.yaml with new cluster credentials."
-
-git pull origin main
-
-git push origin main
+commit_changes
 
 gcloud container clusters get-credentials $(get_value "deployments_cluster_name") --region $(get_value "deployments_region")
 
 gcloud container clusters get-credentials $(get_value "resources_cluster_name") --region $(get_value "resources_region")
-

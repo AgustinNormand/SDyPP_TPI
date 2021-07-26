@@ -17,7 +17,7 @@ variable "dns_zone_name" {
 }
 
 variable "dns_zone_domain" {
-  description = ""
+  description = "Siempre terminado con ."
   type        = string
   default     = "framework.services.gcp.com.ar."
 }

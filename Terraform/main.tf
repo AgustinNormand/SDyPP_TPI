@@ -666,14 +666,16 @@ module "gke_management" {
 
 module "dns-private-zone" {
   source  = "terraform-google-modules/cloud-dns/google"
-  version = "3.0.0"
+  version = "3.1.0"
   project_id = var.project_id
-  type       = "public"
+  type       = "private"
   name       = var.dns_zone_name
   domain     = var.dns_zone_domain
-
+  #force_destroy = true
   private_visibility_config_networks = [
-    "https://www.googleapis.com/compute/v1/projects/my-project/global/networks/my-vpc"
+    module.vpc_deployments.network_self_link,
+    module.vpc_resources.network_self_link
+    #"https://www.googleapis.com/compute/v1/projects/my-project/global/networks/my-vpc"
   ]
 }
 
@@ -686,12 +688,11 @@ module "gcs_buckets" {
   storage_class = "REGIONAL"
   prefix = var.project_id
   set_admin_roles = true
+  #force_destroy = true
   versioning = {
     first = true
   }
 }
-
-
 
 
 
