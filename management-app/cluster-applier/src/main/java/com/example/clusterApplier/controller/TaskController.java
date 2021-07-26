@@ -4,7 +4,6 @@ import com.example.clusterApplier.ClusterApplierApplication;
 import com.example.clusterApplier.events.YamlAppliedEvent;
 import com.example.clusterApplier.events.RequestReceivedEvent;
 import com.example.commons.dto.YamlURLsRequest;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
