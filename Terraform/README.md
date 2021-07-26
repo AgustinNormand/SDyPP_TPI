@@ -93,3 +93,16 @@ gcloud container clusters get-credentials gke-resources-cluster --region us-cent
 gcloud container clusters get-credentials gke-management-cluster --region us-central1 --project sdypp-316414
 
 gcloud container clusters get-credentials gke-deployments-cluster --region us-central1 --project sdypp-316414
+
+
+
+
+#TO ADD
+
+Poner valores validos en variables.tf
+
+Aceptar terminos y condiciones
+
+Compute Engine Api: Administrar esta api
+
+Compute Engine Api: Es posible que necesites credenciales a fin de usar esta API. Haz clic en “Crear credenciales” para comenzar.
