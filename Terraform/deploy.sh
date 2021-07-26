@@ -15,7 +15,7 @@ get_service_account_name() {
 instalar_argo(){
     kubectl create namespace argocd
     kubectl apply -n argocd -f install.yaml
-    cd ../../ArgoCD/$1
+    cd ../ArgoCD/$1
     kubectl apply -n argocd -f app.yaml
     cd -
 }
@@ -97,10 +97,15 @@ gcloud container clusters get-credentials $(get_value "management_cluster_name")
 
 instalar_argo "Management"
 
-git add ../../Docker/Receptionist/kubeconfig.yaml
+git add ../Docker/Receptionist/kubeconfig.yaml
 
 git commit -m "Updated kubeconfig.yaml with new cluster credentials."
 
 git pull origin main
 
 git push origin main
+
+gcloud container clusters get-credentials $(get_value "deployments_cluster_name") --region $(get_value "deployments_region")
+
+gcloud container clusters get-credentials $(get_value "resources_cluster_name") --region $(get_value "resources_region")
+

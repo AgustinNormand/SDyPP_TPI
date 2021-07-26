@@ -677,6 +677,20 @@ module "dns-private-zone" {
   ]
 }
 
+module "gcs_buckets" {
+  source  = "terraform-google-modules/cloud-storage/google"
+  version = "~> 2.1.0"
+  project_id  = var.project_id
+  names = ["task-bucket"]
+  location = var.deployments_region
+  storage_class = "REGIONAL"
+  prefix = var.project_id
+  set_admin_roles = true
+  versioning = {
+    first = true
+  }
+}
+
 
 
 
