@@ -6,4 +6,4 @@ namespace: default
 images:
 - name: tpi_receptionist
   newName: agustinnormand/tpi_receptionist
-  newTag: 11a65b31106c99ce03d1d243886f07ab13b83c59
+  newTag: cad9cb2dcc679cac76730047cbd991dec54494bf
