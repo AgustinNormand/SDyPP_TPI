@@ -1,0 +1,4 @@
+com/example/commons/dto/Task.class
+com/example/commons/dto/JobResponse.class
+com/example/commons/dto/YamlFilesRequest.class
+com/example/commons/dto/YamlURLsRequest.class
