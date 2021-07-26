@@ -1,5 +1,6 @@
 credentials.json
 kubeconfig.yaml
+install.yaml
 
 # Local .terraform directories
 **/.terraform/*

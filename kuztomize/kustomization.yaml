@@ -1,0 +1,9 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- 01-receptionist-worker.yaml
+namespace: default
+images:
+- name: tpi_receptionist
+  newName: agustinnormand/tpi_receptionist
+  newTag: cad9cb2dcc679cac76730047cbd991dec54494bf

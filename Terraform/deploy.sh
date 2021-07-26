@@ -46,6 +46,7 @@ replace_domain_in_resources_yaml(){
 
 commit_changes(){
     git add ../Docker/Receptionist/kubeconfig.yaml
+    git add ../Kubernetes/Resources/external-dns.yaml
     #git add ../Kubernetes/Resources/.
 
     git commit -m "Updated deployment files"
@@ -135,6 +136,8 @@ rm ~/.kube/config
 gcloud container clusters get-credentials $(get_value "management_cluster_name") --region $(get_value "management_region")
 
 instalar_argo "Management"
+
+rm instal.yaml
 
 commit_changes
 
