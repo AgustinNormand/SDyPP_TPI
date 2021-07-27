@@ -4,7 +4,7 @@ env:
   ENV_CODE_PATH: 'management-app/yaml-manager/*'
   ENV_DOCKER_PATH: 'Docker/Yaml-Manager/*'
   ENV_WORKING_DIRECTORY: management-app/yaml-manager/
-  ENV_JAR_PATH: ./target/Yaml-Manager-0.0.1-SNAPSHOT.jar
+  ENV_JAR_PATH: ./target/yaml-manager-0.0.1-SNAPSHOT.jar
   ENV_JAR_DOCKER_PATH: ../Docker/Yaml-Manager/Yaml-Manager.jar
   ENV_DOCKER_CONTEXT: ./Docker/Yaml-Manager/
   ENV_DOCKERFILE_PATH: ./Docker/Yaml-Manager/Dockerfile

@@ -4,7 +4,7 @@ env:
   ENV_CODE_PATH: 'management-app/status-worker/*'
   ENV_DOCKER_PATH: 'Docker/Status-Worker/*'
   ENV_WORKING_DIRECTORY: management-app/status-worker/
-  ENV_JAR_PATH: ./target/Status-Worker-0.0.1-SNAPSHOT.jar
+  ENV_JAR_PATH: ./target/status-worker-0.0.1-SNAPSHOT.jar
   ENV_JAR_DOCKER_PATH: ../Docker/Status-Worker/Status-Worker.jar
   ENV_DOCKER_CONTEXT: ./Docker/Status-Worker/
   ENV_DOCKERFILE_PATH: ./Docker/Status-Worker/Dockerfile
