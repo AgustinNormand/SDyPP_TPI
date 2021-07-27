@@ -9,12 +9,12 @@ env:
   ENV_CREDENTIALS_FILE_PATH: "Docker/Cluster-Applier/credentials.json"
   ENV_DOCKER_CONTEXT: ./Docker/Cluster-Applier/
   ENV_DOCKERFILE_PATH: ./Docker/Cluster-Applier/Dockerfile
-  ENV_IMAGE_TAGS: $DOCKER_USERNAME/tpi_cluster_applier:latest, $DOCKER_USERNAME/tpi_cluster_applier:${{ github.sha }}
+  ENV_IMAGE_TAGS: ${{ secrets.DOCKER_USERNAME }}/tpi_cluster_applier:latest, ${{ secrets.DOCKER_USERNAME }}/tpi_cluster_applier:${{ github.sha }}
   ENV_KUSTOMIZE_PATH: ../../kustomize/Cluster-Applier/
   ENV_KUSTOMIZE_OUTPUT_FILE: "Kubernetes/Management/01-cluster-applier-deployment.yaml"
   ENV_COMMIT_PATH: './Kubernetes/Management/'
   ENV_KUSTOMIZE_BUILD_DIR: './kustomize/Cluster-Applier/'
-  ENV_KUSTOMIZE_COMMAND: kustomize edit set image image_tag=$DOCKER_USERNAME/tpi_cluster_applier:$GITHUB_SHA
+  ENV_KUSTOMIZE_COMMAND: kustomize edit set image image_tag=${{ secrets.DOCKER_USERNAME }}/tpi_cluster_applier:$GITHUB_SHA
 
 on:
   push:
@@ -67,7 +67,7 @@ jobs:
           context: ./Docker/Cluster-Applier/
           file: ./Docker/Cluster-Applier/Dockerfile
           push: true
-          tags: $DOCKER_USERNAME/tpi_cluster_applier:latest, $DOCKER_USERNAME/tpi_cluster_applier:${{ github.sha }}
+          tags: ${{ secrets.DOCKER_USERNAME }}/tpi_cluster_applier:latest, ${{ secrets.DOCKER_USERNAME }}/tpi_cluster_applier:${{ github.sha }}
 
       - name: Setup Kustomize
         uses: imranismail/setup-kustomize@v1
@@ -79,7 +79,7 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         run: |
          cd ../../kustomize/Cluster-Applier/
-         kustomize edit set image image_tag=$DOCKER_USERNAME/tpi_cluster_applier:$GITHUB_SHA
+         kustomize edit set image image_tag=${{ secrets.DOCKER_USERNAME }}/tpi_cluster_applier:$GITHUB_SHA
 
       - name: 'Kustomize Build'
         uses: karancode/kustomize-github-action@master

@@ -8,12 +8,12 @@ env:
   ENV_JAR_DOCKER_PATH: ../../Docker/Entrypoint/Entrypoint.jar
   ENV_DOCKER_CONTEXT: ./Docker/Entrypoint/
   ENV_DOCKERFILE_PATH: ./Docker/Entrypoint/Dockerfile
-  ENV_IMAGE_TAGS: $DOCKER_USERNAME/tpi_entrypoint:latest, $DOCKER_USERNAME/tpi_entrypoint:${{ github.sha }}
+  ENV_IMAGE_TAGS: ${{ secrets.DOCKER_USERNAME }}/tpi_entrypoint:latest, ${{ secrets.DOCKER_USERNAME }}/tpi_entrypoint:${{ github.sha }}
   ENV_KUSTOMIZE_PATH: ../../kustomize/Entrypoint/
   ENV_KUSTOMIZE_OUTPUT_FILE: "Kubernetes/Management/01-entrypoint-deployment.yaml"
   ENV_COMMIT_PATH: './Kubernetes/Management/'
   ENV_KUSTOMIZE_BUILD_DIR: './kustomize/Entrypoint/'
-  ENV_KUSTOMIZE_COMMAND: kustomize edit set image image_tag=$DOCKER_USERNAME/tpi_entrypoint:$GITHUB_SHA
+  ENV_KUSTOMIZE_COMMAND: kustomize edit set image image_tag=${{ secrets.DOCKER_USERNAME }}/tpi_entrypoint:$GITHUB_SHA
 
 on:
   push:
@@ -60,7 +60,7 @@ jobs:
           context: ./Docker/Entrypoint/
           file: ./Docker/Entrypoint/Dockerfile
           push: true
-          tags: $DOCKER_USERNAME/tpi_entrypoint:latest, $DOCKER_USERNAME/tpi_entrypoint:${{ github.sha }}
+          tags: ${{ secrets.DOCKER_USERNAME }}/tpi_entrypoint:latest, ${{ secrets.DOCKER_USERNAME }}/tpi_entrypoint:${{ github.sha }}
 
       - name: Setup Kustomize
         uses: imranismail/setup-kustomize@v1
@@ -72,7 +72,7 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         run: |
          cd ../../kustomize/Entrypoint/
-         kustomize edit set image image_tag=$DOCKER_USERNAME/tpi_entrypoint:$GITHUB_SHA
+         kustomize edit set image image_tag=${{ secrets.DOCKER_USERNAME }}/tpi_entrypoint:$GITHUB_SHA
 
       - name: 'Kustomize Build'
         uses: karancode/kustomize-github-action@master
