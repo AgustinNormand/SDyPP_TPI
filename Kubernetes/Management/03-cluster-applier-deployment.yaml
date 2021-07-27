@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cluster-applier
+  namespace: default
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      role: cluster-applier
+  template:
+    metadata:
+      labels:
+        role: cluster-applier
+    spec:
+      containers:
+      - env:
+        - name: RABBIT_HOST
+          value: rabbitmq-service
+        image: agustinnormand/tpi_cluster_applier:25b32c43e0cafc550ce99c409d35641ff5bccae1
+        imagePullPolicy: IfNotPresent
+        name: cluster-applier
