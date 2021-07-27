@@ -6,6 +6,7 @@ env:
   ENV_WORKING_DIRECTORY: management-app/yaml-manager/
   ENV_JAR_PATH: ./target/yaml-manager-0.0.1-SNAPSHOT.jar
   ENV_JAR_DOCKER_PATH: ../../Docker/Yaml-Manager/Yaml-Manager.jar
+  ENV_CREDENTIALS_FILE_PATH: "Docker/Yaml-Manager/credentials.json"
   ENV_DOCKER_CONTEXT: ./Docker/Yaml-Manager/
   ENV_DOCKERFILE_PATH: ./Docker/Yaml-Manager/Dockerfile
   ENV_IMAGE_TAGS: ${{ secrets.DOCKER_USERNAME }}/tpi_yaml-manager:latest, ${{ secrets.DOCKER_USERNAME }}/tpi_yaml-manager:${{ github.sha }}
