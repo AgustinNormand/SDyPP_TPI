@@ -16,8 +16,11 @@ spec:
       - name: entrypoint
         image: image_tag
         imagePullPolicy: IfNotPresent        
-        #ports:
-        #- containerPort: 8080
+        ports:
+        - containerPort: 8080
+        env:
+        - name: RABBIT_HOST
+          value: "rabbitmq-service"  
         #readinessProbe:
         #  httpGet:
         #    path: /health

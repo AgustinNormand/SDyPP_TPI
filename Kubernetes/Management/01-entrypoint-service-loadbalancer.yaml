@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: receptionist-lb
+  name: entrypoint-lb
 spec:
   type: LoadBalancer
   ports:
@@ -10,4 +10,4 @@ spec:
       targetPort: 8080
       name: http
   selector:
-    role: receptionist
+    role: entrypoint
