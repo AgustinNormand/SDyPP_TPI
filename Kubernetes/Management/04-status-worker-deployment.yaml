@@ -15,8 +15,10 @@ spec:
     spec:
       containers:
       - env:
+        - name: RABBIT_HOST
+          value: rabbitmq-service
         - name: REDIS_HOST
           value: redis-service
-        image: agustinnormand/tpi_status-worker:749bb0b66e46eb32a2cc8ced401b2d59eb08109e
+        image: agustinnormand/tpi_status-worker:c8e75cb729ff13ef5381897bbe07900b3d305b6f
         imagePullPolicy: IfNotPresent
         name: status-worker
