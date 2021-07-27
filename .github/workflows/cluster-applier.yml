@@ -1,14 +1,19 @@
 name: Publisher
 
-on:
-  push:
-    paths:
-    - 'Receptionist/**'
-    - 'Docker/Receptionist/**'
+env:
+  CODE_PATH: 'management-app/cluster-applier/*'
+  DOCKER_PATH: 'Docker/Cluster-Applier/*'
+  WORKING_DIRECTORY: management-app/cluster-applier/
+
+#on:
+#  push:
+#    paths:
+#    - ${{ env.CODE_PATH }}
+#    - ${{ env.DOCKER_PATH }}
 
 defaults:
   run:
-    working-directory: Receptionist/
+    working-directory: ${{ env.WORKING_DIRECTORY }}
 
 jobs:
   build:
