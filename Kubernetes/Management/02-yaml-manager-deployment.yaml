@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yaml-manager
+  namespace: default
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      role: yaml-manager
+  template:
+    metadata:
+      labels:
+        role: yaml-manager
+    spec:
+      containers:
+      - env:
+        - name: RABBIT_HOST
+          value: rabbitmq-service
+        image: agustinnormand/tpi_yaml-manager:749bb0b66e46eb32a2cc8ced401b2d59eb08109e
+        imagePullPolicy: IfNotPresent
+        name: yaml-manager
