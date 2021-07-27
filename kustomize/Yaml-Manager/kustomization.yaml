@@ -5,5 +5,5 @@ resources:
 namespace: default
 images:
 - name: image_tag
-  newName: algo 
-  newTag: tag
+  newName: agustinnormand/tpi_yaml-manager
+  newTag: 9d699ff443c3aecc847b43ac360d645bbaca280a
