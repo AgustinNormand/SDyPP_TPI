@@ -5,11 +5,11 @@ env:
   ENV_DOCKER_PATH: 'Docker/Entrypoint/*'
   ENV_WORKING_DIRECTORY: management-app/entrypoint/
   ENV_JAR_PATH: ./target/entrypoint-0.0.1-SNAPSHOT.jar
-  ENV_JAR_DOCKER_PATH: ../Docker/Entrypoint/Entrypoint.jar
+  ENV_JAR_DOCKER_PATH: ../../Docker/Entrypoint/Entrypoint.jar
   ENV_DOCKER_CONTEXT: ./Docker/Entrypoint/
   ENV_DOCKERFILE_PATH: ./Docker/Entrypoint/Dockerfile
   ENV_IMAGE_TAGS: $DOCKER_USERNAME/tpi_entrypoint:latest, $DOCKER_USERNAME/tpi_entrypoint:${{ github.sha }}
-  ENV_KUSTOMIZE_PATH: ../kustomize/Entrypoint/
+  ENV_KUSTOMIZE_PATH: ../../kustomize/Entrypoint/
   ENV_KUSTOMIZE_OUTPUT_FILE: "Kubernetes/Management/01-entrypoint-deployment.yaml"
   ENV_COMMIT_PATH: './Kubernetes/Management/'
   ENV_KUSTOMIZE_BUILD_DIR: './kustomize/Entrypoint/'
@@ -44,7 +44,7 @@ jobs:
         run:
           mvn clean package --file pom.xml
       - name: Move jar to Dockerfile context
-        run: mv ./target/entrypoint-0.0.1-SNAPSHOT.jar ../Docker/Entrypoint/Entrypoint.jar
+        run: mv ./target/entrypoint-0.0.1-SNAPSHOT.jar ../../Docker/Entrypoint/Entrypoint.jar
  
       - name: Login to DockerHub
         uses: docker/login-action@v1
@@ -69,7 +69,7 @@ jobs:
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         run: |
-         cd ../kustomize/Entrypoint/
+         cd ../../kustomize/Entrypoint/
          kustomize edit set image image_tag=$DOCKER_USERNAME/tpi_entrypoint:$GITHUB_SHA
 
       - name: 'Kustomize Build'
