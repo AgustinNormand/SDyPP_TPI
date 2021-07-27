@@ -5,11 +5,11 @@ env:
   ENV_DOCKER_PATH: 'Docker/Status-Worker/*'
   ENV_WORKING_DIRECTORY: management-app/status-worker/
   ENV_JAR_PATH: ./target/status-worker-0.0.1-SNAPSHOT.jar
-  ENV_JAR_DOCKER_PATH: ../Docker/Status-Worker/Status-Worker.jar
+  ENV_JAR_DOCKER_PATH: ../../Docker/Status-Worker/Status-Worker.jar
   ENV_DOCKER_CONTEXT: ./Docker/Status-Worker/
   ENV_DOCKERFILE_PATH: ./Docker/Status-Worker/Dockerfile
   ENV_IMAGE_TAGS: $DOCKER_USERNAME/tpi_status-worker:latest, $DOCKER_USERNAME/tpi_status-worker:${{ github.sha }}
-  ENV_KUSTOMIZE_PATH: ../kustomize/Status-Worker/
+  ENV_KUSTOMIZE_PATH: ../../kustomize/Status-Worker/
   ENV_KUSTOMIZE_OUTPUT_FILE: "Kubernetes/Management/01-status-worker-deployment.yaml"
   ENV_COMMIT_PATH: './Kubernetes/Management/'
   ENV_KUSTOMIZE_BUILD_DIR: './kustomize/Status-Worker/'

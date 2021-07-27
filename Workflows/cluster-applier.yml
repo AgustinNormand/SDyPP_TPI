@@ -5,12 +5,12 @@ env:
   ENV_DOCKER_PATH: 'Docker/Cluster-Applier/*'
   ENV_WORKING_DIRECTORY: management-app/cluster-applier/
   ENV_JAR_PATH: ./target/cluster-applier-0.0.1-SNAPSHOT.jar
-  ENV_JAR_DOCKER_PATH: ../Docker/Cluster-Applier/Cluster-Applier.jar
+  ENV_JAR_DOCKER_PATH: ../../Docker/Cluster-Applier/Cluster-Applier.jar
   ENV_CREDENTIALS_FILE_PATH: "Docker/Cluster-Applier/credentials.json"
   ENV_DOCKER_CONTEXT: ./Docker/Cluster-Applier/
   ENV_DOCKERFILE_PATH: ./Docker/Cluster-Applier/Dockerfile
   ENV_IMAGE_TAGS: $DOCKER_USERNAME/tpi_cluster_applier:latest, $DOCKER_USERNAME/tpi_cluster_applier:${{ github.sha }}
-  ENV_KUSTOMIZE_PATH: ../kustomize/Cluster-Applier/
+  ENV_KUSTOMIZE_PATH: ../../kustomize/Cluster-Applier/
   ENV_KUSTOMIZE_OUTPUT_FILE: "Kubernetes/Management/01-cluster-applier-deployment.yaml"
   ENV_COMMIT_PATH: './Kubernetes/Management/'
   ENV_KUSTOMIZE_BUILD_DIR: './kustomize/Cluster-Applier/'

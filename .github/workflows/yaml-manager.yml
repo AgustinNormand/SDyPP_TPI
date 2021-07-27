@@ -5,11 +5,11 @@ env:
   ENV_DOCKER_PATH: 'Docker/Yaml-Manager/*'
   ENV_WORKING_DIRECTORY: management-app/yaml-manager/
   ENV_JAR_PATH: ./target/yaml-manager-0.0.1-SNAPSHOT.jar
-  ENV_JAR_DOCKER_PATH: ../Docker/Yaml-Manager/Yaml-Manager.jar
+  ENV_JAR_DOCKER_PATH: ../../Docker/Yaml-Manager/Yaml-Manager.jar
   ENV_DOCKER_CONTEXT: ./Docker/Yaml-Manager/
   ENV_DOCKERFILE_PATH: ./Docker/Yaml-Manager/Dockerfile
   ENV_IMAGE_TAGS: $DOCKER_USERNAME/tpi_yaml-manager:latest, $DOCKER_USERNAME/tpi_yaml-manager:${{ github.sha }}
-  ENV_KUSTOMIZE_PATH: ../kustomize/Yaml-Manager/
+  ENV_KUSTOMIZE_PATH: ../../kustomize/Yaml-Manager/
   ENV_KUSTOMIZE_OUTPUT_FILE: "Kubernetes/Management/01-yaml-manager-deployment.yaml"
   ENV_COMMIT_PATH: './Kubernetes/Management/'
   ENV_KUSTOMIZE_BUILD_DIR: './kustomize/Yaml-Manager/'
@@ -44,7 +44,7 @@ jobs:
         run:
           mvn clean package --file pom.xml
       - name: Move jar to Dockerfile context
-        run: mv ./target/yaml-manager-0.0.1-SNAPSHOT.jar ../Docker/Yaml-Manager/Yaml-Manager.jar
+        run: mv ./target/yaml-manager-0.0.1-SNAPSHOT.jar ../../Docker/Yaml-Manager/Yaml-Manager.jar
  
       - name: Login to DockerHub
         uses: docker/login-action@v1
@@ -69,7 +69,7 @@ jobs:
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         run: |
-         cd ../kustomize/Yaml-Manager/
+         cd ../../kustomize/Yaml-Manager/
          kustomize edit set image image_tag=$DOCKER_USERNAME/tpi_yaml-manager:$GITHUB_SHA
 
       - name: 'Kustomize Build'
