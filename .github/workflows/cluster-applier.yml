@@ -4,7 +4,7 @@ env:
   ENV_CODE_PATH: 'management-app/cluster-applier/*'
   ENV_DOCKER_PATH: 'Docker/Cluster-Applier/*'
   ENV_WORKING_DIRECTORY: management-app/cluster-applier/
-  ENV_JAR_PATH: ./target/Receptionist-0.0.1-SNAPSHOT.jar
+  ENV_JAR_PATH: ./target/cluster-applier-0.0.1-SNAPSHOT.jar
   ENV_JAR_DOCKER_PATH: ../Docker/Cluster-Applier/Cluster-Applier.jar
   ENV_CREDENTIALS_FILE_PATH: "Docker/Cluster-Applier/credentials.json"
   ENV_DOCKER_CONTEXT: ./Docker/Cluster-Applier/
@@ -45,7 +45,7 @@ jobs:
         run:
           mvn clean package --file pom.xml
       - name: Move jar to Dockerfile context
-        run: mv ./target/Receptionist-0.0.1-SNAPSHOT.jar ../Docker/Cluster-Applier/Cluster-Applier.jar
+        run: mv ./target/cluster-applier-0.0.1-SNAPSHOT.jar ../Docker/Cluster-Applier/Cluster-Applier.jar
  
       - name: Login to DockerHub
         uses: docker/login-action@v1
