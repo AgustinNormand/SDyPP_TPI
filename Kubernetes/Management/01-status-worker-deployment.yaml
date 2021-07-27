@@ -14,6 +14,6 @@ spec:
         role: status-worker
     spec:
       containers:
-      - image: agustinnormand/tpi_status-worker:9d699ff443c3aecc847b43ac360d645bbaca280a
+      - image: agustinnormand/tpi_status-worker:5bd7f0a4fb62399b04d351d4b158d328c08d91d0
         imagePullPolicy: IfNotPresent
         name: status-worker
