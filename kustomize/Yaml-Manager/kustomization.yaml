@@ -1,0 +1,9 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- template.yaml
+namespace: default
+images:
+- name: image_tag
+  newName: algo 
+  newTag: tag

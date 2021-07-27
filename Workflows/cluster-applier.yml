@@ -1,14 +1,30 @@
-name: Publisher
+name: Cluster-Applier
 
-#on:
-#  push:
-#    paths:
-#    - 'Receptionist/**'
-#    - 'Docker/Receptionist/**'
+env:
+  ENV_CODE_PATH: 'management-app/cluster-applier/*'
+  ENV_DOCKER_PATH: 'Docker/Cluster-Applier/*'
+  ENV_WORKING_DIRECTORY: management-app/cluster-applier/
+  ENV_JAR_PATH: ./target/Receptionist-0.0.1-SNAPSHOT.jar
+  ENV_JAR_DOCKER_PATH: ../Docker/Cluster-Applier/Cluster-Applier.jar
+  ENV_CREDENTIALS_FILE_PATH: "Docker/Cluster-Applier/credentials.json"
+  ENV_DOCKER_CONTEXT: ./Docker/Cluster-Applier/
+  ENV_DOCKERFILE_PATH: ./Docker/Cluster-Applier/Dockerfile
+  ENV_IMAGE_TAGS: $DOCKER_USERNAME/tpi_cluster_applier:latest, $DOCKER_USERNAME/tpi_cluster_applier:${{ github.sha }}
+  ENV_KUSTOMIZE_PATH: ../kustomize/Cluster-Applier/
+  ENV_KUSTOMIZE_OUTPUT_FILE: "Kubernetes/Management/01-cluster-applier-deployment.yaml"
+  ENV_COMMIT_PATH: './Kubernetes/Management/'
+  ENV_KUSTOMIZE_BUILD_DIR: './kustomize/Cluster-Applier/'
+  ENV_KUSTOMIZE_COMMAND: kustomize edit set image image_tag=$DOCKER_USERNAME/tpi_cluster_applier:$GITHUB_SHA
+
+on:
+  push:
+    paths:
+    - CODE_PATH
+    - DOCKER_PATH
 
 defaults:
   run:
-    working-directory: Receptionist/
+    working-directory: WORKING_DIRECTORY
 
 jobs:
   build:
@@ -24,7 +40,7 @@ jobs:
         run:
           mvn clean package --file pom.xml
       - name: Move jar to Dockerfile context
-        run: mv ./target/Receptionist-0.0.1-SNAPSHOT.jar ../Docker/Receptionist/Receptionist.jar
+        run: mv JAR_PATH JAR_DOCKER_PATH
  
       - name: Login to DockerHub
         uses: docker/login-action@v1
@@ -35,16 +51,16 @@ jobs:
       - name: Create credentials file
         uses: "finnp/create-file-action@master"
         env:
-          FILE_NAME: "Docker/Receptionist/credentials.json"
+          FILE_NAME: CREDENTIALS_FILE_PATH
           FILE_DATA: ${{ secrets.GOOGLE_CREDENTIALS }}
 
       - name: build and push Docker image
         uses: docker/build-push-action@v2
         with:
-          context: ./Docker/Receptionist/
-          file: ./Docker/Receptionist/Dockerfile
+          context: DOCKER_CONTEXT
+          file: DOCKERFILE_PATH
           push: true
-          tags: agustinnormand/tpi_receptionist:latest, agustinnormand/tpi_receptionist:${{ github.sha }}
+          tags: IMAGE_TAGS
 
       - name: Setup Kustomize
         uses: imranismail/setup-kustomize@v1
@@ -55,17 +71,16 @@ jobs:
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         run: |
-         cd ../kustomize/
-         kustomize edit set image tpi_receptionist=$DOCKER_USERNAME/tpi_receptionist:$GITHUB_SHA
-         cat kustomization.yaml
+         cd KUSTOMIZE_PATH
+         KUSTOMIZE_COMMAND
 
       - name: 'Kustomize Build'
         uses: karancode/kustomize-github-action@master
         with:
           kustomize_version: '3.0.0'
-          kustomize_build_dir: './kustomize/'
+          kustomize_build_dir: KUSTOMIZE_BUILD_DIR
           kustomize_comment: true
-          kustomize_output_file: "Kubernetes/Management/01-receptionist-worker-deployment.yaml"
+          kustomize_output_file: KUSTOMIZE_OUTPUT_FILE
           kustomize_build_options: "--load_restrictor none"
           enable_alpha_plugins: true
         env:
@@ -74,4 +89,4 @@ jobs:
       - uses: EndBug/add-and-commit@v7
         with:
           default_author: github_actions
-          path: './Kubernetes'
+          path: COMMIT_PATH
