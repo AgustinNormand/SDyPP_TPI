@@ -8,12 +8,12 @@ env:
   ENV_JAR_DOCKER_PATH: ../../Docker/Yaml-Manager/Yaml-Manager.jar
   ENV_DOCKER_CONTEXT: ./Docker/Yaml-Manager/
   ENV_DOCKERFILE_PATH: ./Docker/Yaml-Manager/Dockerfile
-  ENV_IMAGE_TAGS: $DOCKER_USERNAME/tpi_yaml-manager:latest, $DOCKER_USERNAME/tpi_yaml-manager:${{ github.sha }}
+  ENV_IMAGE_TAGS: ${{ secrets.DOCKER_USERNAME }}/tpi_yaml-manager:latest, ${{ secrets.DOCKER_USERNAME }}/tpi_yaml-manager:${{ github.sha }}
   ENV_KUSTOMIZE_PATH: ../../kustomize/Yaml-Manager/
   ENV_KUSTOMIZE_OUTPUT_FILE: "Kubernetes/Management/01-yaml-manager-deployment.yaml"
   ENV_COMMIT_PATH: './Kubernetes/Management/'
   ENV_KUSTOMIZE_BUILD_DIR: './kustomize/Yaml-Manager/'
-  ENV_KUSTOMIZE_COMMAND: kustomize edit set image image_tag=$DOCKER_USERNAME/tpi_yaml-manager:$GITHUB_SHA
+  ENV_KUSTOMIZE_COMMAND: kustomize edit set image image_tag=${{ secrets.DOCKER_USERNAME }}/tpi_yaml-manager:$GITHUB_SHA
 
 on:
   push:
