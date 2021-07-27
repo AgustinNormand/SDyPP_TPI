@@ -11,7 +11,7 @@ env:
   ENV_DOCKERFILE_PATH: ./Docker/Cluster-Applier/Dockerfile
   ENV_IMAGE_TAGS: ${{ secrets.DOCKER_USERNAME }}/tpi_cluster_applier:latest, ${{ secrets.DOCKER_USERNAME }}/tpi_cluster_applier:${{ github.sha }}
   ENV_KUSTOMIZE_PATH: ../../kustomize/Cluster-Applier/
-  ENV_KUSTOMIZE_OUTPUT_FILE: "Kubernetes/Management/01-cluster-applier-deployment.yaml"
+  ENV_KUSTOMIZE_OUTPUT_FILE: "Kubernetes/Management/03-cluster-applier-deployment.yaml"
   ENV_COMMIT_PATH: './Kubernetes/Management/'
   ENV_KUSTOMIZE_BUILD_DIR: './kustomize/Cluster-Applier/'
   ENV_KUSTOMIZE_COMMAND: kustomize edit set image image_tag=${{ secrets.DOCKER_USERNAME }}/tpi_cluster_applier:$GITHUB_SHA
