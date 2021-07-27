@@ -37,7 +37,7 @@ jobs:
           distribution: 'zulu'
           java-version: 15
       - name: Install local library
-        run:
+        run: |
           cd ../commons/
           mvn install
           cd -
