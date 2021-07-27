@@ -54,6 +54,8 @@ jobs:
 
       - name: build and push Docker image
         uses: docker/build-push-action@v2
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         with:
           context: ./Docker/Entrypoint/
           file: ./Docker/Entrypoint/Dockerfile
