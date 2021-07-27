@@ -10,7 +10,7 @@ env:
   ENV_DOCKERFILE_PATH: ./Docker/Status-Worker/Dockerfile
   ENV_IMAGE_TAGS: ${{ secrets.DOCKER_USERNAME }}/tpi_status-worker:latest, ${{ secrets.DOCKER_USERNAME }}/tpi_status-worker:${{ github.sha }}
   ENV_KUSTOMIZE_PATH: ../../kustomize/Status-Worker/
-  ENV_KUSTOMIZE_OUTPUT_FILE: "Kubernetes/Management/01-status-worker-deployment.yaml"
+  ENV_KUSTOMIZE_OUTPUT_FILE: "Kubernetes/Management/04-status-worker-deployment.yaml"
   ENV_COMMIT_PATH: './Kubernetes/Management/'
   ENV_KUSTOMIZE_BUILD_DIR: './kustomize/Status-Worker/'
   ENV_KUSTOMIZE_COMMAND: kustomize edit set image image_tag=${{ secrets.DOCKER_USERNAME }}/tpi_status-worker:$GITHUB_SHA
@@ -80,7 +80,7 @@ jobs:
           kustomize_version: '3.0.0'
           kustomize_build_dir: './kustomize/Status-Worker/'
           kustomize_comment: true
-          kustomize_output_file: "Kubernetes/Management/01-status-worker-deployment.yaml"
+          kustomize_output_file: "Kubernetes/Management/04-status-worker-deployment.yaml"
           kustomize_build_options: "--load_restrictor none"
           enable_alpha_plugins: true
         env:

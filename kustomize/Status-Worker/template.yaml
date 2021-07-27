@@ -15,7 +15,13 @@ spec:
       containers:
       - name: status-worker
         image: image_tag
-        imagePullPolicy: IfNotPresent        
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: RABBIT_HOST
+          value: "rabbitmq-service"  
+        env:
+        - name: REDIS_HOST
+          value: "redis-service"          
         #ports:
         #- containerPort: 8080
         #readinessProbe:

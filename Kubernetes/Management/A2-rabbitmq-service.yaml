@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq-service
+  annotations:
+    networking.gke.io/load-balancer-type: "Internal"
+    external-dns.alpha.kubernetes.io/hostname: rabbitmq-service.framework.services.gcp.com.ar.
+  labels:
+    component: rabbitmq
+spec:
+  type: LoadBalancer
+  selector:
+    component: rabbitmq
+  ports:
+  - name: http
+    port: 15672
+    protocol: TCP
+    targetPort: 15672
+  - name: web
+    port: 15692
+    protocol: TCP
+    targetPort: 15692
+  - name: amqp
+    port: 5672
+    protocol: TCP
+    targetPort: 5672

@@ -15,7 +15,10 @@ spec:
       containers:
       - name: yaml-manager
         image: image_tag
-        imagePullPolicy: IfNotPresent        
+        imagePullPolicy: IfNotPresent      
+        env:
+        - name: RABBIT_HOST
+          value: "rabbitmq-service"  
         #ports:
         #- containerPort: 8080
         #readinessProbe:
