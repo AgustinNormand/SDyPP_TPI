@@ -1,3 +1,3 @@
 FROM openjdk:latest
-COPY status-worker-0.0.1-SNAPSHOT.jar server.jar
+COPY Status-Worker.jar server.jar
 ENTRYPOINT ["java", "-jar", "server.jar"]
