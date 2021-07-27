@@ -1,3 +1,3 @@
 FROM openjdk:latest
-COPY target/yaml-manager-0.0.1-SNAPSHOT.jar server.jar
+COPY yaml-manager-0.0.1-SNAPSHOT.jar server.jar
 ENTRYPOINT ["java", "-jar", "server.jar"]
