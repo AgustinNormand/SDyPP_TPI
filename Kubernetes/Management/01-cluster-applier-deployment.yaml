@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cluster-applier
+  namespace: default
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      role: cluster-applier
+  template:
+    metadata:
+      labels:
+        role: cluster-applier
+    spec:
+      containers:
+      - image: agustinnormand/tpi_cluster_applier:9d699ff443c3aecc847b43ac360d645bbaca280a
+        imagePullPolicy: IfNotPresent
+        name: cluster-applier
