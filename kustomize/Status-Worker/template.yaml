@@ -19,7 +19,6 @@ spec:
         env:
         - name: RABBIT_HOST
           value: "rabbitmq-service"  
-        env:
         - name: REDIS_HOST
           value: "redis-service"          
         #ports:
