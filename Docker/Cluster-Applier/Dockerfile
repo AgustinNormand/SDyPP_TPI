@@ -1,10 +1,10 @@
 FROM openjdk:latest
 COPY Cluster-Applier.jar server.jar
 
-COPY credentials.json /root/
+COPY credentials.json /usr/src/google_credentials/credentials.json
 COPY kubeconfig.yaml /root/
 
-ENV GOOGLE_APPLICATION_CREDENTIALS="/root/credentials.json"
+ENV GOOGLE_APPLICATION_CREDENTIALS="/usr/src/google_credentials/credentials.json"
 ENV KUBECONFIG="/root/kubeconfig.yaml"
 
 
