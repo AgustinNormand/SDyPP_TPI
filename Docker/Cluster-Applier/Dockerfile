@@ -1,4 +1,4 @@
-FROM openjdk:latest
+FROM agustinnormand/tpi_javakubectl:0.10
 COPY Cluster-Applier.jar server.jar
 
 COPY credentials.json /usr/src/google_credentials/credentials.json
