@@ -8,4 +8,4 @@ ENV GOOGLE_APPLICATION_CREDENTIALS="/usr/src/google_credentials/credentials.json
 ENV KUBECONFIG="/root/kubeconfig.yaml"
 
 
-ENTRYPOINT ["java", "-jar", "server.jar"]
+ENTRYPOINT ["java", "-jar", "server.jar"] 
