@@ -4,6 +4,7 @@ import com.example.clusterApplier.events.YamlAppliedEvent;
 import com.example.clusterApplier.events.RequestReceivedEvent;
 import com.example.clusterApplier.service.yaml.YamlProcessResult;
 import com.example.clusterApplier.service.yaml.YamlProcessorService;
+import com.example.commons.dto.Task;
 import com.example.commons.dto.YamlURLsRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -21,7 +22,7 @@ public class TaskReceptorService {
 
     @EventListener
     public void onTaskReceived(RequestReceivedEvent event) {
-        YamlURLsRequest request = event.getSource();
+        Task request = event.getSource();
 
         YamlProcessResult yamlProcessResult = processorService.processRequest(request);
 

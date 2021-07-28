@@ -33,7 +33,7 @@ public class YAMLController {
 
     @PostMapping
     public ResponseEntity<JobResponse> processYamlScripts(@RequestBody List<MultipartFile> files) {
-        logger.debug("Uploaded scripts {}", files.size());
+        logger.info("Uploaded scripts {}", files.size());
 
         try {
             YamlFilesRequest yamlFilesRequest =

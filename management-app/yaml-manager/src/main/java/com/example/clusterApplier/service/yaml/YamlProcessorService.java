@@ -2,7 +2,9 @@ package com.example.clusterApplier.service.yaml;
 
 import com.example.clusterApplier.exceptions.InvalidYamlProcessRequestException;
 import com.example.clusterApplier.service.blob.LocalUploadService;
+import com.example.clusterApplier.service.blob.UploadService;
 import com.example.clusterApplier.service.notifier.JobNotifierService;
+import com.example.commons.dto.Task;
 import com.example.commons.dto.YamlFilesRequest;
 import com.example.commons.dto.YamlURLsRequest;
 import org.slf4j.Logger;
@@ -21,12 +23,12 @@ public class YamlProcessorService {
     private Logger logger = LoggerFactory.getLogger(YamlProcessorService.class);
 
     @Autowired
-    LocalUploadService uploadService;
+    UploadService uploadService;
 
     @Autowired
     JobNotifierService jobNotifierService;
 
-    public YamlURLsRequest processRequest(String jobId, YamlFilesRequest request) {
+    public Task processRequest(String jobId, YamlFilesRequest request) {
         if (Objects.isNull(request)) {
             throw new InvalidYamlProcessRequestException();
         }
@@ -37,10 +39,10 @@ public class YamlProcessorService {
 
         // ToDo: Validate files or update them
 
-        String splitterUrl = uploadService.upload(jobId + SPLITTER_SUFFIX, splitter);
-        String workerUrl = uploadService.upload(jobId + WORKER_SUFFIX, worker);
-        String joinerUrl = uploadService.upload(jobId + JOINER_SUFFIX, joiner);
+        YamlFilesRequest validated = new YamlFilesRequest(splitter, worker, joiner);
 
-        return new YamlURLsRequest(jobId, splitterUrl, workerUrl, joinerUrl);
+        String blobName = uploadService.upload(jobId, validated);
+
+        return new Task(jobId, blobName);
     }
 }

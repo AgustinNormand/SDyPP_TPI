@@ -107,7 +107,7 @@ public class ClusterApplier {
        
         ClusterOperationResult result = new ClusterOperationResult(jobId.toString(), script.getFilename());
 
-        ClusterOperationResult clusterExecResult = this.execute(jobId, String.format("%s -f %s", operation, script.getUrl()));
+        ClusterOperationResult clusterExecResult = this.execute(jobId, String.format("%s -f %s", operation, script.getFilename()));
         result.setResultContent(clusterExecResult.getResultContent());
         result.setStatus(clusterExecResult.getStatus());
 

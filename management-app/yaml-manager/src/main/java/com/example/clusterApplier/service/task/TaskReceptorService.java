@@ -2,7 +2,7 @@ package com.example.clusterApplier.service.task;
 
 import com.example.clusterApplier.events.TaskProcessedEvent;
 import com.example.clusterApplier.events.TaskReceivedEvent;
-import com.example.clusterApplier.service.blob.LocalDownloadService;
+import com.example.clusterApplier.service.blob.DownloadService;
 import com.example.clusterApplier.service.yaml.YamlProcessorService;
 import com.example.commons.dto.Task;
 import com.example.commons.dto.YamlFilesRequest;
@@ -17,7 +17,7 @@ import org.springframework.util.SerializationUtils;
 public class TaskReceptorService {
 
     @Autowired
-    LocalDownloadService downloadService;
+    DownloadService downloadService;
 
     @Autowired
     YamlProcessorService processorService;
@@ -33,9 +33,9 @@ public class TaskReceptorService {
 
         YamlFilesRequest request = (YamlFilesRequest) SerializationUtils.deserialize(blobBytes);
 
-        YamlURLsRequest yamlURLsRequest = processorService.processRequest(task.getJobId(), request);
+        Task processedTask = processorService.processRequest(task.getJobId(), request);
 
-        applicationEventPublisher.publishEvent(new TaskProcessedEvent(yamlURLsRequest));
+        applicationEventPublisher.publishEvent(new TaskProcessedEvent(processedTask));
     }
 
 }

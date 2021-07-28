@@ -11,8 +11,7 @@ import java.io.Serializable;
 public class OrchestratorService {
 
     @Autowired
-    LocalUploadService uploadService;
-//    UploadService uploadService;
+    UploadService uploadService;
 
     @Autowired
     JobNotifierService jobNotifier;

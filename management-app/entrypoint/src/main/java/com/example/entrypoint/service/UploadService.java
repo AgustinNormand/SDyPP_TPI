@@ -22,6 +22,6 @@ public class UploadService {
         Bucket bucket = storage.get(bucketName);
         byte[] data = SerializationUtils.serialize(payload);
         Blob blob = bucket.create(id, data);
-        return blob.getMediaLink();
+        return blob.getName();
     }
 }

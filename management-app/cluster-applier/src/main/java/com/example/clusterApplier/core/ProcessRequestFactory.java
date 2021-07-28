@@ -12,14 +12,6 @@ public class ProcessRequestFactory {
     private static final int EXPECTED_AMT = 3;
 
 
-    public static ProcessRequest createProcessRequest(String splitterUrl, String workerUrl, String joinerUrl) {
-        ProcessRequest request = new ProcessRequest();
-        request.setSplitter(new Script("SPLITTER", splitterUrl));
-        request.setWorker(new Script("WORKER", workerUrl));
-        request.setJoiner(new Script("JOINER", joinerUrl));
-        return request;
-    }
-
     /**
      * Creates a {@link ProcessRequest} from the given {@link Script}s
      * @param scripts
@@ -59,4 +51,11 @@ public class ProcessRequestFactory {
         }
     }
 
+    public static ProcessRequest createProcessRequest(byte[] splitter, byte[] worker, byte[] joiner) {
+        ProcessRequest request = new ProcessRequest();
+        request.setSplitter(new Script(splitter));
+        request.setWorker(new Script(worker));
+        request.setJoiner(new Script(joiner));
+        return request;
+    }
 }

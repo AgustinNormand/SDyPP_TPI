@@ -1,17 +1,30 @@
 package com.example.clusterApplier.core;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import com.example.clusterApplier.utils.TempFileCreator;
+import lombok.Getter;
 
 /**
  * Represents a k8s script that can be applied in the cluster
  */
-@Data
-@AllArgsConstructor
 public class Script {
 
     private String filename;
 
-    private String url;
+    @Getter
+    private byte[] content;
 
+    private boolean tempFileCreated;
+
+    public Script(byte[] content) {
+        this.content = content;
+        this.tempFileCreated = false;
+    }
+
+    public String getFilename() {
+        if (!tempFileCreated) {
+            this.filename = TempFileCreator.createTempFile(this.content);
+            tempFileCreated = true;
+        }
+        return filename;
+    }
 }
