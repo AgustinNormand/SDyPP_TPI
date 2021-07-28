@@ -6,4 +6,4 @@ namespace: default
 images:
 - name: image_tag
   newName: agustinnormand/tpi_cluster_applier
-  newTag: a34c9f60b9a783df926c20793b753ead86e160fe
+  newTag: 2d14599647e152efa6dcab608b4a7c7e73c88b88

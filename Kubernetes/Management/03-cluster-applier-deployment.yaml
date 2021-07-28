@@ -17,6 +17,6 @@ spec:
       - env:
         - name: RABBIT_HOST
           value: rabbitmq-service
-        image: agustinnormand/tpi_cluster_applier:a34c9f60b9a783df926c20793b753ead86e160fe
+        image: agustinnormand/tpi_cluster_applier:2d14599647e152efa6dcab608b4a7c7e73c88b88
         imagePullPolicy: IfNotPresent
         name: cluster-applier
