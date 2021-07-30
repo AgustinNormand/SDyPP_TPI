@@ -1,6 +1,6 @@
 package com.example.clusterApplier.core;
 
-import com.example.clusterApplier.core.enums.ResultStatus;
+import com.example.commons.dto.enums.ResultStatus;
 import lombok.Data;
 
 import java.util.ArrayList;

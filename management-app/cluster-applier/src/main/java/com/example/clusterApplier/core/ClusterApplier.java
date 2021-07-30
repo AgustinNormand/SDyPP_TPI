@@ -1,10 +1,9 @@
 package com.example.clusterApplier.core;
 
-import com.example.clusterApplier.core.enums.ResultStatus;
 import com.example.clusterApplier.core.utils.ClusterOpResultReader;
+import com.example.commons.dto.enums.ResultStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 

@@ -30,7 +30,6 @@ public class TaskController {
     public Consumer<Task> taskInput() {
         return task -> {
             logger.info("Received task to process: {}", task);
-
             applicationEventPublisher.publishEvent(new TaskReceivedEvent(task));
         };
     }

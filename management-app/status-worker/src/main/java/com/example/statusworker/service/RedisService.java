@@ -1,6 +1,6 @@
-package com.example.splitter;
+package com.example.statusworker.service;
 
-import com.example.splitter.dto.Task;
+import com.example.commons.dto.JobStatus;
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
 import io.lettuce.core.api.StatefulRedisConnection;
@@ -10,16 +10,16 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RedisHandler {
+public class RedisService {
 
     private RedisCommands<String, String> syncCommands;
     private StatefulRedisConnection<String, String> connection;
     private RedisClient redisClient;
 
     @Autowired
-    public RedisHandler(Environment env) {
+    public RedisService(Environment env) {
         RedisURI redisUri = RedisURI.Builder.redis(env.getProperty("redis.hostname"))
-                .withPassword(env.getProperty("redis.password"))
+//                .withPassword(env.getProperty("redis.password"))
                 .withPort(Integer.parseInt(env.getProperty("redis.port")))
                 .withDatabase(Integer.parseInt(env.getProperty("redis.database")))
                 .build();
@@ -33,7 +33,7 @@ public class RedisHandler {
         redisClient.shutdown();
     }
 
-    public void save(String uuid, String subKey, Integer totalTasks){
-        syncCommands.hset(uuid, subKey, totalTasks.toString());
+    public void save(String uuid, JobStatus.State step, String body){
+        syncCommands.hset(uuid, String.valueOf(step), body);
     }
 }

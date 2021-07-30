@@ -1,6 +1,6 @@
-package com.example.clusterApplier.core.dto;
+package com.example.commons.dto;
 
-import com.example.clusterApplier.core.enums.ResultStatus;
+import com.example.commons.dto.enums.ResultStatus;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

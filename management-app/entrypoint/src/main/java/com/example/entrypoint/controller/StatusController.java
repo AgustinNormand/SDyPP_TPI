@@ -1,5 +1,6 @@
 package com.example.entrypoint.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -8,10 +9,9 @@ import org.springframework.web.bind.annotation.*;
 public class StatusController {
 
 
-    @GetMapping
-    public ResponseEntity process(@RequestBody Object input) {
-        System.out.println(input);
-        return ResponseEntity.ok().build();
+    @PostMapping
+    public ResponseEntity<String> process(@RequestBody Object input) {
+        return new ResponseEntity<>("FEATURE_NOT_IMPLEMENTED", HttpStatus.BAD_REQUEST);
     }
 
 }

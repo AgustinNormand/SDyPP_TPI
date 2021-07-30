@@ -1,4 +1,4 @@
-package com.example.splitter.dto;
+package com.example.statusworker.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

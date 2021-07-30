@@ -1,7 +1,7 @@
 package com.example.clusterApplier.core.dto.mappers;
 
 import com.example.clusterApplier.core.ProcessResult;
-import com.example.clusterApplier.core.dto.ProcessResultDto;
+import com.example.commons.dto.ProcessResultDto;
 
 import java.util.stream.Collectors;
 

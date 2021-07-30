@@ -1,4 +1,4 @@
-package com.example.clusterApplier.service.task;
+package com.example.clusterApplier.service.handlers;
 
 import com.example.clusterApplier.events.TaskProcessedEvent;
 import com.example.clusterApplier.events.TaskReceivedEvent;
@@ -6,7 +6,6 @@ import com.example.clusterApplier.service.blob.DownloadService;
 import com.example.clusterApplier.service.yaml.YamlProcessorService;
 import com.example.commons.dto.Task;
 import com.example.commons.dto.YamlFilesRequest;
-import com.example.commons.dto.YamlURLsRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
@@ -14,7 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.SerializationUtils;
 
 @Service
-public class TaskReceptorService {
+public class TaskReceivedHandler {
 
     @Autowired
     DownloadService downloadService;

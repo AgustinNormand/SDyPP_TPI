@@ -2,7 +2,7 @@ package com.example.clusterApplier.core.dto.mappers;
 
 
 import com.example.clusterApplier.core.ClusterOperationResult;
-import com.example.clusterApplier.core.dto.ClusterOperationResultDto;
+import com.example.commons.dto.ClusterOperationResultDto;
 
 public class ClusterOperationMapper {
     public static ClusterOperationResultDto map(ClusterOperationResult result) {

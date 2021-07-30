@@ -30,6 +30,7 @@ public class YamlProcessorService {
 
     public Task processRequest(String jobId, YamlFilesRequest request) {
         if (Objects.isNull(request)) {
+            logger.debug("Yaml request cannot be null");
             throw new InvalidYamlProcessRequestException();
         }
 
@@ -37,7 +38,10 @@ public class YamlProcessorService {
         byte[] worker = request.getWorker();
         byte[] joiner = request.getJoiner();
 
+        logger.debug("Validating yaml files");
+
         // ToDo: Validate files or update them
+        logger.debug("Yaml files validated");
 
         YamlFilesRequest validated = new YamlFilesRequest(splitter, worker, joiner);
 

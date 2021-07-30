@@ -1,8 +1,8 @@
 package com.example.clusterApplier.core;
 
-import com.example.clusterApplier.core.dto.ProcessResultDto;
 import com.example.clusterApplier.core.dto.mappers.ProcessResultMapper;
 import com.example.clusterApplier.core.exceptions.InvalidProcessRequestException;
+import com.example.commons.dto.ProcessResultDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
