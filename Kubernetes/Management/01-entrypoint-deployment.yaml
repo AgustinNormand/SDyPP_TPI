@@ -17,7 +17,7 @@ spec:
       - env:
         - name: RABBIT_HOST
           value: rabbitmq-service
-        image: agustinnormand/tpi_entrypoint:a37dd722fc57d86c9f9005de4fb993dc6e7cebc2
+        image: agustinnormand/tpi_entrypoint:72d9aed2db3e83ede0c5f7072606902a6b2926dd
         imagePullPolicy: IfNotPresent
         name: entrypoint
         ports:
