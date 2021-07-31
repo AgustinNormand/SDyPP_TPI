@@ -17,6 +17,6 @@ spec:
       - env:
         - name: RABBIT_HOST
           value: rabbitmq-service
-        image: agustinnormand/tpi_yaml-manager:72d9aed2db3e83ede0c5f7072606902a6b2926dd
+        image: agustinnormand/tpi_yaml-manager:5b9180aeab766743c7aa7ff9424554dd2fff053b
         imagePullPolicy: IfNotPresent
         name: yaml-manager
