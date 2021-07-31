@@ -1,10 +1,10 @@
 package com.example.clusterApplier.controller;
 
 import com.example.clusterApplier.ClusterApplierApplication;
+import com.example.clusterApplier.events.RollbackTaskReceivedEvent;
 import com.example.clusterApplier.events.YamlAppliedEvent;
-import com.example.clusterApplier.events.RequestReceivedEvent;
+import com.example.clusterApplier.events.ApplyTaskReceivedEvent;
 import com.example.commons.dto.Task;
-import com.example.commons.dto.YamlURLsRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +28,18 @@ public class TaskController {
     private ApplicationEventPublisher applicationEventPublisher;
 
     @Bean
-    public Consumer<Task> taskInput() {
+    public Consumer<Task> applyTask() {
         return request -> {
-            logger.info("Received request to process: {}", request);
-            applicationEventPublisher.publishEvent(new RequestReceivedEvent(request));
+            logger.info("Received task to apply: {}", request);
+            applicationEventPublisher.publishEvent(new ApplyTaskReceivedEvent(request));
+        };
+    }
+
+    @Bean
+    public Consumer<Task> rollbackTask() {
+        return request -> {
+            logger.info("Received request to rollback: {}", request);
+            applicationEventPublisher.publishEvent(new RollbackTaskReceivedEvent(request));
         };
     }
 

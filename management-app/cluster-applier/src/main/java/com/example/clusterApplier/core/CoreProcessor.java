@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Component
 public class CoreProcessor {
@@ -16,19 +18,30 @@ public class CoreProcessor {
     private ClusterApplier clusterApplier;
 
     /**
-     * Processes the given request. Creates the required resources in the cluster and rollbacks all of them if there's
+     * Applies the given request. Creates the required resources in the cluster and rollbacks all of them if there's
      * any error
      * @param processRequest the processing request
      * @return A {@link ProcessResult} indicating the status of the resources
      */
-    public ProcessResultDto process(ProcessRequest processRequest) throws InvalidProcessRequestException {
-        return ProcessResultMapper.map(this.processRequest(processRequest));
+    public ProcessResultDto apply(ProcessRequest processRequest) throws InvalidProcessRequestException {
+        return ProcessResultMapper.map(this.applyRequest(processRequest));
     }
 
-    private ProcessResult processRequest(ProcessRequest processRequest) throws InvalidProcessRequestException {
+    /**
+     * Applies the given request. Creates the required resources in the cluster and rollbacks all of them if there's
+     * any error
+     * @param processRequest the processing request
+     * @return A {@link ProcessResult} indicating the status of the resources
+     */
+    public ProcessResultDto rollback(ProcessRequest processRequest) throws InvalidProcessRequestException {
+        return ProcessResultMapper.map(this.rollbackRequest(processRequest));
+    }
+
+
+    private ProcessResult applyRequest(ProcessRequest processRequest) throws InvalidProcessRequestException {
         preValidate(processRequest);
 
-        UUID jobId = UUID.randomUUID();
+        String jobId = processRequest.getJobId();
 
         Script worker = processRequest.getWorker();
         ClusterOperationResult workerApplyResult = clusterApplier.apply(jobId, worker);
@@ -56,14 +69,23 @@ public class CoreProcessor {
         return ProcessResult.of(workerApplyResult, joinerApplyResult, splitterApplyResult);
     }
 
+
     private void preValidate(ProcessRequest processRequest) {
         if (!processRequest.isValid()) {
             throw new InvalidProcessRequestException(processRequest);
         }
     }
 
-    private void rollback(UUID jobId, Script ...scripts) {
-        Arrays.stream(scripts).forEach(script -> clusterApplier.rollback(jobId, script));
+
+    private ProcessResult rollbackRequest(ProcessRequest processRequest) {
+        return rollback(processRequest.getJobId(), processRequest.getScripts());
+    }
+
+
+    private ProcessResult rollback(String jobId, Script ...scripts) {
+        ClusterOperationResult[] rollbackResults = (ClusterOperationResult[]) Arrays.stream(scripts)
+                .map(script -> clusterApplier.rollback(jobId, script)).toArray();
+        return ProcessResult.of(rollbackResults);
     }
 
 }

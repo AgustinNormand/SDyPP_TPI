@@ -1,4 +1,4 @@
-package com.example.clusterApplier.service.handlers;
+package com.example.clusterApplier.handlers;
 
 import com.example.clusterApplier.events.TaskProcessedEvent;
 import com.example.clusterApplier.events.TaskReceivedEvent;
@@ -9,10 +9,11 @@ import com.example.commons.dto.YamlFilesRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.util.SerializationUtils;
 
-@Service
+@Component
 public class TaskReceivedHandler {
 
     @Autowired

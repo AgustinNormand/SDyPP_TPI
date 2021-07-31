@@ -1,6 +1,7 @@
 package com.example.clusterApplier.service.yaml;
 
 import com.example.clusterApplier.core.CoreProcessor;
+import com.example.clusterApplier.core.ProcessRequest;
 import com.example.clusterApplier.core.ProcessRequestFactory;
 import com.example.clusterApplier.exceptions.InvalidYamlProcessRequestException;
 import com.example.clusterApplier.service.blob.DownloadService;
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.Objects;
 
 @Service
-public class YamlProcessorService {
+public class YamlApplierService {
 
     @Autowired
     CoreProcessor coreProcessor;
@@ -25,21 +26,25 @@ public class YamlProcessorService {
     @Autowired
     DownloadService downloadService;
 
-    private Logger logger = LoggerFactory.getLogger(YamlProcessorService.class);
+    private Logger logger = LoggerFactory.getLogger(YamlApplierService.class);
 
-    public YamlProcessResult processRequest(Task task) {
+    public YamlProcessResult apply(Task task) {
         if (Objects.isNull(task)) {
             throw new InvalidYamlProcessRequestException();
         }
 
-        YamlProcessResult result = new YamlProcessResult(task.getJobId());
+        String jobId = task.getJobId();
+        YamlProcessResult result = new YamlProcessResult(jobId);
 
         byte[] blobBytes = downloadService.downloadBlob(task.getBlobName());
 
         YamlFilesRequest request = (YamlFilesRequest) SerializationUtils.deserialize(blobBytes);
 
-        ProcessResultDto processResult = coreProcessor
-                .process(ProcessRequestFactory.createProcessRequest(request.getSplitter(), request.getWorker(), request.getJoiner()));
+        ProcessRequest processRequest = ProcessRequestFactory
+                .createProcessRequest(jobId, request.getSplitter(), request.getWorker(), request.getJoiner());
+
+        ProcessResultDto processResult = coreProcessor.apply(processRequest);
+
         result.setProcessResult(processResult);
 
         return result;

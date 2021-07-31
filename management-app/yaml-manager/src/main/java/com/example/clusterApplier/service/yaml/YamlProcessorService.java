@@ -1,12 +1,9 @@
 package com.example.clusterApplier.service.yaml;
 
 import com.example.clusterApplier.exceptions.InvalidYamlProcessRequestException;
-import com.example.clusterApplier.service.blob.LocalUploadService;
 import com.example.clusterApplier.service.blob.UploadService;
-import com.example.clusterApplier.service.notifier.JobNotifierService;
 import com.example.commons.dto.Task;
 import com.example.commons.dto.YamlFilesRequest;
-import com.example.commons.dto.YamlURLsRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +22,6 @@ public class YamlProcessorService {
     @Autowired
     UploadService uploadService;
 
-    @Autowired
-    JobNotifierService jobNotifierService;
 
     public Task processRequest(String jobId, YamlFilesRequest request) {
         if (Objects.isNull(request)) {

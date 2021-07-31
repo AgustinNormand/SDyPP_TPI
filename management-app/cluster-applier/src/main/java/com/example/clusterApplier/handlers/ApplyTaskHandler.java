@@ -1,29 +1,29 @@
 package com.example.clusterApplier.handlers;
 
 import com.example.clusterApplier.events.YamlAppliedEvent;
-import com.example.clusterApplier.events.RequestReceivedEvent;
-import com.example.clusterApplier.service.yaml.YamlProcessorService;
+import com.example.clusterApplier.events.ApplyTaskReceivedEvent;
+import com.example.clusterApplier.service.yaml.YamlApplierService;
 import com.example.commons.dto.Task;
 import com.example.commons.dto.YamlProcessResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
-public class TaskHandler {
+@Component
+public class ApplyTaskHandler {
 
     @Autowired
-    YamlProcessorService processorService;
+    YamlApplierService processorService;
 
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
 
     @EventListener
-    public void onTaskReceived(RequestReceivedEvent event) {
+    public void onTaskReceived(ApplyTaskReceivedEvent event) {
         Task request = event.getSource();
 
-        YamlProcessResult yamlProcessResult = processorService.processRequest(request);
+        YamlProcessResult yamlProcessResult = processorService.apply(request);
 
         applicationEventPublisher.publishEvent(new YamlAppliedEvent(yamlProcessResult));
     }

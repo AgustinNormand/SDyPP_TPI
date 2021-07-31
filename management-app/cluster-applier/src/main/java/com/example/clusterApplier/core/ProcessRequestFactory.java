@@ -51,8 +51,9 @@ public class ProcessRequestFactory {
         }
     }
 
-    public static ProcessRequest createProcessRequest(byte[] splitter, byte[] worker, byte[] joiner) {
+    public static ProcessRequest createProcessRequest(String jobId, byte[] splitter, byte[] worker, byte[] joiner) {
         ProcessRequest request = new ProcessRequest();
+        request.setJobId(jobId);
         request.setSplitter(new Script(splitter));
         request.setWorker(new Script(worker));
         request.setJoiner(new Script(joiner));

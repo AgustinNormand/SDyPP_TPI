@@ -27,7 +27,7 @@ public class ProcessResult {
      * @param results
      * @return
      */
-    public static ProcessResult of(ClusterOperationResult...results) {
+    public static ProcessResult of(ClusterOperationResult... results) {
         ProcessResult result = new ProcessResult();
         Arrays.stream(results).forEach(result::addOperationResult);
         result.updateStatus();

@@ -14,4 +14,8 @@ public class Task {
 
     private String blobName;
 
+    public Task(String jobId) {
+        this.jobId = jobId;
+    }
+
 }

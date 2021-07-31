@@ -4,9 +4,11 @@ import com.example.commons.dto.enums.ResultStatus;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@NoArgsConstructor
 public class ClusterOperationResultDto {
 
     @JsonProperty("job_id")

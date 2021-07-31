@@ -3,6 +3,8 @@ package com.example.clusterApplier.core;
 import lombok.Data;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -11,6 +13,8 @@ import java.util.stream.Stream;
  */
 @Data
 public class ProcessRequest {
+
+    private String jobId;
 
     private Script splitter;
 
@@ -24,6 +28,10 @@ public class ProcessRequest {
      */
     public boolean isValid() {
         return Stream.of(splitter, worker, joiner).noneMatch(Objects::isNull);
+    }
+
+    public Script[] getScripts() {
+        return new Script[] {splitter, worker, joiner};
     }
 
 }

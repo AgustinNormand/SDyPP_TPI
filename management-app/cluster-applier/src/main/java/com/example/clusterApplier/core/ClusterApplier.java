@@ -33,8 +33,41 @@ public class ClusterApplier {
      * @param script the script to be applied
      * @return a {@link ClusterOperationResult} indicating whether the script could be applied
      */
-    protected ClusterOperationResult apply(UUID jobId, Script script) {
+    protected ClusterOperationResult apply(String jobId, Script script) {
         return performScriptOperationOnCluster("apply", jobId, script);
+    }
+
+
+
+    /**
+     * Rollbacks synchronously the given script from the k8s cluster
+     *
+     * @param jobId
+     * @param script the script to be applied
+     * @return a {@link ClusterOperationResult} indicating whether the script could be applied
+     */
+    protected ClusterOperationResult rollback(String jobId, Script script) {
+        ClusterOperationResult result = performScriptOperationOnCluster("delete", jobId, script);
+        result.setRolledBack(true);
+        return result;
+    }
+
+    /**
+     * Synchronously performs the given operation on the k8s cluster
+     * @param operation A {@link String} representing the operation to be applied
+     * @param jobId
+     * @param script
+     * @return A {@link ClusterOperationResult} indicating the state of the operation
+     */
+    private ClusterOperationResult performScriptOperationOnCluster(String operation, String jobId, Script script) {
+
+        ClusterOperationResult result = new ClusterOperationResult(jobId, script.getFilename());
+
+        ClusterOperationResult clusterExecResult = this.execute(jobId, String.format("%s -f %s", operation, script.getFilename()));
+        result.setResultContent(clusterExecResult.getResultContent());
+        result.setStatus(clusterExecResult.getStatus());
+
+        return result;
     }
 
     /**
@@ -44,15 +77,15 @@ public class ClusterApplier {
      * @param command the command to be applied
      * @return a {@link ClusterOperationResult} indicating whether the command could be executed
      */
-    protected ClusterOperationResult execute(UUID jobId, String command) {
-        ClusterOperationResult result = new ClusterOperationResult(jobId.toString(), command);
+    protected ClusterOperationResult execute(String jobId, String command) {
+        ClusterOperationResult result = new ClusterOperationResult(jobId, command);
 
         try {
 
             String commandToExecute = String.format("kubectl %s", command);
             logger.debug("Executing '{}' in cluster", commandToExecute);
 
-            if (!deactivateApplier) {
+            if (Boolean.FALSE.equals(deactivateApplier)) {
 
                 Process process = Runtime.getRuntime()
                         .exec(commandToExecute)
@@ -76,39 +109,6 @@ public class ClusterApplier {
             logger.debug(Arrays.toString(e.getStackTrace()));
             result.setStatus(ResultStatus.ERROR);
         }
-
-        return result;
-
-    }
-
-
-    /**
-     * Rollbacks synchronously the given script from the k8s cluster
-     *
-     * @param jobId
-     * @param script the script to be applied
-     * @return a {@link ClusterOperationResult} indicating whether the script could be applied
-     */
-    protected ClusterOperationResult rollback(UUID jobId, Script script) {
-        ClusterOperationResult result = performScriptOperationOnCluster("delete", jobId, script);
-        result.setRolledBack(true);
-        return result;
-    }
-
-    /**
-     * Synchronously performs the given operation on the k8s cluster
-     * @param operation A {@link String} representing the operation to be applied
-     * @param jobId
-     * @param script
-     * @return A {@link ClusterOperationResult} indicating the state of the operation
-     */
-    private ClusterOperationResult performScriptOperationOnCluster(String operation, UUID jobId, Script script) {
-       
-        ClusterOperationResult result = new ClusterOperationResult(jobId.toString(), script.getFilename());
-
-        ClusterOperationResult clusterExecResult = this.execute(jobId, String.format("%s -f %s", operation, script.getFilename()));
-        result.setResultContent(clusterExecResult.getResultContent());
-        result.setStatus(clusterExecResult.getStatus());
 
         return result;
     }
