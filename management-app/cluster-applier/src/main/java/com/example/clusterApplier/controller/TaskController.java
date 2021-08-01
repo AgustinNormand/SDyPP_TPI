@@ -4,6 +4,7 @@ import com.example.clusterApplier.ClusterApplierApplication;
 import com.example.clusterApplier.events.RollbackTaskReceivedEvent;
 import com.example.clusterApplier.events.YamlAppliedEvent;
 import com.example.clusterApplier.events.ApplyTaskReceivedEvent;
+import com.example.clusterApplier.events.YamlRolledBackEvent;
 import com.example.commons.dto.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,6 +48,12 @@ public class TaskController {
     public void onYamlAppliedEvent(YamlAppliedEvent taskProcessedEvent) {
         logger.info("Sending yaml applying result: {}", taskProcessedEvent.getSource());
         streamBridge.send("yamlApplied", taskProcessedEvent.getSource());
+    }
+
+    @EventListener
+    public void onYamlRolledBackEvent(YamlRolledBackEvent event) {
+        logger.info("Sending yaml rolled back result: {}", event.getSource());
+        streamBridge.send("yamlRolledBack", event.getSource());
     }
 
 }

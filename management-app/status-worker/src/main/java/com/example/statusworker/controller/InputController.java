@@ -8,11 +8,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
 
 import java.util.function.Consumer;
 
-@RestController
+@Controller
 public class InputController {
 
     private Logger logger = LoggerFactory.getLogger(InputController.class);
@@ -41,6 +41,14 @@ public class InputController {
         return request -> {
             logger.info("Received processed yaml: {}", request);
             applicationEventPublisher.publishEvent(new YamlProcessedEvent(request));
+        };
+    }
+
+    @Bean
+    public Consumer<YamlProcessResult> yamlRolledBack() {
+        return request -> {
+            logger.info("Received rolled back yaml: {}", request);
+            applicationEventPublisher.publishEvent(new YamlRolledBackEvent(request));
         };
     }
 

@@ -10,7 +10,7 @@ public class JobStatus {
     ProcessResultDto result;
 
     public enum State {
-        PENDING, VALIDATING_YAML, APPLYING_IN_CLUSTER, DONE
+        PENDING, VALIDATING_YAML, APPLYING_IN_CLUSTER, DONE, ROLLED_BACK
     }
 
 }

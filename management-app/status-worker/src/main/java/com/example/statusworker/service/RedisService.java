@@ -36,4 +36,8 @@ public class RedisService {
     public void save(String uuid, JobStatus.State step, String body){
         syncCommands.hset(uuid, String.valueOf(step), body);
     }
+
+    public String getStep(String jobId, JobStatus.State state) {
+        return syncCommands.hget(jobId, String.valueOf(state));
+    }
 }
