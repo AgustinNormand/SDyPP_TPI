@@ -48,7 +48,7 @@ spec:
   selector:
     matchLabels:
       app: external-dns
-  template:
+  template: 
     metadata:
       labels:
         app: external-dns
