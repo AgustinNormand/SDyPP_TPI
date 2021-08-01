@@ -6,4 +6,4 @@ namespace: default
 images:
 - name: image_tag
   newName: agustinnormand/tpi_yaml-manager
-  newTag: 5b9180aeab766743c7aa7ff9424554dd2fff053b
+  newTag: 147d4eeb41ffb687d66cbec2c8fa95d033a6c92f
