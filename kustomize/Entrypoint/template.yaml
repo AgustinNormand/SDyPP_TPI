@@ -20,7 +20,9 @@ spec:
         - containerPort: 8080
         env:
         - name: RABBIT_HOST
-          value: "rabbitmq-service"  
+          value: "rabbitmq-service" 
+        - name: STATUS_SERVICE_URL
+          value: "status-worker-service"   
         #readinessProbe:
         #  httpGet:
         #    path: /health
