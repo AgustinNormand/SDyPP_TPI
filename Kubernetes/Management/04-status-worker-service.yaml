@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+# maybe remove 'worker' from name?
+  name: status-worker-service
+  labels:
+    component: status-worker
+spec:
+  selector:
+    component: status-worker
+  ports:
+  - name: http
+    port: 443
+    protocol: TCP
+    targetPort: 8080
