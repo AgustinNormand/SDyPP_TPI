@@ -3,12 +3,9 @@ kind: Service
 metadata:
   name: redis-service
   annotations:
-    networking.gke.io/load-balancer-type: "Internal"
-    external-dns.alpha.kubernetes.io/hostname: redis-service.framework.services.gcp.com.ar.
   labels:
     component: redis
 spec:
-  type: LoadBalancer
   selector:
     component: redis
   ports:
