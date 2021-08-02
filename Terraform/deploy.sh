@@ -94,9 +94,9 @@ commit_changes(){
 
 export GOOGLE_APPLICATION_CREDENTIALS=$(pwd)'/credentials.json'
 
-terraform init
+#terraform init
 
-terraform apply --auto-approve
+#terraform apply --auto-approve
 
 gh secret set GOOGLE_CREDENTIALS < credentials.json
 
