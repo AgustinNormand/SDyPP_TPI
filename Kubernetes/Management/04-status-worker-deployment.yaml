@@ -18,7 +18,7 @@ spec:
         - name: RABBIT_HOST
           value: rabbitmq-service
         - name: REDIS_HOST
-          value: redis-service
-        image: agustinnormand/tpi_status-worker:717de9aa1df454ac952cc44a523cf0f0ee73cfb4
+          value: redis-cluster
+        image: agustinnormand/tpi_status-worker:22f54879c2db4a3fff4515283f40fe921cc5e6ff
         imagePullPolicy: IfNotPresent
         name: status-worker
