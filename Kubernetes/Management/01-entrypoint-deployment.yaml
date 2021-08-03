@@ -17,7 +17,9 @@ spec:
       - env:
         - name: RABBIT_HOST
           value: rabbitmq-service
-        image: agustinnormand/tpi_entrypoint:717de9aa1df454ac952cc44a523cf0f0ee73cfb4
+        - name: STATUS_SERVICE_URL
+          value: status-worker-service
+        image: agustinnormand/tpi_entrypoint:6ad63b667b55c11491364e7d730809af673521b9
         imagePullPolicy: IfNotPresent
         name: entrypoint
         ports:
