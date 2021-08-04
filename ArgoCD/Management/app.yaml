@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/AgustinNormand/SDyPP_TPI.git
-    targetRevision: HEAD
+    targetRevision: main
     path: Kubernetes/Management
     directory:
       recurse: true
