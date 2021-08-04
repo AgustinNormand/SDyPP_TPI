@@ -39,5 +39,5 @@ public class RedisService {
 
     public String getStep(String jobId, JobStatus.State state) {
         return syncCommands.hget(jobId, String.valueOf(state));
-    }
+    } 
 }
