@@ -20,7 +20,7 @@ spec:
         - name: RABBIT_HOST
           value: "rabbitmq-service"  
         - name: REDIS_HOST
-          value: "redis-cluster"          
+          value: "redis-cluster-app"          
         #ports:
         #- containerPort: 8080
         #readinessProbe:
