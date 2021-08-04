@@ -8,6 +8,6 @@ public class EntrypointApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(EntrypointApplication.class, args);
-	}
+	} 
 
 }

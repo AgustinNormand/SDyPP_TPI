@@ -22,7 +22,7 @@ spec:
         - name: RABBIT_HOST
           value: "rabbitmq-service" 
         - name: STATUS_SERVICE_URL
-          value: "status-worker-service"   
+          value: "http://status-worker-service"   
         #readinessProbe:
         #  httpGet:
         #    path: /health
