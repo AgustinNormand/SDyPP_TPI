@@ -4,17 +4,21 @@ metadata:
   name: example-app
   namespace: argocd
 spec:
-  project: default
-  source:
-    repoURL: https://github.com/AgustinNormand/SDyPP_TPI.git
-    targetRevision: main
-    path: Kubernetes/Management
-    directory:
-      recurse: true
   destination:
     server: https://kubernetes.default.svc
     namespace: default
+  project: default
+  source:
+    path: Kubernetes/Management
+    repoURL: https://github.com/AgustinNormand/SDyPP_TPI
+    targetRevision: main
   syncPolicy:
     automated:
-      prune: false
-      selfHeal: false
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+
+
+    #directory:
+      #recurse: true
