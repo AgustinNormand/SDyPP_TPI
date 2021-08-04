@@ -19,7 +19,7 @@ env:
 on:
   push:
     paths:
-    - 'management-app/entrypoint/*'
+    - 'management-app/entrypoint/**'
     - 'Docker/Entrypoint/*'
 
 defaults:

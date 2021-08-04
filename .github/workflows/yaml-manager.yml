@@ -19,7 +19,7 @@ env:
 on:
   push:
     paths:
-    - 'management-app/yaml-manager/*'
+    - 'management-app/yaml-manager/**'
     - 'Docker/Yaml-Manager/*'
 
 defaults:

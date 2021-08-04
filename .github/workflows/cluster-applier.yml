@@ -19,7 +19,7 @@ env:
 on:
   push:
     paths:
-    - 'management-app/cluster-applier/*'
+    - 'management-app/cluster-applier/**'
     - 'Docker/Cluster-Applier/*'
 
 defaults:

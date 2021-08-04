@@ -23,9 +23,9 @@ spec:
           value: "redis-cluster-app"
         - name: REDIS_PWD
           valueFrom:
-          secretKeyRef:
-            name: redis-cluster-app
-            key: redis-password           
+            secretKeyRef:
+              name: redis-cluster-app
+              key: redis-password           
 
         #ports:
         #- containerPort: 8080
