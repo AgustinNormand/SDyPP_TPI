@@ -18,8 +18,8 @@ spec:
         - name: RABBIT_HOST
           value: rabbitmq-service
         - name: STATUS_SERVICE_URL
-          value: status-worker-service
-        image: agustinnormand/tpi_entrypoint:6ad63b667b55c11491364e7d730809af673521b9
+          value: http://status-worker-service
+        image: agustinnormand/tpi_entrypoint:d8c08a7ff57ecef4c9b0e8a2ef72ac46dd27a169
         imagePullPolicy: IfNotPresent
         name: entrypoint
         ports:
