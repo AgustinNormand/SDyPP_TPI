@@ -1,9 +1,9 @@
 apiVersion: v2
-name: quarkus-subchart
+name: redis-subchart
 type: application
 version: 1.0.0
 appVersion: "1.0.0"
 dependencies:
-- name: quarkus
-  version: 0.0.3
-  repository: https://redhat-developer.github.io/redhat-helm-charts
+- name: redis-cluster
+  version: 6.3.2
+  repository: https://charts.bitnami.com/bitnami
