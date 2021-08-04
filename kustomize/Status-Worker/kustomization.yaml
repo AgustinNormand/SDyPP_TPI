@@ -6,4 +6,4 @@ namespace: default
 images:
 - name: image_tag
   newName: agustinnormand/tpi_status-worker
-  newTag: 9683de6d51a16817aad3c7f1d251c1fa8ea8a79d
+  newTag: be7d913a618ce88e97b612c3f5e58ef563ba3785

@@ -1,3 +1,5 @@
+2021/08/04 22:19:30 nil value at `valueFrom.configMapKeyRef.name` ignored in mutation attempt
+2021/08/04 22:19:30 nil value at `valueFrom.secretKeyRef.name` ignored in mutation attempt
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -19,6 +21,11 @@ spec:
           value: rabbitmq-service
         - name: REDIS_HOST
           value: redis-cluster-app
-        image: agustinnormand/tpi_status-worker:9683de6d51a16817aad3c7f1d251c1fa8ea8a79d
+        - name: REDIS_PWD
+          secretKeyRef:
+            key: redis-password
+            name: redis-cluster-app
+          valueFrom: null
+        image: agustinnormand/tpi_status-worker:be7d913a618ce88e97b612c3f5e58ef563ba3785
         imagePullPolicy: IfNotPresent
         name: status-worker
