@@ -19,7 +19,7 @@ public class RedisService {
     @Autowired
     public RedisService(Environment env) {
         RedisURI redisUri = RedisURI.Builder.redis(env.getProperty("redis.hostname"))
-//                .withPassword(env.getProperty("redis.password"))
+                .withPassword(env.getProperty("redis.password"))
                 .withPort(Integer.parseInt(env.getProperty("redis.port")))
                 .withDatabase(Integer.parseInt(env.getProperty("redis.database")))
                 .build();

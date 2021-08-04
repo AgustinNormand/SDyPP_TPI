@@ -19,6 +19,11 @@ spec:
           value: rabbitmq-service
         - name: REDIS_HOST
           value: redis-cluster-app
+        - name: REDIS_PWD
+          valueFrom:
+          secretKeyRef:
+            name: redis-cluster-app
+            key: redis-password
         image: agustinnormand/tpi_status-worker:68ab92a0ecf169fb1bd124fe77fa398159d4413e
         imagePullPolicy: IfNotPresent
         name: status-worker
