@@ -7,7 +7,7 @@ metadata:
     component: status-worker
 spec:
   selector:
-    component: status-worker
+    role: status-worker
   ports:
   - name: http
     port: 80
