@@ -1,3 +1,4 @@
-redis-subchart:
+redis-cluster:
   service:
     type: LoadBalancer
+  
