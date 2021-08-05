@@ -22,10 +22,7 @@ spec:
         - name: REDIS_HOST
           value: redis-cluster-app
         - name: REDIS_PWD
-          valueFrom:
-            secretKeyRef:
-              key: redis-password
-              name: redis-cluster-app
-        image: agustinnormand/tpi_status-worker:52ea0d85ba3ed16873f8c74c0132694292430ea3
+          value: agusmarian
+        image: agustinnormand/tpi_status-worker:08809e5add04165a8e0cb9f196c11b89f23e473a
         imagePullPolicy: IfNotPresent
         name: status-worker
