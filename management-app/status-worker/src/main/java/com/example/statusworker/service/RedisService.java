@@ -5,6 +5,9 @@ import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
+import io.lettuce.core.cluster.RedisClusterClient;
+import io.lettuce.core.cluster.api.StatefulRedisClusterConnection;
+import io.lettuce.core.cluster.api.sync.RedisAdvancedClusterCommands;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
@@ -12,9 +15,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class RedisService {
 
-    private RedisCommands<String, String> syncCommands;
-    private StatefulRedisConnection<String, String> connection;
-    private RedisClient redisClient;
+    private RedisAdvancedClusterCommands<String, String> syncCommands;
+    private StatefulRedisClusterConnection<String, String> connection;
+    private RedisClusterClient redisClient;
 
     @Autowired
     public RedisService(Environment env) {
@@ -23,7 +26,7 @@ public class RedisService {
                 .withPort(Integer.parseInt(env.getProperty("redis.port")))
                 .withDatabase(Integer.parseInt(env.getProperty("redis.database")))
                 .build();
-        this.redisClient = RedisClient.create(redisUri);
+        this.redisClient = RedisClusterClient.create(redisUri);
         this.connection = redisClient.connect();
         this.syncCommands = connection.sync();
     }
