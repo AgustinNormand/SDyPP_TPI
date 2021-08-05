@@ -92,10 +92,13 @@ public class ClusterApplier {
                         .onExit().get();
 
                 if (process.exitValue() == OK_EXIT_VALUE) {
+                    logger.debug("Command {} executed successfully", commandToExecute);
                     result.setResultContent(ClusterOpResultReader.getProcessResult(process));
                     result.setStatus(ResultStatus.OK);
                 } else {
-                    result.setResultContent(ClusterOpResultReader.getProcessError(process));
+                    String processError = ClusterOpResultReader.getProcessError(process);
+                    logger.debug("Command {} returned an error {}", commandToExecute, processError);
+                    result.setResultContent(processError);
                     result.setStatus(ResultStatus.ERROR);
                 }
 
