@@ -26,6 +26,6 @@ spec:
             secretKeyRef:
               key: redis-password
               name: redis-cluster-app
-        image: agustinnormand/tpi_status-worker:10bbe132ad89a81cf783e0df28a05e7fd126a12c
+        image: agustinnormand/tpi_status-worker:5512fa649a3608dd221865afb2b013eb07c8536c
         imagePullPolicy: IfNotPresent
         name: status-worker
