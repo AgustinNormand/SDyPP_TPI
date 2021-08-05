@@ -1,99 +1,16 @@
-name: Entrypoint
 
-env:
-  ENV_CODE_PATH: 'management-app/entrypoint/*'
-  ENV_DOCKER_PATH: 'Docker/Entrypoint/*'
-  ENV_WORKING_DIRECTORY: management-app/entrypoint/
-  ENV_JAR_PATH: ./target/entrypoint-0.0.1-SNAPSHOT.jar
-  ENV_JAR_DOCKER_PATH: ../../Docker/Entrypoint/Entrypoint.jar
-  ENV_CREDENTIALS_FILE_PATH: "Docker/Entrypoint/credentials.json"
-  ENV_DOCKER_CONTEXT: ./Docker/Entrypoint/
-  ENV_DOCKERFILE_PATH: ./Docker/Entrypoint/Dockerfile
-  ENV_IMAGE_TAGS: ${{ secrets.DOCKER_USERNAME }}/tpi_entrypoint:latest, ${{ secrets.DOCKER_USERNAME }}/tpi_entrypoint:${{ github.sha }}
-  ENV_KUSTOMIZE_PATH: ../../kustomize/Entrypoint/
-  ENV_KUSTOMIZE_OUTPUT_FILE: "Kubernetes/Management/01-entrypoint-deployment.yaml"
-  ENV_COMMIT_PATH: './Kubernetes/Management/'
-  ENV_KUSTOMIZE_BUILD_DIR: './kustomize/Entrypoint/'
-  ENV_KUSTOMIZE_COMMAND: kustomize edit set image image_tag=${{ secrets.DOCKER_USERNAME }}/tpi_entrypoint:$GITHUB_SHA
-
-on:
-  push:
-    paths:
-    - CODE_PATH
-    - DOCKER_PATH
-
-defaults:
-  run:
-    working-directory: WORKING_DIRECTORY
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v2
-        with:
-          distribution: 'zulu'
-          java-version: 15
-      - name: Install local library
-        run: |
-          cd ../commons/
-          mvn install
-          cd -
-      - name: Build with Maven
-        run:
-          mvn clean package --file pom.xml
-      - name: Move jar to Dockerfile context
-        run: mv JAR_PATH JAR_DOCKER_PATH
- 
-      - name: Login to DockerHub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_TOKEN }}
-
-      - name: Create credentials file
-        uses: "finnp/create-file-action@master"
-        env:
-          FILE_NAME: CREDENTIALS_FILE_PATH
-          FILE_DATA: ${{ secrets.GOOGLE_CREDENTIALS }}
-
-      - name: build and push Docker image
-        uses: docker/build-push-action@v2
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        with:
-          context: DOCKER_CONTEXT
-          file: DOCKERFILE_PATH
-          push: true
-          tags: IMAGE_TAGS
-
-      - name: Setup Kustomize
-        uses: imranismail/setup-kustomize@v1
-        with:
-          kustomize-version: "3.6.1"
-
-      - name: Update Kubernetes resources
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        run: |
-         cd KUSTOMIZE_PATH
-         KUSTOMIZE_COMMAND
-
-      - name: 'Kustomize Build'
-        uses: karancode/kustomize-github-action@master
-        with:
-          kustomize_version: '3.0.0'
-          kustomize_build_dir: KUSTOMIZE_BUILD_DIR
-          kustomize_comment: true
-          kustomize_output_file: KUSTOMIZE_OUTPUT_FILE
-          kustomize_build_options: "--load_restrictor none"
-          enable_alpha_plugins: true
-        env:
-          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
-
-      - uses: EndBug/add-and-commit@v7
-        with:
-          default_author: github_actions
-          path: COMMIT_PATH
+ENV_FILENAME: Entrypoint
+ENV_CODE_PATH: 'management-app/entrypoint/**'
+ENV_DOCKER_PATH: 'Docker/Entrypoint/*'
+ENV_WORKING_DIRECTORY: management-app/entrypoint/
+ENV_JAR_PATH: ./target/entrypoint-0.0.1-SNAPSHOT.jar
+ENV_JAR_DOCKER_PATH: ../../Docker/Entrypoint/Entrypoint.jar
+ENV_CREDENTIALS_FILE_PATH: "Docker/Entrypoint/credentials.json"
+ENV_DOCKER_CONTEXT: ./Docker/Entrypoint/
+ENV_DOCKERFILE_PATH: ./Docker/Entrypoint/Dockerfile
+ENV_IMAGE_TAGS: ${{ secrets.DOCKER_USERNAME }}/tpi_entrypoint:latest, ${{ secrets.DOCKER_USERNAME }}/tpi_entrypoint:${{ github.sha }}
+ENV_KUSTOMIZE_PATH: ../../kustomize/Entrypoint/
+ENV_KUSTOMIZE_OUTPUT_FILE: "Kubernetes/Management/01-entrypoint-deployment.yaml"
+ENV_COMMIT_PATH: './Kubernetes/Management/'
+ENV_KUSTOMIZE_BUILD_DIR: './kustomize/Entrypoint/'
+ENV_KUSTOMIZE_COMMAND: kustomize edit set image image_tag=${{ secrets.DOCKER_USERNAME }}/tpi_entrypoint:$GITHUB_SHA

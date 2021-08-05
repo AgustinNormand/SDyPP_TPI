@@ -1,20 +1,5 @@
 name: Status-Worker
 
-env:
-  ENV_CODE_PATH: 'management-app/status-worker/*'
-  ENV_DOCKER_PATH: 'Docker/Status-Worker/*'
-  ENV_WORKING_DIRECTORY: management-app/status-worker/
-  ENV_JAR_PATH: ./target/status-worker-0.0.1-SNAPSHOT.jar
-  ENV_JAR_DOCKER_PATH: ../../Docker/Status-Worker/Status-Worker.jar
-  ENV_DOCKER_CONTEXT: ./Docker/Status-Worker/
-  ENV_DOCKERFILE_PATH: ./Docker/Status-Worker/Dockerfile
-  ENV_IMAGE_TAGS: ${{ secrets.DOCKER_USERNAME }}/tpi_status-worker:latest, ${{ secrets.DOCKER_USERNAME }}/tpi_status-worker:${{ github.sha }}
-  ENV_KUSTOMIZE_PATH: ../../kustomize/Status-Worker/
-  ENV_KUSTOMIZE_OUTPUT_FILE: "Kubernetes/Management/04-status-worker-deployment.yaml"
-  ENV_COMMIT_PATH: './Kubernetes/Management/'
-  ENV_KUSTOMIZE_BUILD_DIR: './kustomize/Status-Worker/'
-  ENV_KUSTOMIZE_COMMAND: kustomize edit set image image_tag=${{ secrets.DOCKER_USERNAME }}/tpi_status-worker:$GITHUB_SHA
-
 on:
   push:
     paths:
@@ -51,6 +36,12 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
+
+      - name: Create credentials file
+        uses: "finnp/create-file-action@master"
+        env:
+          FILE_NAME: CREDENTIALS_FILE_PATH
+          FILE_DATA: ${{ secrets.GOOGLE_CREDENTIALS }}
 
       - name: build and push Docker image
         uses: docker/build-push-action@v2

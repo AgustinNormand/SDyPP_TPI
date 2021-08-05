@@ -1,21 +1,5 @@
 name: Entrypoint
 
-env:
-  ENV_CODE_PATH: 'management-app/entrypoint/*'
-  ENV_DOCKER_PATH: 'Docker/Entrypoint/*'
-  ENV_WORKING_DIRECTORY: management-app/entrypoint/
-  ENV_JAR_PATH: ./target/entrypoint-0.0.1-SNAPSHOT.jar
-  ENV_JAR_DOCKER_PATH: ../../Docker/Entrypoint/Entrypoint.jar
-  ENV_CREDENTIALS_FILE_PATH: "Docker/Entrypoint/credentials.json"
-  ENV_DOCKER_CONTEXT: ./Docker/Entrypoint/
-  ENV_DOCKERFILE_PATH: ./Docker/Entrypoint/Dockerfile
-  ENV_IMAGE_TAGS: ${{ secrets.DOCKER_USERNAME }}/tpi_entrypoint:latest, ${{ secrets.DOCKER_USERNAME }}/tpi_entrypoint:${{ github.sha }}
-  ENV_KUSTOMIZE_PATH: ../../kustomize/Entrypoint/
-  ENV_KUSTOMIZE_OUTPUT_FILE: "Kubernetes/Management/01-entrypoint-deployment.yaml"
-  ENV_COMMIT_PATH: './Kubernetes/Management/'
-  ENV_KUSTOMIZE_BUILD_DIR: './kustomize/Entrypoint/'
-  ENV_KUSTOMIZE_COMMAND: kustomize edit set image image_tag=${{ secrets.DOCKER_USERNAME }}/tpi_entrypoint:$GITHUB_SHA
-
 on:
   push:
     paths:
