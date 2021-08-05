@@ -1,3 +1,4 @@
-global:
-  redis:
-    password: agusmarian
+redis-cluster:
+  global:
+    redis:
+      password: agusmarian
