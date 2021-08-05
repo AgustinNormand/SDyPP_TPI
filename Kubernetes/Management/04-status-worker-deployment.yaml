@@ -16,7 +16,7 @@ spec:
       containers:
       - env:
         - name: SERVER_PORT
-          value: 8080
+          value: "8080"
         - name: RABBIT_HOST
           value: rabbitmq-service
         - name: REDIS_HOST
@@ -26,6 +26,6 @@ spec:
             secretKeyRef:
               key: redis-password
               name: redis-cluster-app
-        image: agustinnormand/tpi_status-worker:5512fa649a3608dd221865afb2b013eb07c8536c
+        image: agustinnormand/tpi_status-worker:fc00036443cfa9fbeed7f094eacae13e4d5ccb03
         imagePullPolicy: IfNotPresent
         name: status-worker
