@@ -1,4 +1,7 @@
 redis-cluster:
   service:
     type: LoadBalancer
+  global:
+    redis:
+      password: agusmarian 
   
