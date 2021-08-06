@@ -1,0 +1,4 @@
+rabbitmq:
+  auth: 
+    password: agusmarian
+    erlangCookie: agusmarian
