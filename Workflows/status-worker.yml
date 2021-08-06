@@ -4,6 +4,7 @@ ENV_DOCKER_PATH: 'Docker/Status-Worker/*'
 ENV_WORKING_DIRECTORY: management-app/status-worker/
 ENV_JAR_PATH: ./target/status-worker-0.0.1-SNAPSHOT.jar
 ENV_JAR_DOCKER_PATH: ../../Docker/Status-Worker/Status-Worker.jar
+ENV_CREDENTIALS_FILE_PATH: "Docker/Status-Worker/credentials.json"
 ENV_DOCKER_CONTEXT: ./Docker/Status-Worker/
 ENV_DOCKERFILE_PATH: ./Docker/Status-Worker/Dockerfile
 ENV_IMAGE_TAGS: ${{ secrets.DOCKER_USERNAME }}/tpi_status-worker:latest, ${{ secrets.DOCKER_USERNAME }}/tpi_status-worker:${{ github.sha }}
