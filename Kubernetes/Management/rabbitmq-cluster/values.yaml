@@ -1,5 +1,6 @@
 rabbitmq:
   replicaCount: 2
   auth: 
+    username: admin
     password: agusmarian
     erlangCookie: agusmarian
