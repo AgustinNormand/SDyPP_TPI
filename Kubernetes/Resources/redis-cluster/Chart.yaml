@@ -1,9 +1,9 @@
 apiVersion: v2
-name: rabbitmq-subchart
+name: redis-subchart
 type: application
 version: 1.0.0
 appVersion: "1.0.0"
 dependencies:
-- name: rabbitmq
-  version: 3.8.19
+- name: redis-cluster
+  version: 6.3.2
   repository: https://charts.bitnami.com/bitnami
