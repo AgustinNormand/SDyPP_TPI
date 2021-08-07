@@ -1,0 +1,16 @@
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: cluster-applier-autoscaler
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: cluster-applier
+  minReplicas: 1
+  maxReplicas: 10
+   metrics:
+  - type: Pods
+    pods:
+      metricName: rabbitmq_queue_messages
+      targetAverageValue: "5"  # only for tests

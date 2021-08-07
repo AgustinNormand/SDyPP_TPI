@@ -9,3 +9,4 @@ rabbitmq:
     serviceMonitor: 
       enabled: true
       namespace: default      
+    prometheusRule: enabled
