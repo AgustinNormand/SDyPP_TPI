@@ -4,3 +4,5 @@ rabbitmq:
     username: admin
     password: agusmarian
     erlangCookie: agusmarian
+  metrics:
+    enabled: true
