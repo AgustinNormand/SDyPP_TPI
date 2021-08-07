@@ -6,3 +6,6 @@ rabbitmq:
     erlangCookie: agusmarian
   metrics:
     enabled: true
+    serviceMonitor: 
+      enabled: true
+      namespace: default      
