@@ -1,12 +1,12 @@
 apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: worker-autoscaler
+  name: cluster-applier-autoscaler
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: worker
+    name: cluster-applier
   minReplicas: 1
   maxReplicas: 50
   metrics:
