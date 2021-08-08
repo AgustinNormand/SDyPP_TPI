@@ -20,7 +20,11 @@ spec:
         - name: SERVER_PORT
           value: "8080"
         - name: RABBIT_HOST
-          value: "rabbitmq-service"  
+          value: "rabbitmq-cluster-app" 
+        - name: RABBIT_USER
+          value: "admin"  
+        - name: RABBIT_PWD
+          value: "agusmarian"             
         - name: REDIS_HOST
           value: "redis-cluster-app"
         - name: REDIS_PWD

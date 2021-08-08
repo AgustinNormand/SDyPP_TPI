@@ -18,7 +18,11 @@ spec:
         imagePullPolicy: IfNotPresent        
         env:
         - name: RABBIT_HOST
-          value: "rabbitmq-service"  
+          value: "rabbitmq-cluster-app" 
+        - name: RABBIT_USER
+          value: "admin"  
+        - name: RABBIT_PWD
+          value: "agusmarian"     
         #ports:
         #- containerPort: 8080
         #readinessProbe:
