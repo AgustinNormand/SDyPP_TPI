@@ -6,4 +6,4 @@ namespace: default
 images:
 - name: image_tag
   newName: agustinnormand/tpi_entrypoint
-  newTag: d8c08a7ff57ecef4c9b0e8a2ef72ac46dd27a169
+  newTag: ec400bc5dfe28ce36c1714d97a653bede5ef9689

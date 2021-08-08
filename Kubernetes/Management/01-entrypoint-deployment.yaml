@@ -16,10 +16,14 @@ spec:
       containers:
       - env:
         - name: RABBIT_HOST
-          value: rabbitmq-service
+          value: rabbitmq-cluster-app
+        - name: RABBIT_USER
+          value: admin
+        - name: RABBIT_PWD
+          value: agusmarian
         - name: STATUS_SERVICE_URL
           value: http://status-worker-service
-        image: agustinnormand/tpi_entrypoint:d8c08a7ff57ecef4c9b0e8a2ef72ac46dd27a169
+        image: agustinnormand/tpi_entrypoint:ec400bc5dfe28ce36c1714d97a653bede5ef9689
         imagePullPolicy: IfNotPresent
         name: entrypoint
         ports:
