@@ -16,7 +16,11 @@ spec:
       containers:
       - env:
         - name: RABBIT_HOST
-          value: rabbitmq-service
-        image: agustinnormand/tpi_cluster_applier:219c1ba64f2a9291642fc4078b7769696bcb2273
+          value: rabbitmq-cluster-app
+        - name: RABBIT_USER
+          value: admin
+        - name: RABBIT_PWD
+          value: agusmarian
+        image: agustinnormand/tpi_cluster_applier:ec400bc5dfe28ce36c1714d97a653bede5ef9689
         imagePullPolicy: IfNotPresent
         name: cluster-applier
