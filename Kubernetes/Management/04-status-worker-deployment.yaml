@@ -18,11 +18,15 @@ spec:
         - name: SERVER_PORT
           value: "8080"
         - name: RABBIT_HOST
-          value: rabbitmq-service
+          value: rabbitmq-cluster-app
+        - name: RABBIT_USER
+          value: admin
+        - name: RABBIT_PWD
+          value: agusmarian
         - name: REDIS_HOST
           value: redis-cluster-app
         - name: REDIS_PWD
           value: agusmarian
-        image: agustinnormand/tpi_status-worker:08809e5add04165a8e0cb9f196c11b89f23e473a
+        image: agustinnormand/tpi_status-worker:ec400bc5dfe28ce36c1714d97a653bede5ef9689
         imagePullPolicy: IfNotPresent
         name: status-worker
