@@ -16,7 +16,11 @@ spec:
       containers:
       - env:
         - name: RABBIT_HOST
-          value: rabbitmq-service
-        image: agustinnormand/tpi_yaml-manager:147d4eeb41ffb687d66cbec2c8fa95d033a6c92f
+          value: rabbitmq-cluster-app
+        - name: RABBIT_USER
+          value: admin
+        - name: RABBIT_PWD
+          value: agusmarian
+        image: agustinnormand/tpi_yaml-manager:ec400bc5dfe28ce36c1714d97a653bede5ef9689
         imagePullPolicy: IfNotPresent
         name: yaml-manager
