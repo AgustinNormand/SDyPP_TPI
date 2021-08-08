@@ -17,7 +17,7 @@ spec:
       describedObject:
         apiVersion: v1
         kind: Service
-        name: rabbitmq-cluster-app
+        name: prometheus-adapter
       target:
         type: Value
         value: 10
