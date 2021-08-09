@@ -1,0 +1,23 @@
+prometheus:
+  url: http://prometheus-scaling-demo-server.rabbitmq-scaling-demo.svc.cluster.local
+  port: 80
+
+rbac:
+  create: true
+
+serviceAccount:
+  create: true
+
+service:
+  port: 443
+
+logLevel: 6
+rules:
+  default: false
+  custom:
+  - seriesQuery: 'rabbitmq_queue_messages{kubernetes_name!="",kubernetes_namespace!=""}'
+    resources:
+      overrides:
+        kubernetes_namespace: {resource: "namespace"}
+        kubernetes_name: {resource: "service"}
+    metricsQuery: sum(<<.Series>>{<<.LabelMatchers>>,queue="task_queue"}) by (<<.GroupBy>>)
