@@ -1,5 +1,5 @@
 prometheus:
-  url: http://prometheus-scaling-demo-server.rabbitmq-scaling-demo.svc.cluster.local
+  url: http://prometheus-app-server.default.svc.cluster.local
   port: 80
 
 rbac:
