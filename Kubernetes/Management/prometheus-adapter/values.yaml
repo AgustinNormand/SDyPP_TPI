@@ -1,19 +1,19 @@
-#prometheus:
-  #url: http://prometheus-app-server.default.svc.cluster.local
-  #port: 80
+prometheus-adapter:
+  prometheus:
+    url: http://prometheus-app-server.default.svc.cluster.local
+    port: 80
+  rbac:
+    create: true
 
-rbac:
-  create: true
+  serviceAccount:
+    create: true
 
-serviceAccount:
-  create: true
+  service:
+    port: 443
 
-service:
-  port: 443
-
-logLevel: 6
-rules:
-  default: false
-  custom:
-  - seriesQuery: 'rabbitmq_queue_messages{kubernetes_pod_name!="",kubernetes_namespace!=""}'    
-    #metricsQuery: sum(<<.Series>>{<<.LabelMatchers>>,queue="prueba"}) by (<<.GroupBy>>)
+  logLevel: 6
+  rules:
+    default: false
+    custom:
+    - seriesQuery: 'rabbitmq_queue_messages{kubernetes_pod_name!="",kubernetes_namespace!=""}'    
+      metricsQuery: sum(<<.Series>>{<<.LabelMatchers>>,queue="prueba"}) by (<<.GroupBy>>)
