@@ -6,6 +6,8 @@ rabbitmq:
     erlangCookie: agusmarian
   metrics:
     enabled: true
+  extraConfiguration: "prometheus.return_per_object_metrics = true"
+
 #    serviceMonitor: 
 #      enabled: true
 #      namespace: default
