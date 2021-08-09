@@ -13,10 +13,11 @@ prometheus-adapter:
 
   logLevel: 6
   rules:
-    custom: 
-    - seriesQuery: ''rabbitmq_queue_messages{app_kubernetes_io_instance="rabbitmq-cluster-app",app_kubernetes_io_managed_by="Helm",app_kubernetes_io_name="rabbitmq",controller_revision_hash="rabbitmq-cluster-app-7c8db6c76c",helm_sh_chart="rabbitmq-8.19.2",instance="192.168.84.251:9419",job="kubernetes-pods",kubernetes_namespace="default",kubernetes_pod_name="rabbitmq-cluster-app-1",queue="prueba",statefulset_kubernetes_io_pod_name="rabbitmq-cluster-app-1",vhost="/"}'
-      metricsQuery: sum(rabbitmq_queue_messages{<<.LabelMatchers>>,queue="prueba"}) by (<<.GroupBy>>)
-    #default: false
-    #custom:
-    #- seriesQuery: 'rabbitmq_queue_messages{kubernetes_pod_name!="",kubernetes_namespace!=""}'    
-      #metricsQuery: sum(<<.Series>>{<<.LabelMatchers>>,queue="prueba"}) by (<<.GroupBy>>)
+    custom:
+    - seriesQuery: '{__name__=~"^some_metric_count$"}'
+      resources:
+        template: <<.Resource>>
+      name:
+        matches: ""
+        as: "my_custom_metric"
+      metricsQuery: sum(<<.Series>>{<<.LabelMatchers>>}) by (<<.GroupBy>>)
