@@ -2,8 +2,8 @@ apiVersion: v2
 name: prometheus-adapter-subchart
 type: application
 version: 1.0.0
-appVersion: "v0.7.0"
+appVersion: "0.8.4"
 dependencies:
-- name: stable/prometheus-adapter
-  version: 2.5.0
-  repository: https://github.com/helm/charts
+- name: prometheus-community/prometheus-adapter
+  version: 2.15.2
+  repository: https://github.com/prometheus-community/helm-charts/
