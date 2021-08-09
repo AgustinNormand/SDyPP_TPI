@@ -14,10 +14,6 @@ prometheus-adapter:
   logLevel: 6
   rules:
   - seriesQuery: 'rabbitmq_queue_messages{kubernetes_pod_name!="",kubernetes_namespace!=""}'
-    resources:
-      overrides:
-        kubernetes_namespace: {resource: "namespace"}
-        kubernetes_name: {resource: "service"}
     metricsQuery: sum(rabbitmq_queue_messages{<<.LabelMatchers>>,queue="prueba"}) by (<<.GroupBy>>)
     #default: false
     #custom:
