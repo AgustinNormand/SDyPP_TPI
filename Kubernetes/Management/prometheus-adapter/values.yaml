@@ -13,7 +13,7 @@ prometheus-adapter:
 
   logLevel: 6
   rules:
-    default: true
+    default: false
     custom:
     - seriesQuery: 'rabbitmq_queue_messages{kubernetes_pod_name!="",kubernetes_namespace!=""}'
     resources:
