@@ -2,23 +2,23 @@ prometheus-adapter:
   prometheus:
     url: http://prometheus-app-server.default.svc.cluster.local
     port: 80
-#  rbac:
-#    create: true
-#
-#  serviceAccount:
-#    create: true
-#
-#  service:
-#    port: 443
-#
-#  logLevel: 6
-#  rules:
-#    seriesQuery: 'rabbitmq_queue_messages{kubernetes_pod_name!="",kubernetes_namespace!=""}'
-#    resources:
-#    overrides:
-#      kubernetes_namespace: {resource: "namespace"}
-#      kubernetes_pod_name: {resource: "pod"}
-#    metricsQuery: sum(<<.Series>>{<<.LabelMatchers>>,queue="prueba"}) by (<<.GroupBy>>)
+  rbac:
+    create: true
+
+  serviceAccount:
+    create: true
+
+  service:
+    port: 443
+
+  logLevel: 6
+  rules:
+    seriesQuery: 'rabbitmq_queue_messages'
+    resources:
+    overrides:
+      kubernetes_namespace: {resource: "namespace"}
+      kubernetes_pod_name: {resource: "pod"}
+    metricsQuery: rabbitmq_queue_messages
     #default: false
     #custom:
     #- seriesQuery: 'rabbitmq_queue_messages{kubernetes_pod_name!="",kubernetes_namespace!=""}'    
