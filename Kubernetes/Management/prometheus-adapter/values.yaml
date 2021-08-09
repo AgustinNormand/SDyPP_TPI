@@ -15,9 +15,9 @@ prometheus-adapter:
   rules:
     default: false
     custom:
-    - seriesQuery: 'rabbitmq_queue_messages{}'
+    - seriesQuery: 'rabbitmq_queue_messages{kubernetes_pod_name!="",kubernetes_namespace!=""}'
       resources:
         overrides:
           kubernetes_namespace: {resource: "namespace"}
           kubernetes_name: {resource: "service"}
-    metricsQuery: sum(<<.Series>>{<<.LabelMatchers>>,queue="prueba"}) by (<<.GroupBy>>)
+      metricsQuery: sum(<<.Series>>{<<.LabelMatchers>>,queue="prueba"}) by (<<.GroupBy>>)
