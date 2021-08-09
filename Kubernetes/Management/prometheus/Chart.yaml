@@ -4,4 +4,5 @@ type: application
 version: 1.0.0
 appVersion: "1.0.0"
 dependencies:
-- name: prometheus
+- name: prometheus-community/prometheus
+  repository: https://github.com/prometheus-community/helm-charts/
