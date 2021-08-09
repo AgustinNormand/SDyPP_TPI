@@ -13,19 +13,11 @@ prometheus-adapter:
 
   logLevel: 6
   rules:
-  default: false
-  external:
-    - seriesQuery: '{name=~"^rabbitmqqueue.*"}'
-      resources:
-        #template: <<.Resource>>
-        overrides:
-          namespace:
-            resource: namespace
-          service:
-            resource: service
-          pod:
-            resource: pod
-      name:
-        matches: ""
-        as: "rabbitmq_queue_messages_ready"
-      metricsQuery: 'rate(<<.Series>>{<<.LabelMatchers>>}[1m])'
+    default: false
+    custom:
+    - seriesQuery: 'rabbitmq_queue_messages{kubernetes_pod_name!="",kubernetes_namespace!=""}'
+    resources:
+      overrides:
+        kubernetes_namespace: {resource: "namespace"}
+        kubernetes_name: {resource: "service"}
+    metricsQuery: sum(<<.Series>>{<<.LabelMatchers>>,queue="prueba"}) by (<<.GroupBy>>)
