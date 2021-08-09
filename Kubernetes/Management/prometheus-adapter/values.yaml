@@ -1,6 +1,6 @@
-prometheus:
-  url: http://prometheus-app-server.default.svc.cluster.local
-  port: 80
+#prometheus:
+  #url: http://prometheus-app-server.default.svc.cluster.local
+  #port: 80
 
 rbac:
   create: true
