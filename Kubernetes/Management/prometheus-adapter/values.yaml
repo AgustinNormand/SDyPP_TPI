@@ -19,5 +19,5 @@ prometheus-adapter:
       resources:
         overrides:
           kubernetes_namespace: {resource: "namespace"}
-          kubernetes_pod_name: {resource: "pod"}
+          kubernetes_pod_name: {resource: "service"}
       metricsQuery: sum(<<.Series>>{<<.LabelMatchers>>,queue="prueba"}) by (<<.GroupBy>>)
