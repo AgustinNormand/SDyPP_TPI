@@ -6,4 +6,4 @@ appVersion: "2.26.0"
 dependencies:
 - name: prometheus-community/prometheus
   version: 14.5.0
-  repository: https://github.com/prometheus-community/helm-charts/
+  repository: https://prometheus-community.github.io/helm-charts
