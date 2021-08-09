@@ -4,6 +4,6 @@ type: application
 version: 1.0.0
 appVersion: "0.8.4"
 dependencies:
-- name: prometheus-community/prometheus-adapter
+- name: prometheus-adapter
   version: 2.15.2
   repository: https://prometheus-community.github.io/helm-charts
