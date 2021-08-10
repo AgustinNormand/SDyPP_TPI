@@ -16,7 +16,7 @@ spec:
       containers:
       - env:
         - name: RABBIT_HOST
-          value: rabbitmq-cluster-app
+          value: rabbitmq-cluster-appDELETE-THIS
         - name: RABBIT_USER
           value: admin
         - name: RABBIT_PWD
