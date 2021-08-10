@@ -49,4 +49,4 @@ prometheus-adapter:
           app_kubernetes_io_instance: {resource: "service"}
       name:
         as: 'rabbitmq_queue_messages_cluster-appliers'
-      metricsQuery: sum(<<.Series>>{<<.LabelMatchers>>, queue="prueba"}) by (<<.GroupBy>>) 
+      metricsQuery: sum(<<.Series>>{<<.LabelMatchers>>, queue="tasks-to-rollback.cluster-appliers|yaml-validated.cluster-appliers"}) by (<<.GroupBy>>) 
