@@ -49,4 +49,4 @@ prometheus-adapter:
           app_kubernetes_io_instance: {resource: "service"}
       name:
         as: 'rabbitmq_queue_messages_cluster-appliers'
-      metricsQuery: "sum(rate(<<.Series>>{<<.LabelMatchers>>}[1m])) by (<<.GroupBy>>)"
+      metricsQuery: sum(rate(<<.Series>>{<<.LabelMatchers>>}[1m])) by (<<.GroupBy>>)
