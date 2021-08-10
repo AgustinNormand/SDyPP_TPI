@@ -1,4 +1,6 @@
 redis-cluster:
+  cluster:
+    nodes: 3
   global:
     redis:
       password: agusmarian
