@@ -1,0 +1,9 @@
+apiVersion: v2
+name: elasticsearch-subchart
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+dependencies:
+- name: elasticsearch
+  version: 8.0.0-SNAPSHOT
+  repository: https://helm.elastic.co
