@@ -8,7 +8,7 @@ spec:
     kind: Deployment
     name: cluster-applier
   minReplicas: 1
-  maxReplicas: 50
+  maxReplicas: 2
   metrics:
   - type: Object
     object:
