@@ -42,7 +42,7 @@ prometheus-adapter:
         as: 'rabbitmq_queue_messages_total'
       metricsQuery: sum(<<.Series>>{<<.LabelMatchers>>}) by (<<.GroupBy>>)
       
-    - seriesQuery: 'rabbitmq_queue_messages{app_kubernetes_io_instance!="",kubernetes_namespace!="",queue=~".*.cluster-appliers"}'
+    - seriesQuery: 'rabbitmq_queue_messages{app_kubernetes_io_instance!="",kubernetes_namespace!=""}'
       resources:
         overrides:
           kubernetes_namespace: {resource: "namespace"}
