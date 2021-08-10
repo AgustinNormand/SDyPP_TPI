@@ -5,5 +5,5 @@ version: 1.0.0
 appVersion: "1.0.0"
 dependencies:
 - name: kibana
-  version: 8.0.0-SNAPSHOT
+  version: 7.14.0
   repository: https://helm.elastic.co
