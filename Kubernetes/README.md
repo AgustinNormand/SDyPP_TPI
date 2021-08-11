@@ -13,3 +13,5 @@ https://www.digitalocean.com/community/tutorials/how-to-set-up-an-elasticsearch-
 https://cloud.google.com/kubernetes-engine/docs/concepts/persistent-volumes
 
 https://github.com/argoproj/argocd-example-apps/blob/master/helm-dependency/README.md
+
+https://medium.com/javarevisited/create-recording-rules-in-prometheus-8a6a1c0b9e11
