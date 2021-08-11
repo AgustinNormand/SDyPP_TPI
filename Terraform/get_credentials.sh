@@ -4,6 +4,10 @@ get_value () {
     echo $(cat variables.tf | grep $1 -A 4 | grep default | awk {'print $3'} | sed 's/"//g') 
 }
 
+get_service_account_name() {
+    echo $1'@'$(get_value "project_id")'.iam.gserviceaccount.com'
+}
+
 gcloud iam service-accounts keys create ./credentials.json --iam-account=$(get_service_account_name $(get_value "management_nodes_sa_name"))
 
 gcloud auth activate-service-account $(get_service_account_name $(get_value "management_nodes_sa_name")) --key-file=./credentials.json
