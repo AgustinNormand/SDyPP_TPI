@@ -53,29 +53,21 @@ prometheus-adapter:
         as: 'rabbitmq_queue_messages_cluster-appliers-tests'
       metricsQuery: sum(<<.Series>>{<<.LabelMatchers>>, queue=~".*cluster-appliers"}) by (<<.GroupBy>>)
 
-    - seriesQuery: 'rabbitmq_queue_messages_cluster_appliers{}'
+    # Esta es la que desde el principio quisimos probar y "no funcionó"
+    - seriesQuery: 'rabbitmq_queue_messages'
       resources:
         overrides:
           kubernetes_namespace: {resource: "namespace"}
           app_kubernetes_io_instance: {resource: "service"}
       name:
-        as: 'rabbitmq_queue_messages_cluster_appliers'
-      metricsQuery: rabbitmq_queue_messages_cluster_appliers
+        as: 'TESTS'
+      metricsQuery: sum(<<.Series>>{<<.LabelMatchers>>, queue=~".*cluster-appliers"}) by (<<.GroupBy>>)      
 
-    - seriesQuery: 'rabbitmq_queue_messages_status_workers{}'
-      resources:
-        overrides:
-          kubernetes_namespace: {resource: "namespace"}
-          app_kubernetes_io_instance: {resource: "service"}
-      name:
-        as: 'rabbitmq_queue_messages_status_workers'
-      metricsQuery: rabbitmq_queue_messages_status_workers
+    - seriesQuery: 'rabbitmq_queue_messages_cluster_appliers{}'            
+      metricsQuery: sum(<<.Series>>{}) by (<<.GroupBy>>)
 
-    - seriesQuery: 'rabbitmq_queue_messages_yaml_managers{}'
-      resources:
-        overrides:
-          kubernetes_namespace: {resource: "namespace"}
-          app_kubernetes_io_instance: {resource: "service"}
-      name:
-        as: 'rabbitmq_queue_messages_yaml_managers'
-      metricsQuery: rabbitmq_queue_messages_yaml_managers 
+    - seriesQuery: 'rabbitmq_queue_messages_status_workers{}'      
+      metricsQuery: sum(<<.Series>>{}) by (<<.GroupBy>>)
+
+    - seriesQuery: 'rabbitmq_queue_messages_yaml_managers{}'      
+      metricsQuery: sum(<<.Series>>{}) by (<<.GroupBy>>)
