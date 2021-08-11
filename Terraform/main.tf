@@ -605,7 +605,7 @@ module "gke_management" {
       min_count                 = 1
       max_count                 = 4
       local_ssd_count           = 0
-      disk_size_gb              = 10
+      disk_size_gb              = 20
       disk_type                 = "pd-standard"
       image_type                = "COS"
       auto_repair               = true
