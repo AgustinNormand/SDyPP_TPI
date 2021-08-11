@@ -53,7 +53,7 @@ prometheus-adapter:
         as: 'rabbitmq_queue_messages_cluster-appliers-tests'
       metricsQuery: sum(<<.Series>>{<<.LabelMatchers>>, queue=~".*cluster-appliers"}) by (<<.GroupBy>>)
 
-    # Esta es la que desde el principio quisimos probar y "no funcionó"
+    
     - seriesQuery: 'rabbitmq_queue_messages'
       resources:
         overrides:
@@ -61,7 +61,7 @@ prometheus-adapter:
           app_kubernetes_io_instance: {resource: "service"}
       name:
         as: 'TESTS'
-      metricsQuery: sum(<<.Series>>{<<.LabelMatchers>>, queue=~".*cluster-appliers"}) by (<<.GroupBy>>)      
+      metricsQuery: sum(<<.Series>>{<<.LabelMatchers>>) by (<<.GroupBy>>)      
 
     - seriesQuery: 'rabbitmq_queue_messages_cluster_appliers{}'            
       metricsQuery: sum(<<.Series>>{}) by (<<.GroupBy>>)
