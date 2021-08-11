@@ -13,7 +13,7 @@ spec:
   - type: Object
     object:
       metric:
-        name: rabbitmq_queue_messages_cluster-appliers
+        name: rabbitmq_queue_messages_cluster_appliers
       describedObject:
         apiVersion: v1
         kind: Service
