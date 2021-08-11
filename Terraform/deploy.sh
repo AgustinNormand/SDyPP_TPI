@@ -15,9 +15,7 @@ get_service_account_name() {
 instalar_argo(){
     kubectl create namespace argocd
     kubectl apply -n argocd -f install.yaml
-    cd ../ArgoCD/$1
-    kubectl apply -n argocd -f app.yaml
-    cd -
+    kubectl apply -n argocd -f ../ArgoCD/$1
 }
 
 instalar_external_dns(){
@@ -45,7 +43,7 @@ replace_domain_in_resources_yaml(){
 }
 
 commit_changes(){
-    git add ../Docker/Receptionist/kubeconfig.yaml
+    git add ../Docker/Cluster-Applier/kubeconfig.yaml
     git add ../Kubernetes/Resources/external-dns.yaml
     #git add ../Kubernetes/Resources/.
 
@@ -55,8 +53,6 @@ commit_changes(){
 
     git push origin main
 }
-
-#echo "First, login and accept Terms of Service"
 
 #gcloud auth login
 
@@ -78,27 +74,27 @@ commit_changes(){
 
 #gcloud iam service-accounts create $(get_value "service_account")
 
-#gcloud projects add-iam-policy-binding sdypp-framework --member=$(get_service_account_name $(get_value "service_account")) --role=roles/owner
+#gcloud projects add-iam-policy-binding $(get_value "project_id") --member="serviceAccount:"$(get_service_account_name $(get_value "service_account")) --role=roles/owner
 
 #gcloud iam service-accounts keys create ./credentials.json --iam-account=$(get_service_account_name $(get_value "management_nodes_sa_name"))
 
-#gcloud projects add-iam-policy-binding sdypp-framework --member=serviceAccount:$(get_service_account_name $(get_value "management_nodes_sa_name")) --role=roles/owner
+#gcloud projects add-iam-policy-binding $(get_value "project_id") --member="serviceAccount:"$(get_service_account_name $(get_value "management_nodes_sa_name")) --role=roles/owner
 
-#gcloud projects add-iam-policy-binding sdypp-framework --member=serviceAccount:$(get_service_account_name $(get_value "management_nodes_sa_name")) --role=roles/iam.serviceAccountUser
+#gcloud projects add-iam-policy-binding $(get_value "project_id") --member="serviceAccount:"$(get_service_account_name $(get_value "management_nodes_sa_name")) --role=roles/iam.serviceAccountUser
 
-#gcloud projects add-iam-policy-binding sdypp-framework --member=serviceAccount:$(get_service_account_name $(get_value "management_nodes_sa_name")) --role=roles/storage.admin
+#gcloud projects add-iam-policy-binding $(get_value "project_id") --member="serviceAccount:"$(get_service_account_name $(get_value "management_nodes_sa_name")) --role=roles/storage.admin
 
-#gcloud projects add-iam-policy-binding sdypp-framework --member=serviceAccount:$(get_service_account_name $(get_value "management_nodes_sa_name")) --role=roles/dns.admin
+#gcloud projects add-iam-policy-binding $(get_value "project_id") --member="serviceAccount:"$(get_service_account_name $(get_value "management_nodes_sa_name")) --role=roles/dns.admin
 
 #gcloud auth activate-service-account $(get_service_account_name $(get_value "management_nodes_sa_name")) --key-file=./credentials.json
 
-export GOOGLE_APPLICATION_CREDENTIALS=$(pwd)'/credentials.json'
+#
 
 #terraform init
 
 #terraform apply --auto-approve
 
-gh secret set GOOGLE_CREDENTIALS < credentials.json
+#gh secret set GOOGLE_CREDENTIALS < credentials.json
 
 gcloud container clusters get-credentials $(get_value "deployments_cluster_name") --region $(get_value "deployments_region")
 
@@ -117,32 +113,32 @@ clusters:
     certificate-authority-data: "$(eval "$GET_CMD --format='value(masterAuth.clusterCaCertificate)'")"
 EOF
 
-mv kubeconfig.yaml ../Docker/Receptionist/kubeconfig.yaml
+mv kubeconfig.yaml ../Docker/Cluster-Applier/kubeconfig.yaml
 
-wget https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+#wget https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
-instalar_argo "Deployments"
+#instalar_argo "Deployments"
 
-rm ~/.kube/config
+#rm ~/.kube/config
 
-gcloud container clusters get-credentials $(get_value "resources_cluster_name") --region $(get_value "resources_region")
+#gcloud container clusters get-credentials $(get_value "resources_cluster_name") --region $(get_value "resources_region")
 
-instalar_argo "Resources"
+#instalar_argo "Resources"
 
-instalar_external_dns
+#instalar_external_dns
 
 #replace_domain_in_resources_yaml
 
-rm ~/.kube/config
+#rm ~/.kube/config
 
-gcloud container clusters get-credentials $(get_value "management_cluster_name") --region $(get_value "management_region")
+#gcloud container clusters get-credentials $(get_value "management_cluster_name") --region $(get_value "management_region")
 
-instalar_argo "Management"
+#instalar_argo "Management"
 
-rm instal.yaml
+#rm install.yaml
 
-commit_changes
+#commit_changes
 
-gcloud container clusters get-credentials $(get_value "deployments_cluster_name") --region $(get_value "deployments_region")
+#gcloud container clusters get-credentials $(get_value "deployments_cluster_name") --region $(get_value "deployments_region")
 
-gcloud container clusters get-credentials $(get_value "resources_cluster_name") --region $(get_value "resources_region")
+#gcloud container clusters get-credentials $(get_value "resources_cluster_name") --region $(get_value "resources_region")

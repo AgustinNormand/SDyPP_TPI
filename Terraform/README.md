@@ -106,3 +106,11 @@ Aceptar terminos y condiciones
 Compute Engine Api: Administrar esta api
 
 Compute Engine Api: Es posible que necesites credenciales a fin de usar esta API. Haz clic en “Crear credenciales” para comenzar.
+
+
+
+
+STEPS DONE:
+Create account
+Accept Terms of Service
+Answer survey
