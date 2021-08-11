@@ -88,7 +88,7 @@ commit_changes(){
 
 #gcloud auth activate-service-account $(get_service_account_name $(get_value "management_nodes_sa_name")) --key-file=./credentials.json
 
-#
+#export GOOGLE_APPLICATION_CREDENTIALS=$(pwd)'/credentials.json'
 
 #terraform init
 
@@ -115,30 +115,30 @@ EOF
 
 mv kubeconfig.yaml ../Docker/Cluster-Applier/kubeconfig.yaml
 
-#wget https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+wget https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
-#instalar_argo "Deployments"
+instalar_argo "Deployments"
 
-#rm ~/.kube/config
+rm ~/.kube/config
 
-#gcloud container clusters get-credentials $(get_value "resources_cluster_name") --region $(get_value "resources_region")
+gcloud container clusters get-credentials $(get_value "resources_cluster_name") --region $(get_value "resources_region")
 
-#instalar_argo "Resources"
+instalar_argo "Resources"
 
-#instalar_external_dns
+instalar_external_dns
 
 #replace_domain_in_resources_yaml
 
-#rm ~/.kube/config
+rm ~/.kube/config
 
-#gcloud container clusters get-credentials $(get_value "management_cluster_name") --region $(get_value "management_region")
+gcloud container clusters get-credentials $(get_value "management_cluster_name") --region $(get_value "management_region")
 
-#instalar_argo "Management"
+instalar_argo "Management"
 
-#rm install.yaml
+rm install.yaml
 
-#commit_changes
+commit_changes
 
-#gcloud container clusters get-credentials $(get_value "deployments_cluster_name") --region $(get_value "deployments_region")
+gcloud container clusters get-credentials $(get_value "deployments_cluster_name") --region $(get_value "deployments_region")
 
-#gcloud container clusters get-credentials $(get_value "resources_cluster_name") --region $(get_value "resources_region")
+gcloud container clusters get-credentials $(get_value "resources_cluster_name") --region $(get_value "resources_region")
