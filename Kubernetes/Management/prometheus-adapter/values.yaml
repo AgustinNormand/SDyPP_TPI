@@ -63,11 +63,23 @@ prometheus-adapter:
         as: 'TESTS'
       metricsQuery: sum(<<.Series>>{<<.LabelMatchers>>}) by (<<.GroupBy>>)      
 
-    - seriesQuery: 'rabbitmq_queue_messages_cluster_appliers{}'            
-      metricsQuery: sum(<<.Series>>{}) by (<<.GroupBy>>)
+    - seriesQuery: 'rabbitmq_queue_messages_cluster_appliers'            
+      resources:
+        overrides:
+          kubernetes_namespace: {resource: "namespace"}
+          app_kubernetes_io_instance: {resource: "service"}
+      metricsQuery: sum(<<.Series>>{<<.LabelMatchers>>}) by (<<.GroupBy>>)
 
-    - seriesQuery: 'rabbitmq_queue_messages_status_workers{}'      
-      metricsQuery: sum(<<.Series>>{}) by (<<.GroupBy>>)
+    - seriesQuery: 'rabbitmq_queue_messages_status_workers'
+      resources:
+        overrides:
+          kubernetes_namespace: {resource: "namespace"}
+          app_kubernetes_io_instance: {resource: "service"}          
+      metricsQuery: sum(<<.Series>>{<<.LabelMatchers>>}) by (<<.GroupBy>>)
 
-    - seriesQuery: 'rabbitmq_queue_messages_yaml_managers{}'      
-      metricsQuery: sum(<<.Series>>{}) by (<<.GroupBy>>)
+    - seriesQuery: 'rabbitmq_queue_messages_yaml_managers'      
+      resources:
+        overrides:
+          kubernetes_namespace: {resource: "namespace"}
+          app_kubernetes_io_instance: {resource: "service"}    
+      metricsQuery: sum(<<.Series>>{<<.LabelMatchers>>}) by (<<.GroupBy>>)
