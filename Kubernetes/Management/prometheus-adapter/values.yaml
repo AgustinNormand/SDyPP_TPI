@@ -54,10 +54,10 @@ prometheus-adapter:
       metricsQuery: sum(<<.Series>>{<<.LabelMatchers>>, queue=~".*cluster-appliers"}) by (<<.GroupBy>>)
 
     - seriesQuery: 'rabbitmq_queue_messages_cluster_appliers{}'            
-      metricsQuery: rabbitmq_queue_messages_cluster_appliers{}
+      metricsQuery: sum(<<.Series>>{}) by (<<.GroupBy>>)
 
     - seriesQuery: 'rabbitmq_queue_messages_status_workers{}'      
-      metricsQuery: rabbitmq_queue_messages_status_workers{}
+      metricsQuery: sum(<<.Series>>{}) by (<<.GroupBy>>)
 
     - seriesQuery: 'rabbitmq_queue_messages_yaml_managers{}'      
-      metricsQuery: rabbitmq_queue_messages_yaml_managers{} 
+      metricsQuery: sum(<<.Series>>{}) by (<<.GroupBy>>)
