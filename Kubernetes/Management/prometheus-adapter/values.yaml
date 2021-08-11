@@ -50,4 +50,4 @@ prometheus-adapter:
       name:
         as: 'rabbitmq_queue_messages_cluster-appliers'
       #metricsQuery: sum(<<.Series>>{"queue=\"tasks-to-rollback.cluster-appliers|yaml-validated.cluster-appliers\""})
-      metricsQuery: sum(rabbitmq_queue_messages{queue="tasks-to-rollback.cluster-appliers",queue="yaml-validated.cluster-appliers"}) by (<<.GroupBy>>)
+      metricsQuery: sum(rabbitmq_queue_messages{queue="tasks-to-rollback.cluster-appliers"}) by (<<.GroupBy>>)
