@@ -4,5 +4,9 @@ prometheus:
       groups:
         - name: rabbitmq_queue_messages_totals
           rules:
-          - record: rabbitmq_queue_messages_cluster_appliers:sum
+          - record: rabbitmq_queue_messages_cluster_appliers
             expr: sum(rabbitmq_queue_messages{queue=~".*.cluster-appliers"})
+          - record: rabbitmq_queue_messages_status_workers
+            expr: sum(rabbitmq_queue_messages{queue=~".*.status-workers"})
+          - record: rabbitmq_queue_messages_yaml_managers
+            expr: sum(rabbitmq_queue_messages{queue=~".*.yaml-managers"})                               
