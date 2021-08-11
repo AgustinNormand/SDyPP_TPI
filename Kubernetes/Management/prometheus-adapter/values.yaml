@@ -32,15 +32,6 @@ prometheus-adapter:
       name:
         as: 'rabbitmq_queue_messages_tasks-to-rollback'
       metricsQuery: sum(<<.Series>>{<<.LabelMatchers>>,queue="tasks-to-rollback.cluster-appliers"}) by (<<.GroupBy>>)
-
-#    - seriesQuery: 'rabbitmq_queue_messages{app_kubernetes_io_instance!="",kubernetes_namespace!=""}'
-#      resources:
-#        overrides:
-#          kubernetes_namespace: {resource: "namespace"}
-#          app_kubernetes_io_instance: {resource: "service"}
-#      name:
-#        as: 'rabbitmq_queue_messages_total'
-#      metricsQuery: sum(<<.Series>>{<<.LabelMatchers>>}) by (<<.GroupBy>>)
       
       # Con esta pude hacerlo funcionar por primera vez
     - seriesQuery: 'rabbitmq_queue_messages{app_kubernetes_io_instance!="",kubernetes_namespace!="",queue=~".*.cluster-appliers"}'
@@ -49,7 +40,7 @@ prometheus-adapter:
           kubernetes_namespace: {resource: "namespace"}
           app_kubernetes_io_instance: {resource: "service"}
       name:
-        as: 'rabbitmq_queue_messages_cluster-appliers'
+        as: 'rabbitmq_queue_messages_cluster-appliers-old'
       metricsQuery: sum(rabbitmq_queue_messages{queue=~".*cluster-appliers"}) by (<<.GroupBy>>)
     
     # Esta es la que desde el principio quisimos probar y "no funcionó"
@@ -61,3 +52,30 @@ prometheus-adapter:
       name:
         as: 'rabbitmq_queue_messages_cluster-appliers-tests'
       metricsQuery: sum(<<.Series>>{<<.LabelMatchers>>, queue=~".*cluster-appliers"}) by (<<.GroupBy>>)
+
+    - seriesQuery: 'rabbitmq_queue_messages_cluster_appliers'
+      resources:
+        overrides:
+          kubernetes_namespace: {resource: "namespace"}
+          app_kubernetes_io_instance: {resource: "service"}
+      name:
+        as: 'rabbitmq_queue_messages_cluster_appliers'
+      metricsQuery: rabbitmq_queue_messages_cluster_appliers
+
+    - seriesQuery: 'rabbitmq_queue_messages_status_workers'
+      resources:
+        overrides:
+          kubernetes_namespace: {resource: "namespace"}
+          app_kubernetes_io_instance: {resource: "service"}
+      name:
+        as: 'rabbitmq_queue_messages_status_workers'
+      metricsQuery: rabbitmq_queue_messages_status_workers
+
+    - seriesQuery: 'rabbitmq_queue_messages_yaml_managers'
+      resources:
+        overrides:
+          kubernetes_namespace: {resource: "namespace"}
+          app_kubernetes_io_instance: {resource: "service"}
+      name:
+        as: 'rabbitmq_queue_messages_yaml_managers'
+      metricsQuery: rabbitmq_queue_messages_yaml_managers 
