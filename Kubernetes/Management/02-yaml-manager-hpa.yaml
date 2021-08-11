@@ -1,19 +1,19 @@
 apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: status-worker-autoscaler
+  name: yaml-manager-autoscaler
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: status-worker
+    name: yaml-manager
   minReplicas: 1
   maxReplicas: 50
   metrics:
   - type: Object
     object:
       metric:
-        name: rabbitmq_queue_messages_status_workers
+        name: rabbitmq_queue_messages_yaml_managers
       describedObject:
         apiVersion: v1
         kind: Service
