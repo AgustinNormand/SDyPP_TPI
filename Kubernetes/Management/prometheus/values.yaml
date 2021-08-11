@@ -6,7 +6,16 @@ prometheus:
           rules:
           - record: rabbitmq_queue_messages_cluster_appliers
             expr: sum(rabbitmq_queue_messages{queue=~".*.cluster-appliers"})
+            labels:
+              kubernetes_namespace: default
+              app_kubernetes_io_instance: rabbitmq-cluster-app
           - record: rabbitmq_queue_messages_status_workers
             expr: sum(rabbitmq_queue_messages{queue=~".*.status-workers"})
+            labels:
+              kubernetes_namespace: default
+              app_kubernetes_io_instance: rabbitmq-cluster-app
           - record: rabbitmq_queue_messages_yaml_managers
             expr: sum(rabbitmq_queue_messages{queue=~".*.yaml-managers"})                               
+            labels:
+              kubernetes_namespace: default
+              app_kubernetes_io_instance: rabbitmq-cluster-app
