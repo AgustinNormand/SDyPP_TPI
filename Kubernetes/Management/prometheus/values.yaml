@@ -1,0 +1,5 @@
+prometheus:
+  serverFiles:
+    rules:
+    - record: rabbitmq_queue_messages_cluster_appliers:sum
+      expr: sum(rabbitmq_queue_messages{queue=~".*.cluster-appliers"})
