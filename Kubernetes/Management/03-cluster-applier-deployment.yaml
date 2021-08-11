@@ -16,11 +16,11 @@ spec:
       containers:
       - env:
         - name: RABBIT_HOST
-          value: rabbitmq-cluster-appDELETE-THIS
+          value: rabbitmq-cluster-app
         - name: RABBIT_USER
           value: admin
         - name: RABBIT_PWD
           value: agusmarian
-        image: agustinnormand/tpi_cluster_applier:9ddd3743c8609c411289f5a1068d6c5757629584
+        image: agustinnormand/tpi_cluster_applier:1e35e2d899b6af61cf86e66576aacb6250da9648
         imagePullPolicy: IfNotPresent
         name: cluster-applier
