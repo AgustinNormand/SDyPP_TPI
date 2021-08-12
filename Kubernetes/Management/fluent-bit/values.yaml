@@ -3,12 +3,7 @@ fluent-bit:
     outputs: |
       [OUTPUT]
           Name http
-          Match kube.*
+          Match *
           Host logstash-app-logstash-headless
-          Retry_Limit False
-
-      [OUTPUT]
-          Name http
-          Match host.*
-          Host logstash-app-logstash-headless
-          Retry_Limit False
+          Port 9600
+          Format json          
