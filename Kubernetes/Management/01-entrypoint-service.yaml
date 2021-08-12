@@ -3,7 +3,6 @@ kind: Service
 metadata:
   name: entrypoint-lb
 spec:
-  #type: LoadBalancer
   ports:
     - protocol: TCP
       port: 80
