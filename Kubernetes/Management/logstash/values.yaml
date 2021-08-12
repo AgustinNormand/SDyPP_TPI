@@ -18,6 +18,7 @@ logstash:
       }
       output {
         elasticsearch {
+          codec => "json"
           hosts => "elasticsearch-master"
         }
       }
