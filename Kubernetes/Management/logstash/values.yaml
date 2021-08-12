@@ -3,17 +3,19 @@ logstash:
     logstash.conf: |
       input {
         http {
+          add_field => { "[@metadata][input-http]" => "" }
           port      => 8080
         }
       }
       filter {
-        prune {
-          blacklist_values => {
-            "log" => "(MYSQL_PASSWORD|AWS_SECRET)"
+        if [@metadata][input-http] {
+          date {
+            match => [ "date", "UNIX" ]
+            remove_field => [ "date" ]
           }
-        }
-        mutate {
-          remove_field => [ "host", "app"]
+          mutate {
+            remove_field => ["headers","host"]
+          }
         }
       }
       output {
