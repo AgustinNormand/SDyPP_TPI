@@ -2,5 +2,6 @@ ingress-nginx:
   controller:
     metrics:
       enabled: true
-  prometheus:
-    create: true
+      serviceMonitor:
+        enabled: true
+ 
