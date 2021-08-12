@@ -1,23 +1,23 @@
 apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: cluster-applier-autoscaler
+  name: entrypoint-autoscaler
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: cluster-applier
+    name: entrypoint
   minReplicas: 1
-  maxReplicas: 50
+  maxReplicas: 3
   metrics:
   - type: Object
     object:
       metric:
-        name: rabbitmq_queue_messages
+        name: rate_nginx_ingress_controller_nginx_process_requests_total
       describedObject:
         apiVersion: v1
         kind: Service
-        name: rabbitmq-cluster-app
+        name: ingress-nginx-app-controller-metrics
       target:
         type: Value
-        value: 10
+        averageValue: 2
