@@ -15,7 +15,7 @@ logstash:
       }
       output {
         elasticsearch {
-          hosts => "hostname"
+          hosts => "elasticsearch-master"
           data_stream => "true"
         }
       }
