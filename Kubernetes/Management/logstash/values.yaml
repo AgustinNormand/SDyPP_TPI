@@ -1,0 +1,6 @@
+logstash:
+  logstashConfig: 
+    logstash.yml: |
+      input:
+        http: 
+          port: 8080
