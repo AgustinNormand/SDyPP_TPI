@@ -3,23 +3,12 @@ logstash:
     logstash.conf: |
       input {
         http {
-#          add_field => { "[@metadata][input-http]" => "" }
           port      => 8080
         }
       }
-      #filter {
-        #date {
-         # match => [ "date", "UNIX" ]
-#          remove_field => [ "date" ]
- #       }
-        #mutate {
-          #remove_field => ["headers","host", "kubernetes"]
-        #}
-      #}
       output {
         stdout { codec => rubydebug }
         elasticsearch {
-#          codec => "json"
           hosts => "elasticsearch-master"
         }
       }
