@@ -1,4 +1,5 @@
-elasticsearch:  
+elasticsearch: 
+  replicas: 1
   resources:
     requests:
       cpu: "200m"
