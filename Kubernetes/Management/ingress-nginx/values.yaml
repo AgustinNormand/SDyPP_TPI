@@ -1,8 +1,0 @@
-kibana:  
-  resources:
-    requests:
-      cpu: "100m"
-      memory: "1Gi"
-    limits:
-      cpu: "200m"
-      memory: "2Gi"
