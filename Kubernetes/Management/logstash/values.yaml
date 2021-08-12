@@ -1,6 +1,15 @@
 logstash:
-  logstashConfig: 
-    logstash.yml: |
-      input:
-        http: 
-          port: 9600
+  logstashPipeline: 
+    logstash.conf: |
+      input {
+        http {
+          port      => 9600
+        }
+      }
+      filter {
+        prune {
+          blacklist_values => {
+            "log" => "(MYSQL_PASSWORD|AWS_SECRET)"
+          }
+        }
+      }
