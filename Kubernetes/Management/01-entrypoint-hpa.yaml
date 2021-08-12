@@ -19,5 +19,5 @@ spec:
         kind: Service
         name: ingress-nginx-app-controller-metrics
       target:
-        type: Value
+        type: AverageValue
         averageValue: 2
