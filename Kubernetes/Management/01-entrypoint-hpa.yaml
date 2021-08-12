@@ -20,4 +20,4 @@ spec:
         name: ingress-nginx-app-controller
       target:
         type: AverageValue
-        averageValue: 2
+        averageValue: 216m
