@@ -1,0 +1,15 @@
+fluent-bit:
+  outputs: |
+    [OUTPUT]
+        Name logstash
+        Match kube.*
+        Host logstash-app-logstash-headless
+        Logstash_Format On
+        Retry_Limit False
+
+    [OUTPUT]
+        Name logstash
+        Match host.*
+        Host logstash-app-logstash-headless
+        Logstash_Format On
+        Retry_Limit False    
