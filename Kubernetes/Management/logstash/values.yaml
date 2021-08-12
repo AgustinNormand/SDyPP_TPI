@@ -11,7 +11,7 @@ logstash:
           blacklist_values => {
             "log" => "(MYSQL_PASSWORD|AWS_SECRET)"
           }
-        },
+        }
         mutate {
           remove_field => [ "host" ]
         }
