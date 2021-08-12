@@ -1,12 +1,12 @@
 prometheus:
   server:
     resources:
-      requests:
-        cpu: "100m"
-        memory: "1Gi"
       limits:
-        cpu: "200m"
-        memory: "2Gi"
+        cpu: 500m
+        memory: 512Mi
+      requests:
+        cpu: 500m
+        memory: 512Mi
   serverFiles:
     recording_rules.yml:
       groups:
