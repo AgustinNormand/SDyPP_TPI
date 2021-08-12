@@ -5,5 +5,4 @@ fluent-bit:
           Name http
           Match *
           Host logstash-app-logstash-headless
-          Port 8080
-          Format json          
+          Port 8080               

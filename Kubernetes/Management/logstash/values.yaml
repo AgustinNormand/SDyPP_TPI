@@ -14,8 +14,6 @@ logstash:
         }
         mutate {
           remove_field => ["headers","host", "app"]
-          '[kubernetes][labels][app]'   => '[kubernetes][labels][app.kubernetes.io/name]'
-          '[kubernetes][labels][chart]' => '[kubernetes][labels][helm.sh/chart]'
         }
       }
       output {
