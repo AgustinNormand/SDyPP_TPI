@@ -13,3 +13,9 @@ logstash:
           }
         }
       }
+      output {
+        elasticsearch {
+          hosts => "hostname"
+          data_stream => "true"
+        }
+      }
