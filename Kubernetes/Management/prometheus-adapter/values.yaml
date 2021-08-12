@@ -74,3 +74,10 @@ prometheus-adapter:
           kubernetes_namespace: {resource: "namespace"}
           app_kubernetes_io_instance: {resource: "service"}    
       metricsQuery: sum(<<.Series>>{<<.LabelMatchers>>}) by (<<.GroupBy>>)
+
+    - seriesQuery: 'rate(nginx_ingress_controller_nginx_process_requests_total[2m])'
+      resources:
+        overrides:
+          kubernetes_namespace: {resource: "namespace"}
+          app_kubernetes_io_instance: {resource: "service"}    
+      metricsQuery: sum(<<.Series>>{<<.LabelMatchers>>}) by (<<.GroupBy>>)
