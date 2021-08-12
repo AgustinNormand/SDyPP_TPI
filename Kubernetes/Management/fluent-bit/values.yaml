@@ -5,12 +5,10 @@ fluent-bit:
           Name http
           Match kube.*
           Host logstash-app-logstash-headless
-          Logstash_Format On
           Retry_Limit False
 
       [OUTPUT]
           Name http
           Match host.*
           Host logstash-app-logstash-headless
-          Logstash_Format On
           Retry_Limit False
