@@ -1,4 +1,7 @@
 grafana:
+  admin:
+    userKey: admin
+    passwordKey: admin
   service:
     type: LoadBalancer
     port: 3000
