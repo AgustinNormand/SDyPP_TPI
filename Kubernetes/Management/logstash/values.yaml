@@ -8,13 +8,9 @@ logstash:
       }
       filter {
         mutate {
-          '[kubernetes][labels][app]'   => '[kubernetes][labels][app.kubernetes.io/name]'
-          '[kubernetes][labels][chart]' => '[kubernetes][labels][helm.sh/chart]'
+          rename => { "[kubernetes][labels][app.kubernetes.io/instance]" => "[kubernetes][labels][mariancapo]" }
         }
       }
       output {
         stdout { codec => rubydebug }
-        elasticsearch {
-          hosts => "elasticsearch-master"
-        }
       }
