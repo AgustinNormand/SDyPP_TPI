@@ -1,6 +1,6 @@
 grafana:
   admin:
-    userKey:  admin
+    userKey: admin
     passwordKey: admin
   service:
     type: LoadBalancer
