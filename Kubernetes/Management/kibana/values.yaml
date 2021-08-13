@@ -5,3 +5,5 @@ kibana:
   limits:
     cpu: "200m"
     memory: "512Mi"
+  service:
+    type: LoadBalancer
