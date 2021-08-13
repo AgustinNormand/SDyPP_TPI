@@ -17,7 +17,6 @@ logstash:
         }
       }
       output {
-        stdout { codec => rubydebug }
         elasticsearch {
           hosts => "elasticsearch-master"
         }
