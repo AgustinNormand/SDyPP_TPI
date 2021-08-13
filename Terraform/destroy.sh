@@ -15,3 +15,5 @@ for RECORD_SET in $RECORD_SETS ; do
 done
 
 gcloud dns managed-zones delete $(get_value "dns_zone_name")
+
+gsutil rm -r gs://*
