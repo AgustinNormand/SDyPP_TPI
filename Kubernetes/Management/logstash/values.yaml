@@ -8,7 +8,12 @@ logstash:
       }
       filter {
         mutate {
-          rename => { "[kubernetes][labels][app.kubernetes.io/instance]" => "[kubernetes][labels][mariancapo]" }
+          rename => { 
+            "[kubernetes][labels][app.kubernetes.io/instance]" => "[kubernetes][labels][instance]" 
+            "[kubernetes][labels][app.kubernetes.io/component]" => "[kubernetes][labels][component]" 
+            "[kubernetes][labels][app.kubernetes.io/name]" => "[kubernetes][labels][name]" 
+            "[kubernetes][labels][app.kubernetes.io/managed-by]" => "[kubernetes][labels][managed-by]" 
+          }
         }
       }
       output {
