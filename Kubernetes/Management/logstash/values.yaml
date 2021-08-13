@@ -6,6 +6,12 @@ logstash:
           port      => 8080
         }
       }
+      filter {
+        mutate {
+          '[kubernetes][labels][app]'   => '[kubernetes][labels][app.kubernetes.io/name]'
+          '[kubernetes][labels][chart]' => '[kubernetes][labels][helm.sh/chart]'
+        }
+      }
       output {
         stdout { codec => rubydebug }
         elasticsearch {
