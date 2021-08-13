@@ -108,6 +108,7 @@
             ],
             "exemplar": true,
             "expr": "rate_nginx_ingress_controller_nginx_process_requests_total",
+            "hide": false,
             "interval": "",
             "legendFormat": "",
             "metrics": [
@@ -160,6 +161,7 @@
               }
             },
             "mappings": [],
+            "noValue": "0",
             "thresholds": {
               "mode": "absolute",
               "steps": [
@@ -208,8 +210,9 @@
               }
             ],
             "exemplar": true,
-            "expr": "count(kube_pod_info{pod=~\"entrypoint-.*.\"})",
+            "expr": "kube_deployment_status_replicas{deployment=\"entrypoint\"}",
             "format": "table",
+            "hide": false,
             "interval": "",
             "legendFormat": "",
             "metrics": [
@@ -227,7 +230,7 @@
         "type": "timeseries"
       },
       {
-        "datasource": null,
+        "datasource": "Elasticsearch",
         "fieldConfig": {
           "defaults": {
             "color": {
@@ -314,16 +317,260 @@
                 "type": "count"
               }
             ],
-            "query": "",
+            "query": "kubernetes.labels.role:entrypoint",
+            "queryType": "randomWalk",
             "refId": "A",
             "timeField": "@timestamp"
           }
         ],
-        "title": "Panel Title",
+        "title": "Log Counts",
         "type": "timeseries"
       },
       {
-        "datasource": null,
+        "datasource": "Elasticsearch",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": [],
+            "noValue": "0"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 8
+        },
+        "id": 10,
+        "options": {
+          "displayLabels": [
+            "value"
+          ],
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom"
+          },
+          "pieType": "pie",
+          "reduceOptions": {
+            "calcs": [
+              "sum"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "targets": [
+          {
+            "alias": "Debug",
+            "bucketAggs": [
+              {
+                "field": "@timestamp",
+                "id": "2",
+                "settings": {
+                  "interval": "auto"
+                },
+                "type": "date_histogram"
+              }
+            ],
+            "metrics": [
+              {
+                "id": "1",
+                "type": "count"
+              }
+            ],
+            "query": "kubernetes.labels.role:entrypoint AND log:DEBUG",
+            "queryType": "randomWalk",
+            "refId": "A",
+            "timeField": "@timestamp"
+          },
+          {
+            "alias": "Error",
+            "bucketAggs": [
+              {
+                "field": "@timestamp",
+                "id": "2",
+                "settings": {
+                  "interval": "auto"
+                },
+                "type": "date_histogram"
+              }
+            ],
+            "hide": false,
+            "metrics": [
+              {
+                "id": "1",
+                "type": "count"
+              }
+            ],
+            "query": "kubernetes.labels.role:entrypoint AND log:ERROR",
+            "refId": "B",
+            "timeField": "@timestamp"
+          },
+          {
+            "alias": "Info",
+            "bucketAggs": [
+              {
+                "field": "@timestamp",
+                "id": "2",
+                "settings": {
+                  "interval": "auto"
+                },
+                "type": "date_histogram"
+              }
+            ],
+            "hide": false,
+            "metrics": [
+              {
+                "id": "1",
+                "type": "count"
+              }
+            ],
+            "query": "kubernetes.labels.role:entrypoint AND log:INFO",
+            "refId": "C",
+            "timeField": "@timestamp"
+          },
+          {
+            "alias": "Warn",
+            "bucketAggs": [
+              {
+                "field": "@timestamp",
+                "id": "2",
+                "settings": {
+                  "interval": "auto"
+                },
+                "type": "date_histogram"
+              }
+            ],
+            "hide": false,
+            "metrics": [
+              {
+                "id": "1",
+                "type": "count"
+              }
+            ],
+            "query": "kubernetes.labels.role:entrypoint AND log:WARN",
+            "refId": "D",
+            "timeField": "@timestamp"
+          }
+        ],
+        "title": "Panel Title",
+        "type": "piechart"
+      },
+      {
+        "datasource": "Prometheus",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 16
+        },
+        "id": 12,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom"
+          },
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "container_memory_usage_bytes{container=\"entrypoint\"}",
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "{{pod}}",
+            "queryType": "randomWalk",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "avg(kube_pod_container_resource_limits{container=\"entrypoint\", resource=\"memory\"})",
+            "hide": false,
+            "instant": false,
+            "interval": "",
+            "legendFormat": "Limit",
+            "refId": "B"
+          },
+          {
+            "exemplar": true,
+            "expr": "avg(kube_pod_container_resource_requests{container=\"entrypoint\", resource=\"memory\"})",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "Request",
+            "refId": "C"
+          }
+        ],
+        "title": "Memory Usage",
+        "type": "timeseries"
+      },
+      {
+        "datasource": "Elasticsearch",
         "fieldConfig": {
           "defaults": {
             "color": {
@@ -372,6 +619,30 @@
                   "value": 260
                 }
               ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "_type"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": null
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "_index"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": null
+                }
+              ]
             }
           ]
         },
@@ -379,7 +650,7 @@
           "h": 9,
           "w": 24,
           "x": 0,
-          "y": 16
+          "y": 24
         },
         "id": 2,
         "options": {
@@ -405,7 +676,8 @@
                 "type": "logs"
               }
             ],
-            "query": "kubernetes.labels.role : entrypoint",
+            "query": "kubernetes.labels.role:entrypoint",
+            "queryType": "randomWalk",
             "refId": "A",
             "timeField": "@timestamp"
           }
@@ -414,6 +686,7 @@
         "type": "table"
       }
     ],
+    "refresh": "5s",
     "schemaVersion": 30,
     "style": "dark",
     "tags": [],
@@ -427,6 +700,6 @@
     "timepicker": {},
     "timezone": "",
     "title": "Main dashboard",
-    "uid": "_4FV9in7k",
-    "version": 3
+    "uid": "ayzrGZ7nz",
+    "version": 7
   }
