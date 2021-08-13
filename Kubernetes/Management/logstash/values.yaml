@@ -13,6 +13,7 @@ logstash:
             "[kubernetes][labels][app.kubernetes.io/component]" => "[kubernetes][labels][component]" 
             "[kubernetes][labels][app.kubernetes.io/name]" => "[kubernetes][labels][name]" 
             "[kubernetes][labels][app.kubernetes.io/managed-by]" => "[kubernetes][labels][managed-by]" 
+            "[kubernetes][labels][app]" => "[kubernetes][labels][label-app]"
           }
         }
       }
