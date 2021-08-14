@@ -505,7 +505,7 @@ module "gke_resources" {
       machine_type              = var.machine_type
       node_locations            = var.resources_node_locations
       min_count                 = 1
-      max_count                 = 4
+      max_count                 = 3
       local_ssd_count           = 0
       disk_size_gb              = 10
       disk_type                 = "pd-standard"
@@ -514,7 +514,7 @@ module "gke_resources" {
       auto_upgrade              = true
       service_account           = format("%s@%s.iam.gserviceaccount.com", var.service_account, var.project_id)
       preemptible               = true
-      initial_node_count        = 4
+      initial_node_count        = 3
       node_metadata             = "GKE_METADATA_SERVER"
     },
   ]

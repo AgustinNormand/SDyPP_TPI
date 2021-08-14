@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export GOOGLE_APPLICATION_CREDENTIALS=$(pwd)'/credentials.json'
+
 get_value () {
     echo $(cat variables.tf | grep $1 -A 4 | grep default | awk {'print $3'} | sed 's/"//g') 
 }
