@@ -56,10 +56,11 @@ En esta sección se linkea a los readme del propio repo.
 
 ### Pipeline CICD
 
-El repositorio cuenta con un pipeline CICD que realiza Continuous Integration y Continuous Deployment cuando se modifica el código o algun Dockerfile dentro de el directorio Docker/ aplicando los cambios realizados en el cluster de Kubernetes de management.
+La *management app* cuenta con un pipeline de CI (Continuous Integration o Integración Continua) que se activa al modificar el código fuente del proyecto o algún Dockerfile dentro del directorio `Docker/`. Esta funcionalidad está implementada a través de Github Actions, reaccionando ante commits del usuario a los paths correspondientes del repositorio.
 
-El componente de CI, Continuous Integration o Integración Contínua se realiza a traves de Github Actions.
-El componente de CD, Continuous Delivery o Entrega Continua se realiza a traves de ArgoCD.
+A su vez, frente a la modificación en los manifiestos de las carpetas `Kubernetes/Management` y `Kubernetes/Resources` - sea manual (por el usuario) o automática (llevada a cabo por Github Actions en el pipeline de CI) - se desencadena el circuito de CD (Continuous Deployment o Entrega continua) implementado a través de ArgoCD, quien se encargará de determinar las diferencias en los manifiestos del clúster correspondiente, aplicando estos cambios y reflejando el estado correcto. 
+
+A continuación, un gráfico que detalla los pasos y la relación entre CI/CD para la *Management app*.
 
 ![GraficoCICD](Imagenes/ideas-final-sdypp-Github-Actions.png)
 
@@ -87,10 +88,7 @@ Actualiza el tag de la imagen docker creada en pasos anteriores, en un archivo d
 11. Kustomize Build
 Aplica el archivo de variables de Kustomize sobre un template, generando el archivo de salida *01-receptionist-worker-deployment.yaml*, que será colocado en el directorio Kubernetes/. Cabe destacar que dicho archivo contendrá el tag de la imagen actualizado.
 12. Agregar cambios, realizar commit y push.
-Se ejecutan los comandos:
-git add /Kubernetes/.
-git commit -m "Commit from GitHub Actions (Publisher)"
-git push origin main
+Se ejecutan los comandos: `git add /Kubernetes/.`, `git commit -m "Commit from GitHub Actions (Publisher)"` y `git push origin main`, lo que provoca que ArgoCD detecte un cambio los archivos .yaml de Kubernetes y los aplique en el cluster. Completando el pipeline CICD.
 
-Lo que provoca que ArgoCD detecte un cambio los archivos .yaml de Kubernetes y los aplique en el cluster. Completando el pipeline CICD.
+Para el caso de los componentes del clúster de *Resources* representados por los manifiestos de la carpeta `Kubernetes/Resources`, el circuito de CI no es necesario ya que no se trabaja con el código fuente. Sin embargo, se aprovechan las bondades de ArgoCD para su despliegue en el clúster.
 
