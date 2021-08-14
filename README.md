@@ -93,6 +93,18 @@ Es una aplicación orientada a microservicios encargada de procesar las tareas q
 
 ![Grafico-Management-App](Imagenes/ideas-final-sdypp-Management-app.png)
 
+
+### Entrypoint 
+
+Es un servicio desarrollado en Java que expone endpoints HTTP desde los cuales recibirá las solicitudes de procesamiento de los usuarios. Cada endpoint espera recibir contenido distinto dependiendo del formato que utilice el usuario para informar la tarea a ejecutar. En el caso de solicitar la ejecución de la tarea mediante manifiestos de Kubernetes, se deberá enviar un `POST /yaml` entregando como cuerpo de la solicitud un conjunto de archivos en formato YAML a aplicar en el cluster. 
+
+
+![Grafico-Entrypoint](Imagenes/ideas-final-sdypp-Entrypoint.png)
+
+
+Una vez recibida la tarea, el componente genera un identificador que vincule los archivos subidos y los deposita en un almacenamiento compartido con el resto de los microservicios. A su vez, emite un mensaje a un *exchange* de RabbitMQ para notificar a los componentes interesados que existe una tarea pendiente.
+
+
 ## Infra
 
 Scripts
