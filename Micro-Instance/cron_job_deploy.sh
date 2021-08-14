@@ -2,6 +2,12 @@
 
 #Must be logged in github to commit deploy changes
 
+cd ..
+
 git pull
 
-../Terraform/deploy.sh
+rm deploy.log
+
+cd Terraform/
+
+./deploy.sh
