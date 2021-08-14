@@ -1,3 +1,5 @@
+#!/bin/bash
+
 get_value () {
     echo $(cat variables.tf | grep $1 -A 4 | grep default | awk {'print $3'} | sed 's/"//g') 
 }
@@ -14,6 +16,8 @@ for RECORD_SET in $RECORD_SETS ; do
     fi
 done
 
-gcloud dns managed-zones delete $(get_value "dns_zone_name")
+#gcloud dns managed-zones delete $(get_value "dns_zone_name")
 
-gsutil rm -r gs://*
+gsutil rm -r gs://task-bucket/*
+
+terraform destroy --auto-approve

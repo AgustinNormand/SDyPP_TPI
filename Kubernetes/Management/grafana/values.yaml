@@ -1,5 +1,5 @@
 grafana:
-  adminPassword: admin
+  adminPassword: agusmarian
   service:
     type: LoadBalancer
     port: 3000
