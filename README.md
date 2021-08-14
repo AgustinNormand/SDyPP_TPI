@@ -68,18 +68,20 @@ En el gráfico a continuación, se detallan los pasos y la relación entre CI/CD
 
 #### Etapas del pipeline
 
-1. **Preparación - Setup Job**: En este caso, Github corre un ubuntu-latest en el cual realizará los pasos declarados en .github/workflows/receptionist.yaml
-2. **Checkout código**: Clona o realiza un pull del repositorio completo, para poder armar la imagen docker con los ultimos cambios
-3. **Setup Java JDK**: Instala o disponibiliza Java JDK para permitir compilar código Java
-4. **Build con Maven**: Empaqueta el código en un archivo .jar, y lo guarda en Receptionist/target/
-5. **Mover el jar al contexto del Dockerfile**: Mueve el archivo .jar de Receptionist/target/ a Docker/Receptionist/
+A continuación, una breve explicación de cada uno de los pasos involucrados en el pipeline de la *Management app*. Dado que la aplicación está compuesta de varios microservicios, debemos considerar que el flujo será idéntico para cada uno de ellos, a excepción de las rutas de los directorios involucrados.
+
+1. **Preparación - Setup Job**: En este caso, Github corre un ubuntu-latest en el cual realizará los pasos declarados en cada uno de los *workflows* de la carpeta `github/workflows/`.
+2. **Checkout código**: Clona el repositorio completo, para poder armar la imagen Docker con los últimos cambios.
+3. **Setup Java JDK**: Instala y disponibiliza Java JDK para poder compilar el código Java de cada una de los componentes.
+4. **Build con Maven**: Empaqueta el código en un archivo .jar, y lo guarda en el directorio del componente, bajo la ruta `/target`.
+5. **Mover el jar al contexto del Dockerfile**: Mueve el archivo .jar creado en el paso anterior al directorio `Docker/` del proyecto, en una subcarpeta correspondiente al componente afectado.
 6. **Loguearse a DockerHub**: Se autentica con DockerHub utilizando un nombre de usuario y un token, para permitir subir la imagen luego de armarla.
-7. **Crear archivo de credentiales**: Arma un archivo de credenciales cuyo contenido es un *secret* del repostorio, requerido por el código para autenticarse en el cluster de Deployments.
-8. **Build y Push de imagen docker**: Arma la imagen utilizando el Dockerfile de Docker/Receptionist/Dockerfile y una vez construida realiza un push de la imagen a dockerHub.
-9. **Setup Kustomize**: Instala o disponibiliza Kustomize para modificar la imagen de un archivo .yaml de Kubernetes de manera simple.
-10. **Actualizar recursos de Kubernetes**: Actualiza el tag de la imagen docker creada en pasos anteriores, en un archivo de variables de Kustomize.
-11. **Kustomize Build**: Aplica el archivo de variables de Kustomize sobre un template, generando el archivo de salida *01-receptionist-worker-deployment.yaml*, que será colocado en el directorio Kubernetes/. Cabe destacar que dicho archivo contendrá el tag de la imagen actualizado.
-12. **Agregar cambios, realizar commit y push**: Se ejecutan los comandos: `git add /Kubernetes/.`, `git commit -m "Commit from GitHub Actions (Publisher)"` y `git push origin main`, lo que provoca que ArgoCD detecte un cambio los archivos .yaml de Kubernetes y los aplique en el cluster. Completando el pipeline CICD.
+7. **Crear archivo de credentiales**: Arma un archivo de credenciales cuyo contenido es un *secret* del repostorio, requerido por el código para autenticarse en el cluster de Deployments y acceder al *Storage* compartido.
+8. **Build y Push de imagen docker**: Se construye la imagen de Docker utilizando el Dockerfile del componente bajo el subdirectorio correspondiente en la carpeta `Docker/`. Luego, se realiza un push de la imagen a dockerHub.
+9. **Setup Kustomize**: Instala y disponibiliza Kustomize, que permitirá modificar la imagen de un manifiesto de Kubernetes de forma sencilla.
+10. **Actualizar recursos de Kubernetes**: Actualiza el tag de la imagen docker creada en el paso 8, en un archivo de variables de Kustomize.
+11. **Kustomize Build**: Aplica el archivo de variables de Kustomize sobre un template, generando el archivo .yaml de salida para el componente afectado, que será colocado en el directorio `Kubernetes/` bajo el subdirectorio correspondiente. Cabe destacar que este archivo contendrá el tag de la imagen actualizado.
+12. **Agregar cambios, realizar commit y push**: Se ejecutan los comandos de *git* necesarios para publicar los cambios en el repositorio, lo que provoca que ArgoCD detecte una modificación de los archivos .yaml de Kubernetes y los aplique en el cluster, completando así el pipeline CICD.
 
 **Importante**: En el caso de los componentes del clúster de *Resources* representados por los manifiestos de la carpeta `Kubernetes/Resources`, el circuito de CI no es necesario dado que no se trabaja con el código fuente. Sin embargo, se aprovechan las bondades de ArgoCD para su despliegue en el clúster.
 
