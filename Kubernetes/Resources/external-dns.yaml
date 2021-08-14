@@ -57,9 +57,9 @@ spec:
         - args:
             - --source=ingress
             - --source=service
-            - --domain-filter=framework.services.gcp.com.ar
+            - --domain-filter=
             - --provider=google
-            - --google-project=sdypp-framework-ago
+            - --google-project=
             - --registry=txt
             - --txt-owner-id=my-identifier
           image: k8s.gcr.io/external-dns/external-dns:v0.8.0
