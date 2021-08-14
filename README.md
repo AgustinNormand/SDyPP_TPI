@@ -5,13 +5,13 @@
 <img src="https://www.universidades.com.ar/logos/original/logo-universidad-nacional-de-lujan.png" alt="UNLu">
 </p>
 
-### Introducción
+## Introducción
 
 
 Desarrollo de un framework de HPC basado en un modelo SWJ (Splitter-Worker-Joiner) para la resolución de tareas genéricas,
 de naturaleza distribuida haciendo uso de recursos de soporte tales como RabbitMQ y Redis.  
 
-### Arquitectura de la solución
+## Arquitectura de la solución
 ![GraficoArquitectura](Imagenes/ideas-final-sdypp-Arquitectura.png)
 
 La arquitectura de la aplicación consta de 3 clusters: uno de *deployments*, otro de *resources* y el último de *management*. Estos clusters poseen *nodos privados*, es decir, no tienen direcciones ip públicas, ya que estas son caras, y además, no las necesitábamos. 
@@ -34,12 +34,12 @@ Todos los clusters se encuentran configurados con *cluster auto scaler* y *horiz
 
 Para lograr comunicar a las aplicaciones del cluster de *deployments* con los recursos alojados en el cluster de *resources* fue necesario levantar servicios de tipo "internal", ya que - de lo contrario - los pods de las aplicaciones no podían acceder a los servicios, por más que se encuentren en *VPCs* emparejadas, con el tráfico permitido a través del firewall.
 
-#### Componentes 
+### Componentes 
 
 Contar qué es cada cosa y que sirva de intro para los conceptos
 
 
-### Paso a paso
+## Paso a paso
 
 En esta sección se linkea a los readme del propio repo. 
 
@@ -54,7 +54,7 @@ En esta sección se linkea a los readme del propio repo.
 
 - La documentación para el usuario final: esta sería cómo usar el FW
 
-### Pipeline CICD
+## Pipeline CICD
 
 La *management app* cuenta con un pipeline de CI (Continuous Integration o Integración Continua) que se activa al modificar el código fuente del proyecto o algún Dockerfile dentro del directorio `Docker/`. Esta funcionalidad está implementada a través de Github Actions, reaccionando ante commits del usuario a los paths correspondientes del repositorio.
 
@@ -66,7 +66,7 @@ En el gráfico a continuación, se detallan los pasos y la relación entre CI/CD
 ![GraficoCICD](Imagenes/ideas-final-sdypp-Github-Actions.png)
 
 
-#### Etapas del pipeline
+### Etapas del pipeline
 
 A continuación, una breve explicación de cada uno de los pasos involucrados en el pipeline de la *Management app*. Dado que la aplicación está compuesta de varios microservicios, debemos considerar que el flujo será idéntico para cada uno de ellos, a excepción de las rutas de los directorios involucrados.
 
@@ -85,3 +85,61 @@ A continuación, una breve explicación de cada uno de los pasos involucrados en
 
 **Importante**: En el caso de los componentes del clúster de *Resources* representados por los manifiestos de la carpeta `Kubernetes/Resources`, el circuito de CI no es necesario dado que no se trabaja con el código fuente. Sin embargo, se aprovechan las bondades de ArgoCD para su despliegue en el clúster.
 
+
+## Management App
+
+Es una aplicación orientada a microservicios encargada de procesar las tareas que el usuario final desea ejecutar en la plataforma HPC. Está diseñada con el propósito de escalar cuando se requiera, por lo que los componentes son independientes entre sí, comunicados a través de colas de mensajería, compartiendo un *storage* en común y utilizando una caché para el almacenamiento de estado de las tareas. 
+
+
+![Grafico-Management-App](Imagenes/ideas-final-sdypp-Management-app.png)
+
+## Infra
+
+Scripts
+Terraform
+GKE
+Cloud DNS
+Cloud Routers
+Cloud NAT
+Bucket
+Firewall Roules
+VPC Peering
+ExternalDNS
+Preemtible
+3 Clusters
+
+## Kubernetes
+
+ArgoCD Apps
+Helm Subcharts
+.yamls
+
+TRANSPARENTE A GOOGLE
+
+## Autoscaling
+
+Cluster Autoscaler
+HPA
+Prometheus
+Prometheus Adapter
+Recording Rules
+Custom API
+Ingress
+Ingres Controller NGINX
+
+## Replication
+
+Redis Cluster Mode
+Redirect, Lettuce
+
+RabbitMQ cluster Mode
+Quorum queues
+
+## Logging/Monitoring
+
+Fluent-bit
+Logstash
+Elasticsearch Cluster Mode
+Kibana
+Grafana
+Prometheus ?
