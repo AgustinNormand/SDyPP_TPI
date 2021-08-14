@@ -4,4 +4,4 @@
 
 git pull
 
-./deploy.sh
+../Terraform/deploy.sh

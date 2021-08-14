@@ -1,7 +1,13 @@
 sudo apt update
 sudo apt upgrade -y
 
+git config --global user.email "NormandAgustin@gmail.com"
+git config --global user.name "Agustin Normand"
+git config credential.helper store
+push
+
 sudo snap install gh
+gh auth login
 
 echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
 sudo apt-get install apt-transport-https ca-certificates gnupg
