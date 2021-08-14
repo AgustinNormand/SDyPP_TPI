@@ -16,7 +16,7 @@ resource "google_compute_instance" "terraform-instance" {
 
   network_interface {
     # A default network is created for all GCP projects
-    network = "sdypp-framework-ago-vpc-deployment"
+    network = "default"
     access_config {
     }
   }
