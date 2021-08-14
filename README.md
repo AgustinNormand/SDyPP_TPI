@@ -7,9 +7,9 @@
 
 ### Introducción
 
+
 Desarrollo de un framework de HPC basado en un modelo SWJ (Splitter-Worker-Joiner) para la resolución de tareas genéricas,
 de naturaleza distribuida haciendo uso de recursos de soporte tales como RabbitMQ y Redis.  
-
 
 ### Arquitectura de la solución
 ![GraficoArquitectura](Imagenes/ideas-final-sdypp-Arquitectura.png)
