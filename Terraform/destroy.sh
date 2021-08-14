@@ -2,9 +2,19 @@
 
 export GOOGLE_APPLICATION_CREDENTIALS=$(pwd)'/credentials.json'
 
+get_service_account_name() {
+    echo $1'@'$(get_value "project_id")'.iam.gserviceaccount.com'
+}
+
 get_value () {
     echo $(cat variables.tf | grep $1 -A 4 | grep default | awk {'print $3'} | sed 's/"//g') 
 }
+
+echo $(get_service_account_name $(get_value "management_nodes_sa_name"))
+
+gcloud config set account $(get_service_account_name $(get_value "management_nodes_sa_name"))
+
+gcloud auth activate-service-account $(get_service_account_name $(get_value "management_nodes_sa_name")) --key-file=./credentials.json
 
 RECORD_SETS=$(gcloud dns record-sets list --zone $(get_value "dns_zone_name") | tail -n +2 | awk {'print $1"&"$2'})
 
