@@ -23,7 +23,7 @@ Concretamente, el presente trabajo aporta:
 - Una herramienta de gestión denominada Management App, que permite ejecutar tareas genéricas con alta capacida de cómputo de forma transparente al usuario.
 - La configuración necesaria para lograr el auto-escalado de los componentes de apoyo e involucrados en la tarea del usuario, como así también la replicación de los mismos - cuando se requiera - para lograr tolerancia a fallos. 
 - La documentación de cada uno de los recursos utilizados y su función en el proyecto, así como ventajas y desventajas identificadas por su uso. 
-- La implementación de herramientas de monitoreo del stack ELK para identificar errores y fallas en la aplicación y sus dependencias, utilizando tableros de visualización y alertas. 
+- La implementación de la herramienta Prometheus para el monitoreo de los servicios, y Fluentd para la recolección de logs, junto al stack ELK para identificar errores y fallas en la aplicación y sus dependencias, utilizando tableros de visualización y alertas. 
 
 
 ### Out-of-scope
