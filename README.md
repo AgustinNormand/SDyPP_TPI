@@ -7,14 +7,34 @@
 
 ## Introducción
 
+En el contexto de la asignatura Sistemas Distribuidos y Programación Paralela de la Universidad Nacional de Luján, se propone y documenta la creación de una herramienta de cómputo intensivo basado en un modelo SWJ (Splitter-Worker-Joiner) para la resolución de tareas genéricas, apoyado en la plataforma de gestión de contenedores Kubernetes y tecnologías de Cloud Computing. Todos los componentes utilizados (propios y de terceros) presentan características de alta disponibilidad y tolerancia a fallos. 
 
-Desarrollo de un framework de HPC basado en un modelo SWJ (Splitter-Worker-Joiner) para la resolución de tareas genéricas,
-de naturaleza distribuida haciendo uso de recursos de soporte tales como RabbitMQ y Redis.  
+La herramienta está orientada, por el momento, al uso exclusivo de los autores del trabajo. Sin embargo, se toman algunas consideraciones para soportar aspectos tales como cargas de tráfico mayores resultantes de publicar la aplicación. En la sección de Alcance se presenta 
 
-## Arquitectura de la solución
+La motivación principal del trabajo es la necesidad eventual de ejecutar tareas que se verían altamente beneficiadas de una gran capacidad de cómputo para la obtención de resultados. Dado que el costo de contar con una infraestructura disponible 24/7 que permita satisfacer los requerimientos eventuales implicaría un costo excesivo y un gran desperdicio la mayor parte del tiempo, la propuesta considera desde la creación hasta la destrucción de los recursos necesarios de manera automatizada, tan solo configurando unas pocas variables dependientes. 
+
+### Alcance
+
+Concretamente, el presente trabajo aporta:
+- Los scripts necesarios para la creación de la infraestructura en Google Cloud Platform mediante Terraform. 
+- La documentación de los pasos previos requeridos para poder crearla.
+- La configuración y puesta en funcionamiento de un pipeline de CI/CD para la herramienta en sí misma y los recursos auxiliares.
+- Los manifiestos de Kubernetes que serán desplegados por el componente de CD (Continuous Delivery), y las imágenes de Docker para cada uno de los componentes de la herramienta, independientes de la tecnología subyacente. 
+- La configuración necesaria para lograr el auto-escalado de los componentes frente al aumento de tráfico de la aplicación, como así también la replicación de los componentes 
+- La documentación de cada uno de los recursos utilizados y su función en el proyecto, así como ventajas y desventajas identificadas por su uso. 
+- La implementación de herramientas de monitoreo del stack ELK para identificar errores y fallas en la aplicación y sus dependencias. 
+- 
+
+### Out-of-scope
+
+Algunas cuestiones no consideradas por el trabajo hasta el momento, que presentan oportunidades de extensión a futuro, son:
+- La publicación de la herramienta para uso de terceros, y como consecuencia:
+    - La prevención de que individuos maliciosos la utilicen para ejecutar ataques.
+    - Un esquema de medición y costo frente al uso de la herramienta.
+    - Implementación de mecanismos de seguridad para evitar ataques a la propia infraestructura. 
+- La posibilidad de entregar imágenes Dockerizadas o incluso, código fuente, en lugar de manifiestos de Kubernetes. 
 
 
-### Componentes 
 
 Contar qué es cada cosa y que sirva de intro para los conceptos
 
@@ -131,7 +151,15 @@ Para lograr comunicar a las aplicaciones del clúster de *deployments* con los r
 
 ### Scripts
 
-Dado que el proyecto se ha construido con el propósito de poder replicar su funcionamiento en poco tiempo, se ha construido un script con todos los pasos necesarios para hacerlo. Este puede encontrarse en `/Terraform/deploy.sh`
+Dado que el proyecto fue construido con el propósito de ser utilizado desde cero sin necesidad de conocer en detalle su funcionamiento, se construyeron los scripts necesarios para crear y descartar todos los elementos involucrados, facilitando la tarea al usuario. 
+
+#### Despliegue
+
+Este puede encontrarse en `/Terraform/deploy.sh`. 
+
+#### Destrucción
+
+Este puede encontrarse en `/Terraform/destroy.sh`. 
 
 Terraform
 GKE
