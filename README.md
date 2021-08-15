@@ -91,7 +91,7 @@ A continuación, una breve explicación de cada uno de los pasos involucrados en
 Es una aplicación orientada a microservicios encargada de procesar las tareas que el usuario final desea ejecutar en la plataforma HPC. Está diseñada con el propósito de escalar cuando se requiera, por lo que los componentes son independientes entre sí, comunicados a través de colas de mensajería, compartiendo un *storage* en común y utilizando una caché para el almacenamiento de estado de las tareas. 
 
 
-![Grafico-Management-App](Imagenes/ideas-final-sdypp-Management-app.png)
+![Grafico-Management-App](Imagenes/ideas-final-sdypp-Management-app.jpg)
 
 
 ### Entrypoint 
