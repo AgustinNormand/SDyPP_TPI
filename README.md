@@ -9,9 +9,9 @@
 
 En el contexto de la asignatura Sistemas Distribuidos y Programación Paralela de la Universidad Nacional de Luján, se propone y documenta la creación de una herramienta de cómputo intensivo basado en un modelo SWJ (Splitter-Worker-Joiner) para la resolución de tareas genéricas, apoyado en la plataforma de gestión de contenedores Kubernetes y tecnologías de Cloud Computing. Todos los componentes utilizados (propios y de terceros) presentan características de alta disponibilidad y tolerancia a fallos. 
 
-La herramienta está orientada, por el momento, al uso exclusivo de los autores del trabajo. Sin embargo, se toman algunas consideraciones para soportar aspectos tales como cargas de tráfico mayores resultantes de publicar la aplicación. En la sección de Alcance se presenta 
+La herramienta está orientada, por el momento, al uso exclusivo de los autores del trabajo. Sin embargo, se toman algunas consideraciones para soportar aspectos tales como cargas de tráfico mayores resultantes de publicar la aplicación. En la sección de Alcance se presentan los límites del mismo.
 
-La motivación principal del trabajo es la necesidad eventual de ejecutar tareas que se verían altamente beneficiadas de una gran capacidad de cómputo para la obtención de resultados. Dado que el costo de contar con una infraestructura disponible 24/7 que permita satisfacer los requerimientos eventuales implicaría un costo excesivo y un gran desperdicio la mayor parte del tiempo, la propuesta considera desde la creación hasta la destrucción de los recursos necesarios de manera automatizada, tan solo configurando unas pocas variables dependientes. 
+La motivación principal del trabajo es la necesidad ocasional de ejecutar tareas que se verían beneficiadas de una gran capacidad de cómputo para la obtención de resultados. Dado que el costo de contar con una infraestructura disponible 24/7 que permita satisfacer los requerimientos eventuales implicaría un costo excesivo y un gran desperdicio la mayor parte del tiempo, la propuesta considera desde la creación hasta la destrucción de los recursos necesarios de manera automatizada, tan solo configurando unas pocas variables dependientes. 
 
 ### Alcance
 
@@ -19,11 +19,12 @@ Concretamente, el presente trabajo aporta:
 - Los scripts necesarios para la creación de la infraestructura en Google Cloud Platform mediante Terraform. 
 - La documentación de los pasos previos requeridos para poder crearla.
 - La configuración y puesta en funcionamiento de un pipeline de CI/CD para la herramienta en sí misma y los recursos auxiliares.
-- Los manifiestos de Kubernetes que serán desplegados por el componente de CD (Continuous Delivery), y las imágenes de Docker para cada uno de los componentes de la herramienta, independientes de la tecnología subyacente. 
-- La configuración necesaria para lograr el auto-escalado de los componentes frente al aumento de tráfico de la aplicación, como así también la replicación de los componentes 
+- Los manifiestos de Kubernetes que serán desplegados por el componente de CD (Continuous Delivery) y las imágenes de Docker para cada uno de los componentes de la herramienta, independientes de la tecnología subyacente. 
+- Una herramienta de gestión denominada Management App, que permite ejecutar tareas genéricas con alta capacida de cómputo de forma transparente al usuario.
+- La configuración necesaria para lograr el auto-escalado de los componentes de apoyo e involucrados en la tarea del usuario, como así también la replicación de los mismos - cuando se requiera - para lograr tolerancia a fallos. 
 - La documentación de cada uno de los recursos utilizados y su función en el proyecto, así como ventajas y desventajas identificadas por su uso. 
-- La implementación de herramientas de monitoreo del stack ELK para identificar errores y fallas en la aplicación y sus dependencias. 
-- 
+- La implementación de herramientas de monitoreo del stack ELK para identificar errores y fallas en la aplicación y sus dependencias, utilizando tableros de visualización y alertas. 
+
 
 ### Out-of-scope
 
@@ -36,10 +37,7 @@ Algunas cuestiones no consideradas por el trabajo hasta el momento, que presenta
 
 
 
-Contar qué es cada cosa y que sirva de intro para los conceptos
-
-
-## Paso a paso
+## Paso a paso - Eliminamos esta sección? <--------------------------------- 
 
 En esta sección se linkea a los readme del propio repo. 
 
