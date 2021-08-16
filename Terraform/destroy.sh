@@ -10,8 +10,6 @@ get_value () {
     echo $(cat variables.tf | grep $1 -A 4 | grep default | awk {'print $3'} | sed 's/"//g') 
 }
 
-echo $(get_service_account_name $(get_value "management_nodes_sa_name"))
-
 gcloud config set account $(get_service_account_name $(get_value "management_nodes_sa_name"))
 
 gcloud auth activate-service-account $(get_service_account_name $(get_value "management_nodes_sa_name")) --key-file=./credentials.json
@@ -30,6 +28,6 @@ done
 
 #gcloud dns managed-zones delete $(get_value "dns_zone_name")
 
-gsutil rm -r gs://task-bucket/*
+gsutil rm -r gs://sdypp-framework-ago-us-central1-task-bucket/*
 
-terraform destroy --auto-approve
+#terraform destroy --auto-approve
