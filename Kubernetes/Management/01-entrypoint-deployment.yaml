@@ -14,8 +14,7 @@ spec:
         role: entrypoint
     spec:
       containers:
-      - name: entrypoint
-        env:
+      - env:
         - name: RABBIT_HOST
           value: rabbitmq-cluster-app
         - name: RABBIT_USER
@@ -24,14 +23,8 @@ spec:
           value: agusmarian
         - name: STATUS_SERVICE_URL
           value: http://status-worker-service
-        image: agustinnormand/tpi_entrypoint:85f1c0737b152bcf5fe7181ed7151911de1df5a2
+        image: agustinnormand/tpi_entrypoint:97e317b399921852cb0fb587a7d693d6c4c00dc1
         imagePullPolicy: IfNotPresent
-        resources:
-          requests:
-            cpu: "100m"
-            memory: "256Mi"
-          limits:
-            cpu: "200m"
-            memory: "512Mi"
+        name: entrypoint
         ports:
         - containerPort: 8080
