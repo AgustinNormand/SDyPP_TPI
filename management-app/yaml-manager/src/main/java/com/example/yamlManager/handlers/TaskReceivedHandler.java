@@ -1,16 +1,15 @@
-package com.example.clusterApplier.handlers;
+package com.example.yamlManager.handlers;
 
-import com.example.clusterApplier.events.TaskProcessedEvent;
-import com.example.clusterApplier.events.TaskReceivedEvent;
-import com.example.clusterApplier.service.blob.DownloadService;
-import com.example.clusterApplier.service.yaml.YamlProcessorService;
+import com.example.yamlManager.events.TaskProcessedEvent;
+import com.example.yamlManager.events.TaskReceivedEvent;
+import com.example.yamlManager.service.blob.DownloadService;
+import com.example.yamlManager.service.yaml.YamlProcessorService;
 import com.example.commons.dto.Task;
 import com.example.commons.dto.YamlFilesRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.springframework.util.SerializationUtils;
 
 @Component

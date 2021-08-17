@@ -4,6 +4,9 @@ package com.example.clusterApplier.core;
 import com.example.clusterApplier.core.exceptions.ProcessRequestCreationException;
 import com.example.clusterApplier.core.exceptions.UnknownScriptFilename;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -12,26 +15,6 @@ public class ProcessRequestFactory {
     private static final int EXPECTED_AMT = 3;
 
 
-    /**
-     * Creates a {@link ProcessRequest} from the given {@link Script}s
-     * @param scripts
-     * @return An instance of {@link ProcessRequest} with the corresponding resources within it
-     */
-    public static ProcessRequest createProcessRequest(List<Script> scripts) {
-        preValidate(scripts);
-        ProcessRequest request = new ProcessRequest();
-        scripts.forEach(file -> {
-            String resource = getResource(file);
-            switch (resource) {
-                case "SPLITTER" -> request.setSplitter(file);
-                case "JOINER" -> request.setJoiner(file);
-                case "WORKER" -> request.setWorker(file);
-                default -> throw new UnknownScriptFilename(file.getFilename());
-            }
-        });
-
-        return request;
-    }
 
     /**
      * Tries to split the filename to remove the resource's name based on the "." character.
@@ -51,12 +34,11 @@ public class ProcessRequestFactory {
         }
     }
 
-    public static ProcessRequest createProcessRequest(String jobId, byte[] splitter, byte[] worker, byte[] joiner) {
+    public static ProcessRequest createProcessRequest(String jobId, byte[] splitter, byte[] worker, byte[] joiner, byte[] autoscaler) {
         ProcessRequest request = new ProcessRequest();
+        List<Script> pending = new ArrayList<>(Arrays.asList(new Script(splitter), new Script(worker), new Script(joiner), new Script(autoscaler)));
+        request.setPending(pending);
         request.setJobId(jobId);
-        request.setSplitter(new Script(splitter));
-        request.setWorker(new Script(worker));
-        request.setJoiner(new Script(joiner));
         return request;
     }
 }

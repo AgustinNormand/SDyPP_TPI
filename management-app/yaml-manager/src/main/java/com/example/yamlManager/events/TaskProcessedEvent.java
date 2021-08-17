@@ -1,7 +1,6 @@
-package com.example.clusterApplier.events;
+package com.example.yamlManager.events;
 
 import com.example.commons.dto.Task;
-import com.example.commons.dto.YamlURLsRequest;
 import org.springframework.context.ApplicationEvent;
 
 public class TaskProcessedEvent extends ApplicationEvent {

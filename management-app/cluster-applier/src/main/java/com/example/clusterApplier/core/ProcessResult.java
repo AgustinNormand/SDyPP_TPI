@@ -42,7 +42,7 @@ public class ProcessResult {
      * Adds the given result to the corresponding list based on its state
      * @param applyResult
      */
-    private void addOperationResult(ClusterOperationResult applyResult) {
+    public void addOperationResult(ClusterOperationResult applyResult) {
         if (applyResult.isOk()) {
             this.applied.add(applyResult);
         } else {

@@ -37,7 +37,7 @@ public class YamlRollbackService {
         logger.debug("YamlFilesRequest deserialized");
 
         ProcessRequest processRequest = ProcessRequestFactory
-                .createProcessRequest(task.getJobId(), request.getSplitter(), request.getWorker(), request.getJoiner());
+                .createProcessRequest(task.getJobId(), request.getSplitter(), request.getWorker(), request.getJoiner(), request.getAutoscaler());
 
         ProcessResultDto rollbackResult = coreProcessor.rollback(processRequest);
 

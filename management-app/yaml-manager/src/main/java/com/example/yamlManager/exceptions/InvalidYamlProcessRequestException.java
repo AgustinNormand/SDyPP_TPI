@@ -1,4 +1,4 @@
-package com.example.clusterApplier.exceptions;
+package com.example.yamlManager.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

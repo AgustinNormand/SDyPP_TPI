@@ -1,7 +1,5 @@
-package com.example.clusterApplier.service.blob;
+package com.example.yamlManager.service.blob;
 
-import com.google.cloud.storage.Blob;
-import com.google.cloud.storage.Bucket;
 import com.google.cloud.storage.Storage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

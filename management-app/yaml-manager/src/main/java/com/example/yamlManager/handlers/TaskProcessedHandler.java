@@ -1,6 +1,6 @@
-package com.example.clusterApplier.handlers;
+package com.example.yamlManager.handlers;
 
-import com.example.clusterApplier.events.TaskProcessedEvent;
+import com.example.yamlManager.events.TaskProcessedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

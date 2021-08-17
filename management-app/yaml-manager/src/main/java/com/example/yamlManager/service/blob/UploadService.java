@@ -1,4 +1,4 @@
-package com.example.clusterApplier.service.blob;
+package com.example.yamlManager.service.blob;
 
 import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.Bucket;

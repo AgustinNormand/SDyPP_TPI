@@ -41,7 +41,7 @@ public class YamlApplierService {
         YamlFilesRequest request = (YamlFilesRequest) SerializationUtils.deserialize(blobBytes);
 
         ProcessRequest processRequest = ProcessRequestFactory
-                .createProcessRequest(jobId, request.getSplitter(), request.getWorker(), request.getJoiner());
+                .createProcessRequest(jobId, request.getSplitter(), request.getWorker(), request.getJoiner(), request.getAutoscaler());
 
         ProcessResultDto processResult = coreProcessor.apply(processRequest);
 
