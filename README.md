@@ -21,7 +21,7 @@ Concretamente, el presente trabajo aporta:
 - La documentación de los pasos previos requeridos para poder crearla.
 - La configuración y puesta en funcionamiento de un pipeline de CI/CD para la herramienta en sí misma y los recursos auxiliares.
 - Los manifiestos de Kubernetes que serán desplegados por el componente de CD (Continuous Delivery) y las imágenes de Docker para cada uno de los componentes de la herramienta, independientes de la tecnología subyacente. 
-- Una herramienta de gestión denominada Management App, que permite ejecutar tareas genéricas con alta capacida de cómputo de forma transparente al usuario.
+- Una herramienta de gestión denominada Management App, que permite ejecutar tareas genéricas con alta capacidad de cómputo de forma transparente al usuario.
 - La configuración necesaria para lograr el auto-escalado de los componentes de apoyo e involucrados en la tarea del usuario, como así también la replicación de los mismos - cuando se requiera - para lograr tolerancia a fallos. 
 - La documentación de cada uno de los recursos utilizados y su función en el proyecto, así como ventajas y desventajas identificadas por su uso. 
 - La implementación de la herramienta Prometheus para el monitoreo de los servicios, y Fluentd para la recolección de logs, junto al stack ELK para identificar errores y fallas en la aplicación y sus dependencias, utilizando tableros de visualización y alertas. 
