@@ -9,7 +9,8 @@ import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
 import javax.annotation.PostConstruct;
-import java.io.ByteArrayInputStream;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
@@ -41,9 +42,7 @@ public class YamlValidator {
 
         String yaml = yamlMapper.dump(yamlValues);
 
-        byte[] serializedContent = SerializationUtils.serialize(yaml);
-
-        return CompletableFuture.completedFuture(YamlValidated.of(name, serializedContent));
+        return CompletableFuture.completedFuture(YamlValidated.of(name, yaml.getBytes(StandardCharsets.UTF_8)));
     }
 
     private String setName(String jobId, Map<String, Object> yamlValues) {
