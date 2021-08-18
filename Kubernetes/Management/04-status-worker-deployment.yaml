@@ -27,6 +27,6 @@ spec:
           value: redis-cluster-app
         - name: REDIS_PWD
           value: agusmarian
-        image: agustinnormand/tpi_status-worker:97e317b399921852cb0fb587a7d693d6c4c00dc1
+        image: agustinnormand/tpi_status-worker:066c059905e7b96d1b60df295ad4720d505e8802
         imagePullPolicy: IfNotPresent
         name: status-worker
