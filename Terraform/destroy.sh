@@ -26,8 +26,17 @@ for RECORD_SET in $RECORD_SETS ; do
     fi
 done
 
-#gcloud dns managed-zones delete $(get_value "dns_zone_name")
-
 gsutil rm -r gs://sdypp-framework-ago-us-central1-task-bucket/*
+
+FIREWALL_RULES=$(gcloud compute firewall-rules list | tail -n +2 | awk {'print $1"&"$2"%"'} | sed 's/%/ /g')
+for FIREWALL_RULE in $FIREWALL_RULES ; do
+    FIREWALL_RULE_ARRAY=(${FIREWALL_RULE//&/ })
+    NAME=${FIREWALL_RULE_ARRAY[0]}
+    NETWORK=${FIREWALL_RULE_ARRAY[1]}
+    if [ $NETWORK != default ]
+    then
+        gcloud compute firewall-rules delete $NAME --quiet
+    fi
+done
 
 terraform destroy --auto-approve
