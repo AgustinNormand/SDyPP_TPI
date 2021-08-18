@@ -30,4 +30,4 @@ done
 
 gsutil rm -r gs://sdypp-framework-ago-us-central1-task-bucket/*
 
-terraform destroy --auto-approve
+#terraform destroy --auto-approve
