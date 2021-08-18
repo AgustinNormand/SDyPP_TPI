@@ -8,3 +8,7 @@ git pull
 cd Terraform/
 
 ./deploy.sh
+
+./cat-slack.sh "/tmp/deploy.log"
+
+rm /tmp/deploy.log
