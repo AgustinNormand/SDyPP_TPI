@@ -1,6 +1,9 @@
 #!/bin/bash
 
 #Must be logged in github to commit deploy changes
+
+.cat-slack.sh "/tmp/deploy.log" $WEBHOOK
+
 cd ..
 
 git pull
@@ -8,7 +11,5 @@ git pull
 cd Terraform/
 
 ./deploy.sh
-
-./cat-slack.sh "/tmp/deploy.log"
 
 rm /tmp/deploy.log

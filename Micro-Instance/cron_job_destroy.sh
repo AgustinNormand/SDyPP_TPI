@@ -8,6 +8,7 @@ cd Terraform/
 
 ./destroy.sh
 
-./cat-slack.sh "/tmp/destroy.log"
+../Micro-Instance/cat-slack.sh "/tmp/destroy.log" $WEBHOOK
 
 rm /tmp/destroy.log
+
