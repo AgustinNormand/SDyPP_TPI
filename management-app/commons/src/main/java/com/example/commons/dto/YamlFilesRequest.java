@@ -16,5 +16,11 @@ public class YamlFilesRequest implements Serializable {
     byte[] splitter;
     byte[] joiner;
     byte[] worker;
+    byte[] autoscaler;
 
+    public YamlFilesRequest(byte[] splitter, byte[] joiner, byte[] worker) {
+        this.splitter = splitter;
+        this.joiner = joiner;
+        this.worker = worker;
+    }
 }

@@ -3,6 +3,7 @@ package com.example.clusterApplier.core;
 import lombok.Data;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -16,22 +17,25 @@ public class ProcessRequest {
 
     private String jobId;
 
-    private Script splitter;
+    private List<Script> pending;
 
-    private Script worker;
+    private List<Script> done;
 
-    private Script joiner;
+    public ProcessRequest() {
+        this.pending = new ArrayList<>();
+        this.done = new ArrayList<>();
+    }
 
     /**
      * Checks if the request is valid to be processed
      * @return true if it's valid, false if it isn't
      */
     public boolean isValid() {
-        return Stream.of(splitter, worker, joiner).noneMatch(Objects::isNull);
+        return !(pending.isEmpty() && done.isEmpty());
     }
 
-    public Script[] getScripts() {
-        return new Script[] {splitter, worker, joiner};
+    public void scriptProcessed(Script script) {
+        this.getPending().remove(script);
+        this.getDone().add(script);
     }
-
 }

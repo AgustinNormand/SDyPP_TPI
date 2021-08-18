@@ -30,6 +30,6 @@ gcloud auth activate-service-account $(get_service_account_name $(get_value "man
 
 #gcloud dns managed-zones delete $(get_value "dns_zone_name")
 
-gsutil rm -r gs://task-bucket/*
+gsutil rm -r gs://sdypp-framework-ago-us-central1-task-bucket/*
 
 #terraform destroy --auto-approve

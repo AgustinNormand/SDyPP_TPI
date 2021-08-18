@@ -1,4 +1,4 @@
-package com.example.clusterApplier.events;
+package com.example.yamlManager.events;
 
 import com.example.commons.dto.Task;
 import org.springframework.context.ApplicationEvent;

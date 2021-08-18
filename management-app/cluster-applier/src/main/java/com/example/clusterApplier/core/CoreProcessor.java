@@ -8,8 +8,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Component
 public class CoreProcessor {
@@ -43,30 +41,21 @@ public class CoreProcessor {
 
         String jobId = processRequest.getJobId();
 
-        Script worker = processRequest.getWorker();
-        ClusterOperationResult workerApplyResult = clusterApplier.apply(jobId, worker);
+        ProcessResult processResult = new ProcessResult();
 
-        if (!workerApplyResult.isOk()) {
-            rollback(jobId, worker);
-            return ProcessResult.of(workerApplyResult);
+        List<Script> pending = List.copyOf(processRequest.getPending());
+
+        for (Script script : pending) {
+            ClusterOperationResult opResult = clusterApplier.apply(jobId, script);
+            processResult.addOperationResult(opResult);
+            if (!opResult.isOk()) {
+                this.rollback(jobId, processRequest.getDone().toArray(new Script[0]));
+                break;
+            }
+            processRequest.scriptProcessed(script);
         }
 
-        Script joiner = processRequest.getJoiner();
-        ClusterOperationResult joinerApplyResult = clusterApplier.apply(jobId, joiner);
-
-        if (!joinerApplyResult.isOk()) {
-            rollback(jobId, worker, joiner);
-            return ProcessResult.of(workerApplyResult, joinerApplyResult);
-        }
-
-        Script splitter = processRequest.getSplitter();
-        ClusterOperationResult splitterApplyResult = clusterApplier.apply(jobId, splitter);
-
-        if (!splitterApplyResult.isOk()) {
-            rollback(jobId, worker, joiner, splitter);
-        }
-
-        return ProcessResult.of(workerApplyResult, joinerApplyResult, splitterApplyResult);
+        return processResult;
     }
 
 
@@ -78,7 +67,7 @@ public class CoreProcessor {
 
 
     private ProcessResult rollbackRequest(ProcessRequest processRequest) {
-        return rollback(processRequest.getJobId(), processRequest.getScripts());
+        return rollback(processRequest.getJobId(), processRequest.getPending().toArray(new Script[0]));
     }
 
 

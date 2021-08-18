@@ -1,6 +1,6 @@
-package com.example.clusterApplier.controller;
+package com.example.yamlManager.controller;
 
-import com.example.clusterApplier.events.TaskReceivedEvent;
+import com.example.yamlManager.events.TaskReceivedEvent;
 import com.example.commons.dto.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,4 +1,4 @@
-package com.example.clusterApplier;
+package com.example.yamlManager;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

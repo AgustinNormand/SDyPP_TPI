@@ -1,4 +1,4 @@
-package com.example.clusterApplier.service.blob;
+package com.example.yamlManager.service.blob;
 
 
 import org.springframework.amqp.utils.SerializationUtils;
