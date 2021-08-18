@@ -21,6 +21,6 @@ spec:
           value: admin
         - name: RABBIT_PWD
           value: agusmarian
-        image: agustinnormand/tpi_cluster_applier:eb171f2d897ec9500dff1307646b0406069aec36
+        image: agustinnormand/tpi_cluster_applier:f489b84ba8d7cff2b908195dab3314e1dc269ea5
         imagePullPolicy: IfNotPresent
         name: cluster-applier
