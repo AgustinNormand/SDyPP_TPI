@@ -76,7 +76,7 @@ commit_changes(){
 
 #gcloud projects add-iam-policy-binding $(get_value "project_id") --member="serviceAccount:"$(get_service_account_name $(get_value "service_account")) --role=roles/owner
 
-#gcloud iam service-accounts keys create ./credentials.json --iam-account=$(get_service_account_name $(get_value "management_nodes_sa_name"))
+gcloud iam service-accounts keys create ./credentials.json --iam-account=$(get_service_account_name $(get_value "management_nodes_sa_name"))
 
 #gcloud projects add-iam-policy-binding $(get_value "project_id") --member="serviceAccount:"$(get_service_account_name $(get_value "management_nodes_sa_name")) --role=roles/owner
 
@@ -84,6 +84,6 @@ commit_changes(){
 
 #gcloud projects add-iam-policy-binding $(get_value "project_id") --member="serviceAccount:"$(get_service_account_name $(get_value "management_nodes_sa_name")) --role=roles/storage.admin
 
-#gcloud projects add-iam-policy-binding $(get_value "project_id") --member="serviceAccount:"$(get_service_account_name $(get_value "management_nodes_sa_name")) --role=roles/dns.admin
+#echo gcloud projects add-iam-policy-binding $(get_value "project_id") --member="serviceAccount:"$(get_service_account_name $(get_value "management_nodes_sa_name")) --role=roles/dns.admin
 
 #gcloud auth activate-service-account $(get_service_account_name $(get_value "management_nodes_sa_name")) --key-file=./credentials.json

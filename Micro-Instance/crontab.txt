@@ -1,5 +1,5 @@
 PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
 
-20 * * * * cd /home/agustin/SDyPP_TPI/Micro-Instance && rm deploy.log && bash /home/agustin/Micro-Instance/Terraform/deploy.sh > /home/agustin/SDyPP_TPI/Micro-Instance/deploy.log 2>&1
+20 * * * * cd /home/agustin/SDyPP_TPI/Micro-Instance && bash ./cron_job_deploy.sh > /tmp/deploy.log 2>&1
 
-#41 * * * * cd /home/agustin/SDyPP_TPI/Micro-Instance && rm destroy.log && bash /home/agustin/Micro-Instance/Terraform/destroy.sh > /home/agustin/SDyPP_TPI/Micro-Instance/destroy.log 2>&1
+#41 * * * * cd /home/agustin/SDyPP_TPI/Micro-Instance && bash ./cron_job_destroy.sh > /tmp/destroy.log 2>&1
