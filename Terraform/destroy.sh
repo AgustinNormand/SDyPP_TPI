@@ -28,6 +28,6 @@ done
 
 #gcloud dns managed-zones delete $(get_value "dns_zone_name")
 
-gsutil rm -r gs://sdypp-framework-sep-us-central1-task-bucket/*
+gsutil rm -r gs://sdypp-framework-ago-us-central1-task-bucket/*
 
 terraform destroy --auto-approve
