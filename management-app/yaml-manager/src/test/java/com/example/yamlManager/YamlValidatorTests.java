@@ -31,6 +31,6 @@ public class YamlValidatorTests {
         CompletableFuture<YamlValidated> result = validator.validateYaml(jobId, fileBytes);
 
         byte[] bytes = result.get().getSerializedContent();
-        System.out.println("Validation output: " + SerializationUtils.deserialize(bytes));
+        System.out.println("Validation output: " + new String(bytes));
     }
 }
