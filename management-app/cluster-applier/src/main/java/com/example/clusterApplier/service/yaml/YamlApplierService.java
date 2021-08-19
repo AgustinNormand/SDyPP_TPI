@@ -40,6 +40,8 @@ public class YamlApplierService {
 
         YamlFilesRequest request = (YamlFilesRequest) SerializationUtils.deserialize(blobBytes);
 
+        logger.debug("Yaml files request to apply {}", request);
+
         ProcessRequest processRequest = ProcessRequestFactory
                 .createProcessRequest(jobId, request.getSplitter(), request.getWorker(), request.getJoiner(), request.getAutoscaler());
 
