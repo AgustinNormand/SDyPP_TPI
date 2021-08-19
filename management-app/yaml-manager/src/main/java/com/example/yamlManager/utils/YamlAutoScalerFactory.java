@@ -2,9 +2,8 @@ package com.example.yamlManager.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.amqp.utils.SerializationUtils;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
-import org.springframework.util.ResourceUtils;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
@@ -35,8 +34,7 @@ public class YamlAutoScalerFactory {
         try {
             logger.debug("Creating autoscaler");
 
-            String template = Files
-                    .readString(ResourceUtils.getFile("classpath:templates/autoscaler.yaml").toPath());
+            String template = Files.readString(Path.of("autoscaler.yaml"));
 
             logger.debug("Template loaded: {}", template);
 
