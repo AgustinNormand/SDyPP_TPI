@@ -35,23 +35,14 @@ Algunas cuestiones no consideradas por el trabajo hasta el momento, que presenta
     - Un esquema de medición y costo frente al uso de la herramienta.
     - Implementación de mecanismos de seguridad para evitar ataques a la propia infraestructura. 
 - La posibilidad de entregar imágenes Dockerizadas o incluso, código fuente, en lugar de manifiestos de Kubernetes. 
+- Desplegar Kubernetes obviando el servicio administrado provisto por GCP. https://github.com/kelseyhightower/kubernetes-the-hard-way
 
+## Management App
 
+Es una aplicación orientada a microservicios encargada de procesar las tareas que el usuario final desea ejecutar en la plataforma HPC. Está diseñada con el propósito de escalar cuando se requiera, por lo que los componentes son independientes entre sí, comunicados a través de colas de mensajería, compartiendo un *storage* en común y utilizando una caché para el almacenamiento de estado de las tareas. 
 
-## Paso a paso - Eliminamos esta sección? <--------------------------------- 
+![Grafico-Management-App](Imagenes/ideas-final-sdypp-Management-app.jpg)
 
-En esta sección se linkea a los readme del propio repo. 
-
-1. Terraform/README.md
-2. ArgoCD/README.md
-3. Docker/README.md 
-
-- La documentación para el que quiere implementarlo + explicación de cómo funciona 
-    - Levantar local (sin ci/cd)
-    - Hacer los pasos idénticos a como lo usamos nosotros
-
-
-- La documentación para el usuario final: esta sería cómo usar el FW
 
 ## Pipeline CICD
 
@@ -60,7 +51,6 @@ La Management App cuenta con un pipeline de CI (Continuous Integration o Integra
 A su vez, frente a la modificación en los manifiestos de las carpetas `Kubernetes/Management` y `Kubernetes/Resources` - sea manual (por el usuario) o automática (llevada a cabo por Github Actions en el pipeline de CI) - se desencadena el circuito de CD (Continuous Deployment o Entrega continua) implementado a través de ArgoCD, quien se encargará de determinar las diferencias en los manifiestos del clúster correspondiente, aplicando estos cambios y reflejando el estado correcto. 
 
 En el gráfico a continuación, se detallan los pasos y la relación entre CI/CD para la Management app.
-
 
 ![GraficoCICD](Imagenes/ideas-final-sdypp-Github-Actions.png)
 
@@ -83,14 +73,6 @@ A continuación, una breve explicación de cada uno de los pasos involucrados en
 12. **Agregar cambios, realizar commit y push**: Se ejecutan los comandos de *git* necesarios para publicar los cambios en el repositorio, lo que provoca que ArgoCD detecte una modificación de los archivos .yaml de Kubernetes y los aplique en el clúster, completando así el pipeline CICD.
 
 **Importante**: En el caso de los componentes del clúster de *Resources* representados por los manifiestos de la carpeta `Kubernetes/Resources`, el circuito de CI no es necesario dado que no se trabaja con el código fuente. Sin embargo, se aprovechan las bondades de ArgoCD para su despliegue en el clúster.
-
-
-## Management App
-
-Es una aplicación orientada a microservicios encargada de procesar las tareas que el usuario final desea ejecutar en la plataforma HPC. Está diseñada con el propósito de escalar cuando se requiera, por lo que los componentes son independientes entre sí, comunicados a través de colas de mensajería, compartiendo un *storage* en común y utilizando una caché para el almacenamiento de estado de las tareas. 
-
-
-![Grafico-Management-App](Imagenes/ideas-final-sdypp-Management-app.jpg)
 
 
 ### Entrypoint 
@@ -148,20 +130,37 @@ Todos los clústers se encuentran configurados con *cluster auto scaler* y *hori
 
 Para lograr comunicar a las aplicaciones del clúster de *deployments* con los recursos alojados en el clúster de *resources* fue necesario levantar servicios de tipo "internal", ya que - de lo contrario - los pods de las aplicaciones no podían acceder a los servicios, por más que se encuentren en *VPCs* emparejadas, con el tráfico permitido a través del firewall.
 
+### GKE
+
+Se utilizó Google Kubernetes Engine como servicio administrado para el despliegue de Kubernetes. Si bien existen diversos proveedores, la elección de GCP, se ve justificada por la oferta de 300USD de crédito y la certeza de que no te cobrarán nada a tu tarjeta. 
+
 ### Scripts
 
 Dado que el proyecto fue construido con el propósito de ser utilizado desde cero sin necesidad de conocer en detalle su funcionamiento, se construyeron los scripts necesarios para crear y descartar todos los elementos involucrados, facilitando la tarea al usuario. 
 
+#### Init
+
+Este puede encontrase en `/Terraform/init.sh`.
+La funcionalidad de este script es inicializar una cuenta de Google Cloud Platform recien creada. Primero se logeará en esta cuenta, se creará el proyecto, las cuentas de servicio, se otargarán roles/permisos a estas. Se habilitarán las API necesarias, se habilitará la cuenta de facturación, se genera el archivo de credenciales.
+
 #### Despliegue
 
-Este puede encontrarse en `/Terraform/deploy.sh`. 
+Este puede encontrarse en `/Terraform/deploy.sh`.
+Una vez cumplidas las condiciones para el despliegue, este script realizará esa tarea. Exportará la variable necesaria para ubicar el archivo de credenciales, ejecutará los comandos necesarios de Terraform para desplegar la infraestructura. Establecerá el secret de github que contiene las credenciales de la cuenta de GCP, para poder acceder, junto con el archivo kubeconfig, al cluster de Deployments. Descarga la ultima version de ArgoCD, aplica el manifiesto en todos los cluster e instala todas las aplicaciones de ArgoCD ubicadas en el directorio ArgoCD y el subdirectorio homonimo a cada cluster. Instala External-dns en el cluster de Resources y realiza un commit de los cambios realizados al repositorio. (Add/Update kubeconfig.conf, Add/Update external-dns)
+
+#### Get Credentials
+
+Este puede encontrarse en `/Terraform/get_credentials.sh`.
+La funcionalidad de este script es establecer las credentiales de los cluster desplegados en el equipo local. Establece el proyecto actual en gcloud, crea un nuevo archivo de credenciales, lo activa, remueve las credenciales viejas de kubectl, y obtiene las nuevas.
 
 #### Destrucción
 
 Este puede encontrarse en `/Terraform/destroy.sh`. 
+Este script elimina toda la insfraestructura, aplicaciones, configuraciones.
+Si bien bastaría con "terraform destroy", existen ciertos recursos creados posteriormente al despliegue, que requieren ser eliminados previamente a ejecutar dicho comando de terraform, dado que, de lo contrario, no coincidiría el estado que terraform percibe contra el real, fallando en tiempo de ejecución.
 
 Terraform
-GKE
+
 Cloud DNS
 Cloud Routers
 Cloud NAT
