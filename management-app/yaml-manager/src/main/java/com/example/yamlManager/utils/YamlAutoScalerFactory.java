@@ -36,13 +36,16 @@ public class YamlAutoScalerFactory {
 
             String template = Files.readString(Path.of("src/main/resources/templates/autoscaler.yaml"));
 
+            logger.debug("Template loaded: {}", template);
+
             String finalYamlString = template.replace(TEMPLATE_VALUE, resourceName);
 
             logger.debug("Autoscaler created: {}", finalYamlString);
 
             return finalYamlString.getBytes(StandardCharsets.UTF_8);
         } catch (IOException e) {
-            logger.error("Couldn't create autoscaler: {}", e.getMessage());
+            logger.error("Couldn't create autoscaler: {} - {}", e.getMessage(), e.getLocalizedMessage());
+            e.printStackTrace();
             return new byte[0];
         }
     }
