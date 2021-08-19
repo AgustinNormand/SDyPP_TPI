@@ -21,6 +21,6 @@ spec:
           value: admin
         - name: RABBIT_PWD
           value: agusmarian
-        image: agustinnormand/tpi_yaml-manager:b79bed5e2827f52f1e5b60aca46873db1bc63241
+        image: agustinnormand/tpi_yaml-manager:ac7bd43d99973b105a9ed6595e8859fc4c67bb2e
         imagePullPolicy: IfNotPresent
         name: yaml-manager
