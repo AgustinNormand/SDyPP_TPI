@@ -34,7 +34,7 @@ public class YamlAutoScalerFactory {
         try {
             logger.debug("Creating autoscaler");
 
-            String template = Files.readString(Path.of("classpath:autoscaler.yaml"));
+            String template = Files.readString(Path.of(new ClassPathResource("classpath:autoscaler.yaml").getPath()));
 
             logger.debug("Template loaded: {}", template);
 
