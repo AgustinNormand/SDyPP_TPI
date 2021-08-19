@@ -39,7 +39,9 @@ public class YamlProcessorService {
 
         validated.setAutoscaler(autoscaler);
 
-        String blobName = uploadService.upload(jobId, validated.yamlFilesRequest());
+        YamlFilesRequest yamlFilesRequest = validated.yamlFilesRequest();
+        logger.debug("Uploading yaml files request {}", yamlFilesRequest);
+        String blobName = uploadService.upload(jobId, yamlFilesRequest);
 
         return new Task(jobId, blobName);
     }
