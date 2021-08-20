@@ -185,7 +185,7 @@ Si bien GCP ofrece cŕedito gratuito, tiene algunas limitaciones llamadas *quota
 Ahora bien, debido a la falta de una dirección routeable en Internet, y el requisito de que los los nodos tengan acceso a esta última, fue necesario configurar otro servicio proporcionado por Google, denominado Cloud NAT, que requiere ser aplicado a un Cloud Router vinculado a una VPC. Cabe destacar que esta configuración fue aplicada en los tres clústers, resultando en tres Cloud Routers que realizan Cloud NAT para sus respectivas VPCs. 
 
 
-#### Instancias *Preemtible*
+#### Instancias *Preemptible*
 
 En pos de reducir los costos y ampliar la duración de los créditos disponibles, se utilizaron instancias *preemptible*. Estas últimas, a diferencia de las denominadas *on demand*, tienen un costo tres veces inferior con la consecuencia de que duran - como máximo - 24 hrs. Sin embargo, previo a ese rango temporal, la instancia podría "caerse". Al suceder esto, Kubernetes intenta reubicar los *pods* del nodo afectado a algún otro del clúster. Probablemente, al concretarse dicha acción, algún *pod* no tenga suficientes recursos (cpu y/o memoria) en el nodo asignado. Como consecuencia, GKE instancia un nuevo nodo, ya que se encuentra habilitada la característica de *cluster autoscaler*.
 
