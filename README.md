@@ -159,12 +159,23 @@ Aún con las dos configuraciones previas, no bastaba para que los servicios defi
     type: LoadBalancer
     annotations: 
       networking.gke.io/load-balancer-type: "Internal"
-      external-dns.alpha.kubernetes.io/hostname: redis-service.framework.services.gcp.com.ar.
 ...
 ```
 
+De esta forma, la IP externa del LoadBalancer deja de ser una IP pública como normalmente lo es, y pasa a ser una IP privada del subrango correspondiente a la red de VPC (en lugar de la subnet de *resources*). Dicho rango es accesible por los *pods* ejecutándose en la subred de la VPC emparejada.
 
 ##### ExternalDNS y CloudDNS
+
+Con lo configurado en la sección previa, contamos con un servicio que tiene una IP que puede ser accedida desde el clúster de *deployments* al clúster de *resources*. Bajo una configuración tradicional, donde todos los recursos se encuentran desplegados en un único clúster, los *pods* podrían alcanzar los servicios mediante un mnemónico, manejado por *kubedns*. Sin embargo, recordando la separación implementada en esta arquitectura, nos encontramos con la imposibilidad de acceder a dicha facilidad. Por consiguiente, fue necesario registrar el servicio en CloudDNS, la API de GCP que permite establecer un mnemónico que puede ser consultado desde cualquier instancia del clúster. Si bien podría haberse registrado de manera manual como una entrada estática en los registros DNS, decidimos ir un paso más allá e implementar la carga y actualización automática del registro mediante la herramienta ExternalDNS. Esta última - a todos los servicios anotados con la anotación correspondiente luego de ser creados - reemplaza el *fully qualified domain name* (FQDN) de la anotación por la dirección IP asignada al servicio. 
+
+```yaml
+...
+    type: LoadBalancer
+    annotations: 
+      networking.gke.io/load-balancer-type: "Internal"
+      external-dns.alpha.kubernetes.io/hostname: redis-service.framework.services.gcp.com.ar.
+...
+```
 
 
 
