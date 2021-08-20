@@ -178,11 +178,33 @@ Con lo configurado en la sección previa, contamos con un servicio que tiene una
 ```
 
 
+#### Clúster privado, Cloud NAT y Cloud Router
+
+Si bien GCP ofrece cŕedito gratuito, tiene algunas limitaciones llamadas *quotas*. Una de estas consiste en el número de direcciones IP públicas que pueden utilizarse. Dado que en el proyecto contamos con más de 8 nodos, cada uno con una IP pública, nos vimos obligados a evitar que todos los nodos tengan una IP pública. GCP ofrece este tipo de instancias bajo la denominación de nodos privados, resultando en un clúster con un único punto de acceso. 
+
+Ahora bien, debido a la falta de una dirección routeable en Internet, y el requisito de que los los nodos tengan acceso a esta última, fue necesario configurar otro servicio proporcionado por Google, denominado Cloud NAT, que requiere ser aplicado a un Cloud Router vinculado a una VPC. Cabe destacar que esta configuración fue aplicada en los tres clústers, resultando en tres Cloud Routers que realizan Cloud NAT para sus respectivas VPCs. 
+
+
+#### Instancias *Preemtible*
+
+En pos de reducir los costos y ampliar la duración de los créditos disponibles, se utilizaron instancias *preemptible*. Estas últimas, a diferencia de las denominadas *on demand*, tienen un costo tres veces inferior con la consecuencia de que duran - como máximo - 24 hrs. Sin embargo, previo a ese rango temporal, la instancia podría "caerse". Al suceder esto, Kubernetes intenta reubicar los *pods* del nodo afectado a algún otro del clúster. Probablemente, al concretarse dicha acción, algún *pod* no tenga suficientes recursos (cpu y/o memoria) en el nodo asignado. Como consecuencia, GKE instancia un nuevo nodo, ya que se encuentra habilitada la característica de *cluster autoscaler*.
+
+
+#### Google Storage
+
+La Management App utiliza un almacenamiento compartido entre los distintos microservicios. La herramienta utilizada para dar soporte a esta necesidad es Google Storage por formar parte de la suite de GCP. Además, este *storage* está disponible para los usuarios que lo requieran. 
+
+
+### Terraform
+
+Todos los recursos mencionados anteriormente podrían ser desplegados de forma manual mediante alguna interfaz de GCP. Sin embargo, optamos por la opción de Infraestructura como Código (IaaC) a través de la herramienta Terraform. Para ello se cuenta con un archivo principal, el cual hace uso de los módulos de Google necesarios para satisfacer los requerimientos de infraestructura, junto a un archivo de variables, que permite personalizar el despliegue con los parámetros del proyecto actual. 
+
+El archivo mencionado consta de una serie de bloques denominados módulos, denotados por la palabra reservada *module* junto a un identificador y un grupo de entradas, entre las cuales debe encontrarse la propiedad "source", que indica el origen del código fuente del módulo. 
 
 
 ### Scripts
 
-Dado que el proyecto fue construido con el propósito de ser utilizado desde cero sin necesidad de conocer en detalle su funcionamiento, se construyeron los scripts necesarios para crear y descartar todos los elementos involucrados, facilitando la tarea al usuario. 
+Dado que el proyecto fue construido con el propósito de ser utilizado desde cero sin necesidad de conocer en detalle su funcionamiento, se construyeron los scripts necesarios para crear y descartar todos los elementos involucrados, facilitando la tarea al usuario, ya que Terraform no era suficiente para cubrir por completo esta tarea. 
 
 #### Init
 
