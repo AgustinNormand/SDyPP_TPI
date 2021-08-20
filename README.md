@@ -35,7 +35,7 @@ Algunas cuestiones no consideradas por el trabajo hasta el momento, que presenta
     - Un esquema de medición y costo frente al uso de la herramienta.
     - Implementación de mecanismos de seguridad para evitar ataques a la propia infraestructura. 
 - La posibilidad de entregar imágenes Dockerizadas o incluso, código fuente, en lugar de manifiestos de Kubernetes. 
-- Desplegar Kubernetes obviando el servicio administrado provisto por GCP. https://github.com/kelseyhightower/kubernetes-the-hard-way
+- Desplegar Kubernetes obviando el servicio administrado provisto por GCP. Más información [aquí](https://github.com/kelseyhightower/kubernetes-the-hard-way).
 
 ## Management App
 
@@ -132,7 +132,42 @@ Para lograr comunicar a las aplicaciones del clúster de *deployments* con los r
 
 ### GKE
 
-Se utilizó Google Kubernetes Engine como servicio administrado para el despliegue de Kubernetes. Si bien existen diversos proveedores, la elección de GCP, se ve justificada por la oferta de 300USD de crédito y la certeza de que no te cobrarán nada a tu tarjeta. 
+Se utilizó Google Kubernetes Engine como servicio administrado para el despliegue de Kubernetes. Si bien existen diversos proveedores, la elección de GCP, se ve justificada por la oferta de 300USD de crédito y la certeza de que no se cobrara nada a la tarjeta introducida.
+
+#### Separación de responsabilidades
+
+Tal lo mencionado, se desplegaron tres clústers para mantener una separación de responsabilidades e incrementar la seguridad mediante el aislamiento total de los recursos. Si bien podrían haberse tomado otros aproximamientos para lograr un fin similar (por ejemplo, mediante el uso de *namespaces*), consideramos que desde la perspectiva de la escalibilidad resulta más conveniente la separación. Por otra parte, los fines didácticos complementan la elección.  
+
+A nivel funcional, el clúster de *management* contiene cada uno de los microservicios que conforman la Management App, junto con los recursos que esta necesita. Este despliega las tareas del usuario en el clúster de *deployment*, por lo que no existe un contacto directo entre aplicaciones externas y la de gestión. A su vez, la plataforma provee al usuario servicios complementarios tales como RabbitMQ y Redis. Estos últimos se encuentran en un clúster adicional, denominado *resources*. 
+
+#### Interconexión de clústers
+
+Para sostener el aislamiento planteado, cada clúster se encuentra en una VPC distinta. Sin embargo, por motivos funcionales, los recursos del clúster de *deployment* necesitan acceder a los servicios del de *resources*. Como consecuencia, para que dos servicios en VPCs diferentes lograran comunicarse, fue necesario llevar a cabo configuraciones adicionales, detalladas a continuación. 
+
+Por otro lado, fue deseable que los servicios levantados en el clúster de recursos pudieran ser accedidos mediante un mnemónico en lugar de su dirección IP, dado que no consideramos aceptable que esta última fuese un valor estático. Para resolver este inconveniente, fue necesario acudir a las bondades de un recurso adicional, detallado posteriormente.
+
+##### VPC Peering, Reglas de firewall e Internal Services
+
+En GCP, la interconexión de dos redes privadas virtuales es posible mediante el uso de la tecnología denominada *VPC Peering*. La configuración de la misma debe llevarse a cabo de forma recíproca, esto implica que - en ambas VPCs - se establezca un emparejamiento desde la red origen hacia la red destino, respectivamente. 
+
+Además, para poder cursar el tráfico entre las VPCs vinculadas, es necesario definir las reglas de firewall correspondientes, permitiendo los paquetes entrantes hacia los puertos de Redis y RabbitMQ.
+
+Aún con las dos configuraciones previas, no bastaba para que los servicios definidos como ClusterIP pudieran ser accedidos desde fuera del clúster, sino que fue necesario declarar a los servicios de tipo LoadBalancer y con una anotación "internal". 
+
+```
+...
+    type: LoadBalancer
+    annotations: 
+      networking.gke.io/load-balancer-type: "Internal"
+      external-dns.alpha.kubernetes.io/hostname: redis-service.framework.services.gcp.com.ar.
+...
+```
+
+
+##### ExternalDNS y CloudDNS
+
+
+
 
 ### Scripts
 
@@ -161,15 +196,19 @@ Si bien bastaría con "terraform destroy", existen ciertos recursos creados post
 
 Terraform
 
-Cloud DNS
-Cloud Routers
-Cloud NAT
-Bucket
 Firewall Roules
 VPC Peering
 ExternalDNS
+Cloud DNS
+
+Private clusters
+Cloud Routers
+Cloud NAT
+
+Bucket
+
 Preemtible
-3 Clusters
+
 
 ## Kubernetes
 
