@@ -204,7 +204,7 @@ El archivo mencionado consta de una serie de bloques denominados módulos, denot
 
 ### Scripts
 
-Dado que el proyecto fue construido con el propósito de ser utilizado desde cero sin necesidad de conocer en detalle su funcionamiento, se construyeron los scripts necesarios para crear y descartar todos los elementos involucrados, facilitando la tarea al usuario, ya que Terraform no era suficiente para cubrir por completo esta tarea. 
+Dado que el proyecto fue construido con el propósito de ser utilizado desde cero sin necesidad de conocer en detalle su funcionamiento, se construyeron los scripts necesarios para crear y descartar todos los elementos involucrados, facilitando la tarea al usuario, ya que Terraform no era suficiente para cubrir por completo esta tarea. Por lo tanto, apuntamos a complementar tanto la etapa previa y posterior a la construcción y destrucción de la infraestructura. 
 
 #### Init
 
@@ -226,21 +226,6 @@ La funcionalidad de este script es establecer las credentiales de los cluster de
 Este puede encontrarse en `/Terraform/destroy.sh`. 
 Este script elimina toda la insfraestructura, aplicaciones, configuraciones.
 Si bien bastaría con "terraform destroy", existen ciertos recursos creados posteriormente al despliegue, que requieren ser eliminados previamente a ejecutar dicho comando de terraform, dado que, de lo contrario, no coincidiría el estado que terraform percibe contra el real, fallando en tiempo de ejecución.
-
-Terraform
-
-Firewall Roules
-VPC Peering
-ExternalDNS
-Cloud DNS
-
-Private clusters
-Cloud Routers
-Cloud NAT
-
-Bucket
-
-Preemtible
 
 
 ## Kubernetes
