@@ -154,7 +154,7 @@ Además, para poder cursar el tráfico entre las VPCs vinculadas, es necesario d
 
 Aún con las dos configuraciones previas, no bastaba para que los servicios definidos como ClusterIP pudieran ser accedidos desde fuera del clúster, sino que fue necesario declarar a los servicios de tipo LoadBalancer y con una anotación "internal". 
 
-```
+```yaml
 ...
     type: LoadBalancer
     annotations: 
