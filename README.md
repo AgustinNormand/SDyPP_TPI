@@ -230,11 +230,48 @@ Si bien bastaría con "terraform destroy", existen ciertos recursos creados post
 
 ## Kubernetes
 
-ArgoCD Apps
-Helm Subcharts
-.yamls
+Dado que la aplicación se orientó al uso de contenedores, se utilizó el orquestador Kubernetes. 
+Se eligio este enfoque debido a su portabilidad, y facilidad de despliegue, aislamiento y demás ventajas de provee. Sumado a la tolerancia a fallos, escalabilidad que nos provee un orquestador de contenedores, como por ejemplo, Kubernetes.
 
-TRANSPARENTE A GOOGLE
+### Manifiestos
+
+Cuando utilizamos Kubernetes la forma en que podemos indicarle los recursos que queremos que gestione son los manifiestos. La unidad minima de Kubernetes son los pods, los cuales contienen uno o varios contenedores Docker. Dichos pods pueden ser instanciados mediante un Deployment, indicando la cantidad de replicas deseadas. Cada manifiesto puede ser aplicado en un Namespace, el cual provee de aislamiento a los pods. Es necesario indicar una etiqueta en cada Deployment que permite a un Service localizar y enviar trafico a sus pods. Existen varios tipos de Services, los cuales son, ClusterIP, NodePort y LoadBalacer.
+
+ClusterIP crea una dirección IP estática, accesible desde todos los recursos del cluster.
+
+NodePort habilita un puerto en un nodo, que permite ingresar trafico del exterior, y que se redireccione al pod correspondiente, sin importar si este se encuentra en dicho nodo o no.
+
+LoadBalancer levanta un nuevo recurso, el cual tiene una IP pública, que balancea la carga de las peticiones hacia los pods correspondientes.
+
+La arquitectura de la solución a nivel de manifiestos tiene la siguiente estructura:
+
+El tráfico es dirigido al Entrypoint por una IP pública expuesta mediante el Ingress. Este ultimo requiere al Service de un deployment para dirigir los paquetes hacia los pods. El Entrypoint envía los mensajes a RabbitMQ que serán recibidos por los pods de los demás deployments.
+
+### Helm
+
+Como se apreció en el grafico anterior, en el caso de aplicaciónes de terceros, se utilizaron Helm Charts para su despliegue. Los cuales encapsulan la complejidad del deploy una aplicación completa. Incluyendo Deployments, Servicios, Persistencia y Configuraciones. 
+Tipicamente para el uso de Helm, es necesario importar el repositorio del Chart, y personalizarlo en un archivo, comunmente llamado, values.yaml. En este último, es posible, realizar configuraciones tanto simples como complejas, pudiendo por ejemplo, desplegar una aplicación con una sola instancia, sin replicación como tambien, desplegarla en modo cluster con tan solo ajustar un parámetro en el archivo de valores.
+
+Como vimos en los fragmentos de manifiestos de la sección [GKE](https://github.com/AgustinNormand/SDyPP_TPI#gke), si bien podría pensarse que se trata de anotaciones sobre el servicio, en realidad, estas fueron agregadas al archivo de valores, que luego Helm añadirá al servicio final. Dado que es posible modificar varios parámetros es necesario especificar de manera concreta que cual de ellos queremos personalizar. Para obtener los posibles cambios que podemos realizar, Helm nos ofrece el comando ` helm show values CHART_NAME `
+
+Considerando esto, los fragmentos mencionados, se verían de la siguiente manera:
+```yaml
+service:
+  type: LoadBalancer
+  annotations: 
+    networking.gke.io/load-balancer-type: "Internal"
+    external-dns.alpha.kubernetes.io/hostname: redis-service.framework.services.gcp.com.ar.
+```
+
+### ArgoCD apps
+
+Si bien los manifiestos creados podrían aplicarse manualmente mediante la herramienta "kubectl" en el proyecto como se mencionó anteriormente ArgoCD realiza el despliegue automático tanto de manifiestos como de Helm Charts.
+
+Esto se realiza a traves de Custom Resources definidos por ArgoCD llamados Application. Cada uno de ellos cuenta con un nombre, un Namespace en el que será aplicado, un origen desde el cual extraer los manifiestos y la politica de sincronización.
+
+ArgoCD soporta Helm de dos maneras, indicando un repositorio de Helm en el "RepoURL" o indicando un repositorio de Github donde contenga un Helm Sub-Chart. Optando por la primer opción, no contaríamos con el archivo de values.yaml en el repositorio de Github, lo cual no sigue el principio de Single Source of Truth. En cambio, implementando la segunda, sería posible versionar el archivo de valores.
+
+Ejemplos se pueden encontrar en el directorio ArgoCD/.
 
 ## Autoscaling
 
