@@ -1,5 +1,5 @@
 rabbitmq:
-  replicaCount: 3
+  #replicaCount: 3
   auth:
     username: guest
     password: guest
