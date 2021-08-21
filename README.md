@@ -271,7 +271,45 @@ Esto se realiza a traves de Custom Resources definidos por ArgoCD llamados Appli
 
 ArgoCD soporta Helm de dos maneras, indicando un repositorio de Helm en el "RepoURL" o indicando un repositorio de Github donde contenga un Helm Sub-Chart. Optando por la primer opción, no contaríamos con el archivo de values.yaml en el repositorio de Github, lo cual no sigue el principio de Single Source of Truth. En cambio, implementando la segunda, sería posible versionar el archivo de valores.
 
-Ejemplos se pueden encontrar en el directorio ArgoCD/.
+Ejemplos se pueden encontrar en el directorio `ArgoCD/`.
+
+
+
+## Replication
+
+En búsqueda de garantizar la alta disponibilidad y tolerancia a fallos de la aplicación, los recursos con estado y cuya caída podría producir pérdidas de información, han sido configurados en modo clúster. Puntualmente, tanto RabbitMQ como Redis habilitan las opciones de *clustering* para mantener sincronizadas las réplicas en referencia a sus respectivos componentes internos. 
+
+
+### Redis Cluster Mode
+
+Tal lo mencionado, Redis Cluster ha sido desplegado mediante un Helm Chart. Este último se trata de una implementación específica, separada de Redis bajo la modalidad *single instance*. Inspeccionando sus componentes, nos aproximamos a entender qué está haciendo por detŕas, ampliando la comprensión de su funcionamiento. 
+
+Entre los recursos que son instanciados al desplegar el Chart, encontraremos un StatefulSet que de manera similar a un Deployment gestiona los pods de una aplicación, su despliegue y escalado, pero que además, garantiza el orden y unicidad de dichos pods, manteniendo una identidad asociada a los mismos. Esto facilita las condiciones necesarias para la gestión de aplicaciones con estado, tal como Redis Cluster. Los StatefulSets requieren un PersistenceVolume para el almacenamiento de sus pods, que también se encuentra dentro del despliegue de Helm.
+
+Por otro lado, es requerido contar con un Service de tipo *headless* responsable de la identidad de estos pods. Sin embargo, existirá un Service de tipo LoadBalancer que será utilizado para el acceso efectivo a la aplicación. Cada uno de ellos generará los respectivos Endpoints y Endpoint Slices para garantizar la escalabilidad de los mismos.
+
+A su vez, existen recursos de configuración tales como ConfigMaps y Secrets. 
+
+#### Fragmentación de los valores
+
+Bajo el modo *clustering* de Redis, los valores son almacenados de forma distribuida, en los diferentes nodos del clúster. Esto se logra obteniendo el hash de la clave a almacenar y determinando en base a este, el nodo en que deberá persistirse. Ahora bien, todos los miembros del clúster llevarán un registro de la localización de cada clave, posibilitando la consulta de cualquier clave a cualquier nodo. En caso que este último no contenga la clave almacenada, devolverá un mensaje de redirección hacia el nodo adecuado. 
+
+Tanto en la herramienta CLI como en el cliente Lettuce de Java - utilizado en las aplicaciones para acceder al clúster - la redirección no es automática a menos que así se configure. De esta manera, para lograr transparencia en la ubicación de los valores, será necesario utilizar este parámetro. 
+
+
+### RabbitMQ clúster Mode
+
+A diferencia de la configuración de Redis Cluster, en el caso de RabbitMQ no fue necesario utilizar un Helm diferente, sino que tan solo utilizando el mismo con el que levantaríamos la aplicación en modo *single instance* podía levantarse en modo clúster, modificando la cantidad de réplicas. 
+
+Se ha llevado a cabo un experimento con la aplicación para mejorar el entendimiento, utilizando la configuración por defecto del Chart de prueba y verificando los componentes levantados. Luego, utilizando la configuración definitiva especificando las réplicas deseadas y logrando características de tolerancia a fallos, comparamos los recursos instanciados. Como conclusión, al comprobar que en ambos casos se despliegan los mismos componentes, notamos que RabbitMQ en modo *single instance* no es más que un "clúster" con una sola instancia. 
+
+
+#### Replicación de las colas
+
+Al utilizar RabbitMQ bajo un esquema de múltiples réplicas, por defecto contaremos con redundancia a nivel de *virtual hosts*, *exchanges*, *users* y *permissions*. Por lo tanto, frente a la caída de alguno de los nodos, estos componentes serían tolerantes a dicha falla. Sin embargo, un recurso fundamental que podría perderse al utilizar la configuración tradicional, son las colas. Esto resultaría crítico por la pérdida de mensajes. Para resolverlo, RabbitMQ ofrece distintas alternativas. Por un lado, el clásico *queue mirroring*, hoy en día reemplazado por opciones más eficientes como los tipos de cola Quorum y Streams. 
+
+La *Quorum queue* es un tipo de cola moderna de RabbitMQ que implementa durabilidad y replicación, basado en el algoritmo de consenso de Raft, bajo un esquema FIFO y cuya prioridad es mantener los datos seguros. Están diseñadas para ser más seguras y más simples que las colas *Mirror*, debiendo ser consideradas la implementación por defecto para lograr alta disponibilidad y presentando, sin embargo, algunas limitaciones al compararlas con las tradicionales, como pueden ser la no exclusividad, la obligación de durabilidad y la única posibilidad de definir persistencia a nivel de cola (en vez de por mensaje), etc.
+
 
 ## Autoscaling
 
@@ -284,13 +322,6 @@ Custom API
 Ingress
 Ingres Controller NGINX
 
-## Replication
-
-Redis Cluster Mode
-Redirect, Lettuce
-
-RabbitMQ clúster Mode
-Quorum queues
 
 ## Logging/Monitoring
 
