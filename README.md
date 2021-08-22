@@ -435,9 +435,27 @@ Cabe destacar que en la Recording Rule se utiliza una expresión regular para fi
 
 ## Logging/Monitoring
 
-Fluent-bit
-Logstash
-Elasticsearch Cluster Mode
+Una parte importante de toda aplicación es el registro de logs y monitoreo de los mismos para detectar fallos y malfuncionamiento de los componentes. Al estar inmersos en un contexto de microservicios, contar con sistemas de logging centralizados que permitan unificar la ubicación de los logs será fundamental para facilitar la tarea de revisión de los mismos. 
+
+### Fluent-bit
+
+Dado que los pods de cada nodo vuelcan logs al *standard output*, será necesario recolectarlos mediante alguna herramienta. Fluent Bit es un procesador de logs *lightweight* que puede llevar a cabo la extracción desde diversas fuentes, aplicar filtros en caso de ser necesario y enviar dichos logs a distintos destinos.
+
+Dentro de Kubernetes, Fluen Bit se ejecutará como DaemonSet, esto es, como un pod en cada nodo del clúster. No es necesario indicar configuraciones adicionales para que - una vez en ejecución - lea, parsee y filtre los logs de todos los pods del nodo, enriqueciendo cada registro con información del pod, del contenedor que generó el log, etiquetas y anotaciones. 
+
+Una vez recolectados los logs, Fluent Bit permite configurar uno o más destinos a los cuales enviarlos. Esto lo logra mediante un esquema de plugins, donde cada destino posible estará dado por las implementaciones existentes. Sin embargo, también existe la posibilidad de indicar un protocolo como salida, tal como en el caso del plugin "http" que volcará los logs en el endpoint especificado.
+
+### Logstash
+
+Se ha definido la utilización de Logstash como destino de los logs recolectados por Fluent Bit, cursándolos mediante la interfaz http. Si bien no se trata de un motor de búsqueda, conforma el paso intermedio antes de alcanzarlo. Logstash permitirá realizar transformaciones sobre el formato de los logs, en pos de uniformizarlos.
+
+El funcionamiento del servicio consiste en la definición de un *pipeline* con las etapas: *input*, *filter* y *output*, que mediante los plugins existentes tomarán datos de las fuentes especificadas, filtrarán/transformarán los logs recibidos y los enviarán a las salidas indicadas. 
+
+El destino de los registros procesados que ha sido utilizado en este proyecto es Elastic Search, que genera índices basados en *templates* para cada origen de datos. Por este motivo, y debido a los identificadores de los labels de Kubernetes, ha sido necesario aplicar una transformación sobre los logs. Concretamente, la nomenclatura anidada mediante puntos causa que Elastic Search indexe como objetos a elementos que no lo son, deviniendo en inconvenientes a la hora de procesar ciertos valores. Las transformaciones aplicadas pueden encontrarse en `Kubernetes/Management/logstash/values.yaml`.
+
+### Elasticsearch Cluster Mode
+
+
 Kibana
 Grafana
 Prometheus ?
