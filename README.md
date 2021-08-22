@@ -283,21 +283,21 @@ La funcionalidad de este script es establecer las credenciales de los clusters d
 
 Este puede encontrarse en `/Terraform/destroy.sh`.
 Este script elimina toda la infraestructura, aplicaciones y configuraciones.
-Si bien bastaría con "terraform destroy", existen ciertos recursos creados posteriormente al despliegue, que requieren ser eliminados previamente a ejecutar dicho comando de terraform, dado que, de lo contrario, no coincidiría el estado que terraform percibe contra el real, fallando en tiempo de ejecución.
+Si bien bastaría con "terraform destroy", existen ciertos recursos creados posteriormente al despliegue, que requieren ser eliminados previamente a ejecutar dicho comando de Terraform, dado que, de lo contrario, no coincidiría el estado que percibe contra el real, fallando en tiempo de ejecución.
 
 
 ## Kubernetes
 
 Dado que la aplicación se orientó al uso de contenedores, se utilizó el orquestador Kubernetes.
-Se eligió este enfoque debido a su portabilidad, y facilidad de despliegue, aislamiento y demás ventajas que provee. Sumado a la tolerancia a fallos, escalabilidad que nos provee un orquestador de contenedores, como por ejemplo, Kubernetes.
+Se eligió este enfoque debido a su portabilidad, y facilidad de despliegue, aislamiento y demás ventajas que provee. Sumado a la tolerancia a fallos y escalabilidad que nos brinda un orquestador de contenedores, como por ejemplo, Kubernetes.
 
 ### Manifiestos
 
-Cuando utilizamos Kubernetes la forma en que podemos indicarle los recursos que queremos que gestione son los manifiestos. La unidad mínima de Kubernetes son los pods, los cuales contienen uno o varios contenedores Docker. Dichos pods pueden ser instanciados mediante un Deployment, indicando la cantidad de réplicas deseadas. Cada manifiesto puede ser aplicado en un Namespace, el cual provee de aislamiento a los pods. Es necesario indicar una etiqueta en cada Deployment que permite a un Service localizar y enviar trafico a sus pods. Existen varios tipos de Services, los cuales son, ClusterIP, NodePort y LoadBalacer.
+Cuando utilizamos Kubernetes, la forma en que podemos indicar los recursos que queremos que se gestionen son los manifiestos. La unidad mínima de Kubernetes son los pods, los cuales contienen uno o varios contenedores Docker. Dichos pods pueden ser instanciados mediante un Deployment, indicando la cantidad de réplicas deseadas. Cada manifiesto puede ser aplicado en un Namespace, el cual provee de aislamiento a los pods. Es necesario indicar una etiqueta en cada Deployment que permite a un Service localizar y enviar trafico a sus pods. Existen varios tipos de Services, los cuales son, ClusterIP, NodePort y LoadBalacer.
 
 ClusterIP crea una dirección IP estática, accesible desde todos los recursos del cluster.
 
-NodePort habilita un puerto en un nodo, que permite ingresar trafico del exterior, y que se redireccione al pod correspondiente, sin importar si este se encuentra en dicho nodo o no.
+NodePort habilita un puerto en un nodo, que permite ingresar tráfico del exterior, y que se redireccione al pod correspondiente, sin importar si este se encuentra en dicho nodo o no.
 
 LoadBalancer levanta un nuevo recurso, el cual tiene una IP pública, que balancea la carga de las peticiones hacia los pods correspondientes.
 
