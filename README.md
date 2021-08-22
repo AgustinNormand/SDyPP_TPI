@@ -441,7 +441,7 @@ Una parte importante de toda aplicación es el registro de logs y monitoreo de l
 
 Dado que los pods de cada nodo vuelcan logs al *standard output*, será necesario recolectarlos mediante alguna herramienta. Fluent Bit es un procesador de logs *lightweight* que puede llevar a cabo la extracción desde diversas fuentes, aplicar filtros en caso de ser necesario y enviar dichos logs a distintos destinos.
 
-Dentro de Kubernetes, Fluen Bit se ejecutará como DaemonSet, esto es, como un pod en cada nodo del clúster. No es necesario indicar configuraciones adicionales para que - una vez en ejecución - lea, parsee y filtre los logs de todos los pods del nodo, enriqueciendo cada registro con información del pod, del contenedor que generó el log, etiquetas y anotaciones. 
+Dentro de Kubernetes, Fluent-Bit se ejecutará como DaemonSet, esto es, como un pod en cada nodo del clúster. No es necesario indicar configuraciones adicionales para que - una vez en ejecución - lea, parsee y filtre los logs de todos los pods del nodo, enriqueciendo cada registro con información del pod, del contenedor que generó el log, etiquetas y anotaciones. 
 
 Una vez recolectados los logs, Fluent Bit permite configurar uno o más destinos a los cuales enviarlos. Esto lo logra mediante un esquema de plugins, donde cada destino posible estará dado por las implementaciones existentes. Sin embargo, también existe la posibilidad de indicar un protocolo como salida, tal como en el caso del plugin "http" que volcará los logs en el endpoint especificado.
 
