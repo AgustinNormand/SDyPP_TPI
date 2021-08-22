@@ -66,7 +66,9 @@ En el contexto de la asignatura Sistemas Distribuidos y Programación Paralela d
 
 La herramienta está orientada, por el momento, al uso exclusivo de los autores del trabajo. Sin embargo, se toman algunas consideraciones para soportar aspectos tales como cargas de tráfico mayores resultantes de publicar la aplicación. En la sección de Alcance se presentan los límites del mismo.
 
-La motivación principal del trabajo es la necesidad ocasional de ejecutar tareas que se verían beneficiadas de una gran capacidad de cómputo para la obtención de resultados. Dado que el costo de contar con una infraestructura disponible 24/7 que permita satisfacer los requerimientos eventuales implicaría un costo excesivo y un gran desperdicio la mayor parte del tiempo, la propuesta considera desde la creación hasta la destrucción de los recursos necesarios de manera automatizada, tan solo configurando unas pocas variables dependientes.
+La motivación inicial del trabajo fue la necesidad ocasional de ejecutar tareas que se verían beneficiadas de una gran capacidad de cómputo para la obtención de resultados. Dado que el costo de contar con una infraestructura disponible 24/7 que permita satisfacer los requerimientos eventuales sería muy alto e implicaría un gran desperdicio la mayor parte del tiempo, la propuesta considera desde la creación hasta la destrucción de los recursos necesarios de manera automatizada, tan solo configurando unas pocas variables dependientes.
+
+Sin embargo, a lo largo del desarrollo del proyecto, la motivación sufrió un desvío hacia horizontes más generales tales como lograr un entendimiento y obtener experiencia en el uso de tecnologías de despliegue, autoescalado, tolerancia a fallas, replicación y monitoreo. 
 
 ### Alcance
 
