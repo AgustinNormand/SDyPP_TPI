@@ -240,7 +240,7 @@ Con lo configurado en la sección previa, contamos con un servicio que tiene una
 
 Si bien GCP ofrece cŕedito gratuito, tiene algunas limitaciones llamadas *quotas*. Una de estas consiste en el número de direcciones IP públicas que pueden utilizarse. Este valor corresponde a 8 en el caso de nuestro proyecto y dado que contamos con más de 8 nodos, nos vimos obligados a evitar que tengan una IP pública. GCP ofrece este tipo de instancias bajo la denominación de nodos privados, resultando en un clúster con un único punto de acceso.
 
-Ahora bien, debido a la falta de una dirección routeable en Internet, y el requisito de que los los nodos tengan acceso a esta última, fue necesario configurar otro servicio proporcionado por Google, denominado Cloud NAT, que requiere ser aplicado a un Cloud Router vinculado a una VPC. Cabe destacar que esta configuración fue aplicada en los tres clústers, resultando en tres Cloud Routers que realizan Cloud NAT para sus respectivas VPCs.
+Ahora bien, debido a la falta de una dirección routeable en Internet, y el requisito de que los nodos tengan acceso a esta última, fue necesario configurar otro servicio proporcionado por Google, denominado Cloud NAT, que requiere ser aplicado a un Cloud Router vinculado a una VPC. Cabe destacar que esta configuración fue aplicada en los tres clústers, resultando en tres Cloud Routers que realizan Cloud NAT para sus respectivas VPCs.
 
 
 #### Instancias *Preemptible*
@@ -262,7 +262,7 @@ El archivo mencionado consta de una serie de bloques denominados módulos, denot
 
 ### Scripts
 
-Dado que el proyecto fue construido con el propósito de ser utilizado desde cero sin necesidad de conocer en detalle su funcionamiento, se construyeron los scripts necesarios para crear y descartar todos los elementos involucrados, facilitando la tarea al usuario, ya que Terraform no era suficiente para cubrir por completo esta tarea. Por lo tanto, apuntamos a complementar tanto la etapa previa y posterior a la construcción y destrucción de la infraestructura.
+Dado que el proyecto fue construido bajo la filosofía de automatizar desde el principio y tener que migrar hacia ella a posteriori, se construyeron los scripts necesarios para crear y descartar todos los elementos involucrados, ya que Terraform no era suficiente para cubrir por completo esta tarea. Por lo tanto, apuntamos a complementar tanto la etapa previa como la posterior a la construcción y destrucción de la infraestructura.
 
 #### Init
 
