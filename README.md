@@ -6,6 +6,60 @@
 </p>
 
 
+- [Introducción](#introducci-n)
+  * [Alcance](#alcance)
+  * [Out-of-scope](#out-of-scope)
+- [Management App](#management-app)
+  * [Entrypoint](#entrypoint)
+  * [YAML Manager](#yaml-manager)
+  * [Cluster Applier](#cluster-applier)
+  * [Status Worker](#status-worker)
+- [Pipeline CICD](#pipeline-cicd)
+  * [Etapas del pipeline](#etapas-del-pipeline)
+- [Infraestructura](#infraestructura)
+  * [GKE](#gke)
+    + [Separación de responsabilidades](#separaci-n-de-responsabilidades)
+    + [Interconexión de clústers](#interconexi-n-de-cl-sters)
+      - [VPC Peering, Reglas de firewall e Internal Services](#vpc-peering--reglas-de-firewall-e-internal-services)
+      - [ExternalDNS y CloudDNS](#externaldns-y-clouddns)
+    + [Clúster privado, Cloud NAT y Cloud Router](#cl-ster-privado--cloud-nat-y-cloud-router)
+    + [Instancias *Preemptible*](#instancias--preemptible-)
+    + [Google Storage](#google-storage)
+  * [Terraform](#terraform)
+  * [Scripts](#scripts)
+    + [Init](#init)
+    + [Despliegue](#despliegue)
+    + [Get Credentials](#get-credentials)
+    + [Destrucción](#destrucci-n)
+- [Kubernetes](#kubernetes)
+  * [Manifiestos](#manifiestos)
+  * [Helm](#helm)
+  * [ArgoCD apps](#argocd-apps)
+- [Replication](#replication)
+  * [Redis Cluster Mode](#redis-cluster-mode)
+    + [Fragmentación de los valores](#fragmentaci-n-de-los-valores)
+  * [RabbitMQ clúster Mode](#rabbitmq-cl-ster-mode)
+    + [Replicación de las colas](#replicaci-n-de-las-colas)
+- [Autoscaling](#autoscaling)
+  * [Cluster Autoscaler](#cluster-autoscaler)
+  * [HPA](#hpa)
+    + [Management Clúster](#management-cl-ster)
+    + [Deployments Clúster](#deployments-cl-ster)
+  * [Custom metrics](#custom-metrics)
+    + [Ingress](#ingress)
+    + [Prometheus](#prometheus)
+    + [Prometheus Adapter](#prometheus-adapter)
+    + [Custom Rules](#custom-rules)
+    + [Recording Rules](#recording-rules)
+    + [RabbitMQ Queue Depth Autoscaler](#rabbitmq-queue-depth-autoscaler)
+- [Logging/Monitoring](#logging-monitoring)
+  * [Fluent-bit](#fluent-bit)
+  * [Logstash](#logstash)
+  * [Elasticsearch Cluster Mode](#elasticsearch-cluster-mode)
+  * [Kibana y Grafana](#kibana-y-grafana)
+
+
+
 ## Introducción
 
 En el contexto de la asignatura Sistemas Distribuidos y Programación Paralela de la Universidad Nacional de Luján, se propone y documenta la creación de una herramienta de cómputo intensivo basado en un modelo SWJ (Splitter-Worker-Joiner) para la resolución de tareas genéricas, apoyado en la plataforma de gestión de contenedores Kubernetes y tecnologías de Cloud Computing. Todos los componentes utilizados (propios y de terceros) presentan características de alta disponibilidad y tolerancia a fallos. 
@@ -246,6 +300,9 @@ NodePort habilita un puerto en un nodo, que permite ingresar trafico del exterio
 LoadBalancer levanta un nuevo recurso, el cual tiene una IP pública, que balancea la carga de las peticiones hacia los pods correspondientes.
 
 La arquitectura de la solución a nivel de manifiestos tiene la siguiente estructura:
+
+![Arquitectura k8s](Imagenes/ideas-final-sdypp-k8s-arq.jpg)
+
 
 El tráfico es dirigido al Entrypoint por una IP pública expuesta mediante el Ingress. Este ultimo requiere al Service de un deployment para dirigir los paquetes hacia los pods. El Entrypoint envía los mensajes a RabbitMQ que serán recibidos por los pods de los demás deployments.
 
