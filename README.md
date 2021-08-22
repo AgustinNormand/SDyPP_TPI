@@ -356,7 +356,7 @@ Bajo el modo *clustering* de Redis, los valores son almacenados de forma distrib
 Tanto en la herramienta CLI como en el cliente Lettuce de Java - utilizado en las aplicaciones para acceder al clúster - la redirección no es automática a menos que así se configure. De esta manera, para lograr transparencia en la ubicación de los valores, será necesario utilizar este parámetro.
 
 
-### RabbitMQ clúster Mode
+### RabbitMQ cluster Mode
 
 A diferencia de la configuración de Redis Cluster, en el caso de RabbitMQ no fue necesario utilizar un Helm diferente, sino que tan solo utilizando el mismo con el que levantaríamos la aplicación en modo *single instance* podía levantarse en modo clúster, modificando la cantidad de réplicas.
 
@@ -388,14 +388,14 @@ Kubernetes ofrece el recurso llamado "Horizontal Pod Autoscaler" para aumentar e
 
 Internamente, HPA utiliza un mecanismo de *querying* para determinar el valor de la métrica en ese instante, compararlo contra el valor indicado en el manifiesto y en base a ello determinar si requiere aumentar la cantidad de pods (valor real por encima del target) o disminuirla (valor real por debajo del target), respetando los valores mínimos y máximos especificados.
 
-#### Management Clúster
+#### Management Cluster
 
 Dentro del clúster de *management* se ha utilizado HPA para el escalado horizontal de los pods de cada uno de los componentes de la aplicación de gestión. El Entrypoint, por un lado, define la necesidad de escalado en base a la cantidad de solicitudes HTTP recibidas en una franja temporal arbitraria. Esto resulta conveniente, dado que la cantidad de tráfico que está recibiendo es altamente representativa de los requisitos de procesamiento del servicio.
 
 Por otra parte, los componentes restantes - YamlManager, ClusterApplier y StatusWorker - se caracterizan por no exponer endpoints HTTP para tareas complejas, sino que reciben las tareas a partir del bróker de mensajería. Por ende, tenemos certeza de que tendrán mayor o menor carga de trabajo dependiendo de los mensajes acumulados en las colas a las que están suscriptos. Por lo tanto, esta es la métrica elegida para determinar el requerimiento de escalado.
 
 
-#### Deployments Clúster
+#### Deployments Cluster
 
 Dado que - tal lo mencionado en secciones anteriores - el clúster de *deployments* está dedicado a ejecutar las cargas de trabajo intensivas del usuario y estas se adecúan al modelo SWJ (Splitter-Worker-Joiner), podemos suponer que los requerimientos de escalado estarán dados por la utilización de CPU de los *workers*. Como parte de la gestión de las tareas subidas por el usuario y las facilidades brindadas al mismo, la Management App agrega a los *jobs* un manifiesto HPA para ser aplicado en el clúster, referenciando al recurso Worker enviado.
 
@@ -518,6 +518,8 @@ Por la problemática comentada anteriormente, debido a los identificadores de lo
 
 ### Kibana y Grafana
 
-Son las herramientas de visualización y formato de datos métricos utilizados por el proyecto. Ambas presentan ventajas y desventajas, por lo que se utilizó la combinación de ambas para obtener lo mejor de "los dos mundos". Kibana, por un lado, fue utilizada para la visualización y búsqueda de datos indexados en Elasticsearch, siguiendo la propuesta del Elastic Stack, para no perder las características del Kibana Query Language a la hora de realizar consultas sobre logs. Por otro lado, la utilización de Grafana se orientó a la visualización de métricas extraídas desde Prometheus. Los paneles que componen los dashboards construidos giran en torno a algunas métricas consideradas interesantes para evaluar el estado de la aplicación, entre ellas podemos mencionar la cantidad de peticiones HTTP recibidas por el Entrypoint, los tamaños de las colas de los microservicios, la cantidad de nodos determinados por el *cluster autoscaler* y de pods, determinados por el *horizontal pod autoscaler*, entre otros.
+Son las herramientas de visualización y formato de datos métricos utilizados por el proyecto. Ambas presentan ventajas y desventajas, por lo que se utilizó la combinación de ambas para obtener lo mejor de "los dos mundos". 
 
+Kibana, por un lado, fue utilizada para la visualización y búsqueda de datos indexados en Elastic Search, siguiendo la propuesta del Elastic Stack, para no perder las características del Kibana Query Language a la hora de realizar consultas sobre logs. 
 
+Por otro lado, la utilización de Grafana se orientó a la visualización de métricas extraídas desde Prometheus. Los paneles que componen los dashboards construidos giran en torno a algunas métricas consideradas interesantes para evaluar el estado de la aplicación, entre ellas podemos mencionar la cantidad de peticiones HTTP recibidas por el Entrypoint, los tamaños de las colas de los microservicios, la cantidad de nodos determinados por el *cluster autoscaler* y de pods, determinados por el *horizontal pod autoscaler*, entre otros. 
