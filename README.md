@@ -313,8 +313,38 @@ La *Quorum queue* es un tipo de cola moderna de RabbitMQ que implementa durabili
 
 ## Autoscaling
 
-Cluster Autoscaler
-HPA
+Como parte de las características de alta disponibilidad perseguidas, es necesario garantizar que la aplicación no sufrirá impactos frente al aumento de tráfico. El escalado automático será el mecanismo que asegure que los componentes requeridos aumenten el número de réplicas para soportar los requisitos de procesamiento. 
+
+
+### Cluster Autoscaler
+
+Los servicios administrados de Kubernetes de los diferentes proveedores de Cloud Computing ofrecen herramientas para escalar automáticamente los nodos que componen un clúster. GKE nos brinda esta funcionalidad mediante el denominado "Cluster Autoscaler", que cambiará la cantidad de nodos de acuerdo a las demandas de las cargas de trabajo. Gracias a ello, y junto al "Node autoprovisioning", evitaremos agregar y quitar nodos de forma manual. Tan solo especificaremos el tamaño mínimo y máximo de nodos que conformarán el clúster, y GKE gestionará el tamaño adecuado en base a las exigencias del momento. 
+
+Concretamente, la decisión de escalar será tomada en base a las solicitudes de recursos de los pods que se ejecutan en los nodos del clúster. En caso que no se logre colocar los pods requeridos por falta de recursos, el *scaler* agregará los nodos necesarios siempre y cuando no se exceda el máximo configurado. Por el contrario, si existiera capacidad de sobra para programar todos los pods con una cantidad menor de nodos, entonces el *scaler* quitará los sobrantes, a menos que se haya alcanzado el límite inferior. 
+
+
+### HPA
+
+Kubernetes ofrece el recurso llamado "Horizontal Pod Autoscaler" para aumentar el número de pods de un *Deployment*, *ReplicaSet*, *StatefulSet* o *ReplicationController*. A partir de la extracción y evaluación de métricas tales como la utilización de CPU o memoria, o incluso parámetros personalizados provistos por la aplicación, el HPA determinará la necesidad de aumentar o disminuir los pods para alcanzar el valor de la métrica declarada.
+
+Internamente, HPA utiliza un mecanismo de *querying* para determinar el valor de la métrica en ese instante, compararlo contra el valor indicado en el manifiesto y en base a ello determinar si requiere aumentar la cantidad de pods (valor real por encima del target) o disminuirla (valor real por debajo del target), respetando los valores mínimos y máximos especificados.
+
+#### Management Clúster
+
+Dentro del clúster de *management* se ha utilizado HPA para el escalado horizontal de los pods de cada uno de los componentes de la aplicación de gestión. El Entrypoint, por un lado, define la necesidad de escalado en base a la cantidad de solicitudes HTTP recibidas en una franja temporal arbitraria. Esto resulta conveniente, dado que la cantidad de tráfico que está recibiendo es altamente representativa de los requisitos de procesamiento del servicio. 
+
+Por otra parte, los componentes restantes - YamlManager, ClusterApplier y StatusWorker - se caracterizan por no exponer endpoints HTTP para tareas complejas, sino que reciben las tareas a partir del bróker de mensajería. Por ende, tenemos certeza de que tendrán mayor o menor carga de trabajo dependiendo de los mensajes acumulados en las colas a las que están suscriptos. Por lo tanto, esta es la métrica elegida para determinar el requerimiento de escalado.
+
+
+#### Deployments Clúster
+
+Dado que - tal lo mencionado en secciones anteriores - el clúster de *deployments* está dedicado a ejecutar las cargas de trabajo intensivas del usuario y estas se adecúan al modelo SWJ (Splitter-Worker-Joiner), podemos suponer que los requerimientos de escalado estarán dados por la utilización de CPU de los *workers*. Como parte de la gestión de las tareas subidas por el usuario y las facilidades brindadas al mismo, la Management App agrega a los *jobs* un manifiesto HPA para ser aplicado en el clúster, referenciando al recurso Worker enviado. 
+
+
+### Custom metrics
+
+Acá presentar todo lo necesario para poder levantar las métricas de Rabbit, http, rules de prometheus
+
 Prometheus
 Prometheus Adapter
 Recording Rules
