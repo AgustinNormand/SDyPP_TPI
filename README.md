@@ -353,7 +353,9 @@ Si se desea escalar en base al tráfico HTTP es necesario contar con una métric
 
 Considerando que todas las solicitudes atraviesan un LoadBalancer, sería tentativo que este sea quien provea esta información. Si bien los balanceadores de cargas de Google Cloud Platform disponibilizan dicha métrica, orientar la solución de esta manera, no era transladable a otros proveedores. Por este motivo optamos por resolverlo con Ingress.
 
-Este ultimo es un balanceador de cargas
+Este último es un recurso de Kubernetes que gestiona el acceso externo a los servicios de un cluster y requiere contar con un Ingress Controller que los satisfaga. Se trata de un controlador reponsable de cumplir con el Ingress, generalmente provee balanceo de cargas, aunque tambien puede configurar su Router de Borde o interfaces adicionales para ayudar a manejar el tráfico.
+
+Existen diferentes implementaciones de Ingress Controller disponibles, entre ellas la utilizada en este proyecto, es la de NGINX.
 
 #### Prometheus
 
@@ -362,7 +364,6 @@ Para poder monitorear nuestros microservicios, necesitamos de un sistema de moni
 Esta funcionalidad es llevada a cabo mediante un DaemonSet, el cual despliega un pod en cada nodo, llamado Prometheus-Node-Exporter, quien agrupa las metricas de los servicios que corre, y las envía al Prometheus Server.
 
 Tomando como ejemplo la métrica de "cantidad de solicitudes http al Entrypoint", ahora, estaría disponible para poder consultarla y graficarla desde un software de visualización como Grafana.
-
 
 #### Prometheus Adapter
 
@@ -381,7 +382,6 @@ En la disponibilización que realiza el Prometheus Adapter hacia la Custom Metri
 Al recuperar una métrica, el Adapter ejecuta la Query configurada para obtener el valor, si esta consulta involucra el calculo, este será realizado cada vez que se solicite dicha métrica.
 
 En Prometheus Server, como se mencionó anteriormente, Ingress disponibiliza la cantidad de mensajes http totales. Para calcular el rate, sería posible escribir una Query en el Adapter, que solicite dicho valor dos veces con intervalo de tiempo X, y con estos datos, computar la tasa cada vez que se consulte el valor de la métrica.
-
 
 #### Recording Rules
 
