@@ -518,7 +518,7 @@ Por la problemática comentada anteriormente, debido a los identificadores de lo
 
 ### Kibana y Grafana
 
-Son las herramientas de visualización y formato de datos métricos utilizados por el proyecto. Ambas presentan ventajas y desventajas, por lo que se utilizó la combinación de ambas para obtener lo mejor de "los dos mundos". 
+Son las herramientas de visualización y formato de datos métricos utilizados por el proyecto. Dado que presentan ventajas y desventajas, se utilizó una combinación de ambas para obtener lo mejor de "los dos mundos". 
 
 Kibana, por un lado, fue utilizada para la visualización y búsqueda de datos indexados en ElasticSearch, siguiendo la propuesta del Elastic Stack, para no perder las características del Kibana Query Language a la hora de realizar consultas sobre logs. 
 
