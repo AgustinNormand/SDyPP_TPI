@@ -520,6 +520,6 @@ Por la problemática comentada anteriormente, debido a los identificadores de lo
 
 Son las herramientas de visualización y formato de datos métricos utilizados por el proyecto. Ambas presentan ventajas y desventajas, por lo que se utilizó la combinación de ambas para obtener lo mejor de "los dos mundos". 
 
-Kibana, por un lado, fue utilizada para la visualización y búsqueda de datos indexados en Elastic Search, siguiendo la propuesta del Elastic Stack, para no perder las características del Kibana Query Language a la hora de realizar consultas sobre logs. 
+Kibana, por un lado, fue utilizada para la visualización y búsqueda de datos indexados en ElasticSearch, siguiendo la propuesta del Elastic Stack, para no perder las características del Kibana Query Language a la hora de realizar consultas sobre logs. 
 
 Por otro lado, la utilización de Grafana se orientó a la visualización de métricas extraídas desde Prometheus. Los paneles que componen los dashboards construidos giran en torno a algunas métricas consideradas interesantes para evaluar el estado de la aplicación, entre ellas podemos mencionar la cantidad de peticiones HTTP recibidas por el Entrypoint, los tamaños de las colas de los microservicios, la cantidad de nodos determinados por el *cluster autoscaler* y de pods, determinados por el *horizontal pod autoscaler*, entre otros. 
