@@ -267,12 +267,12 @@ Dado que el proyecto fue construido bajo la filosofía de automatizar desde el p
 #### Init
 
 Este puede encontrarse en `/Terraform/init.sh`.
-La funcionalidad de este script es inicializar una cuenta de Google Cloud Platform recién creada. Primero se logeará en esta cuenta, se creará el proyecto, las cuentas de servicio, se otorgarán roles/permisos a estas. Se habilitarán las API necesarias, se habilitará la cuenta de facturación, se generará el archivo de credenciales.
+La funcionalidad de este script es inicializar una cuenta de Google Cloud Platform recién creada. Primero se logeará en esta cuenta, se creará el proyecto, las cuentas de servicio, se otorgarán roles/permisos a estas. Se habilitarán las API necesarias, se habilitará la cuenta de facturación y se generará el archivo de credenciales.
 
 #### Despliegue
 
 Este puede encontrarse en `/Terraform/deploy.sh`.
-Una vez cumplidas las condiciones para el despliegue, este script realizará esa tarea. Exportará la variable necesaria para ubicar el archivo de credenciales, ejecutará los comandos necesarios de Terraform para desplegar la infraestructura. Establecerá el secret de github que contiene las credenciales de la cuenta de GCP, para poder acceder, junto con el archivo kubeconfig, al cluster de Deployments. Descarga la última versión de ArgoCD, aplica el manifiesto en todos los cluster e instala todas las aplicaciones de ArgoCD ubicadas en el directorio ArgoCD y el subdirectorio homónimo a cada cluster. Instala External-dns en el cluster de Resources y realiza un commit de los cambios realizados al repositorio. (Add/Update kubeconfig.conf, Add/Update external-dns)
+Una vez cumplidas las condiciones para el despliegue, este script realizará esa tarea. Exportará la variable necesaria para ubicar el archivo de credenciales y ejecutará los comandos necesarios de Terraform para desplegar la infraestructura. Establecerá, además, el secret de Github que contiene las credenciales de la cuenta de GCP para poder acceder - junto con el archivo kubeconfig - al cluster de Deployments. Luego, descarga la última versión de ArgoCD, aplica el manifiesto en todos los cluster e instala todas las aplicaciones de ArgoCD ubicadas en el directorio ArgoCD y el subdirectorio homónimo a cada cluster. Instala External-dns en el cluster de Resources y realiza un commit de los cambios realizados al repositorio. (Add/Update kubeconfig.conf, Add/Update external-dns)
 
 #### Get Credentials
 
@@ -282,7 +282,7 @@ La funcionalidad de este script es establecer las credenciales de los clusters d
 #### Destrucción
 
 Este puede encontrarse en `/Terraform/destroy.sh`.
-Este script elimina toda la infraestructura, aplicaciones, configuraciones.
+Este script elimina toda la infraestructura, aplicaciones y configuraciones.
 Si bien bastaría con "terraform destroy", existen ciertos recursos creados posteriormente al despliegue, que requieren ser eliminados previamente a ejecutar dicho comando de terraform, dado que, de lo contrario, no coincidiría el estado que terraform percibe contra el real, fallando en tiempo de ejecución.
 
 
