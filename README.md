@@ -2,7 +2,7 @@
 <h2 align="center">Sistemas Distribuidos y Programación Paralela</h2>
 
 <p align="center">
-<img src="https://www.universidades.com.ar/logos/original/logo-universidad-nacional-de-lujan.png" alt="UNLu">
+<img src="Imagenes/logo-universidad-nacional-de-lujan.png" alt="UNLu">
 </p>
 
 
@@ -345,14 +345,92 @@ Dado que - tal lo mencionado en secciones anteriores - el clúster de *deploymen
 
 ### Custom metrics
 
-Acá presentar todo lo necesario para poder levantar las métricas de Rabbit, http, rules de prometheus
+El recurso HPA de Kubernetes soporta de manera nativa, la consulta de métricas de uso CPU y memoria. Sin embargo, cuando se trata de otras métricas, metricas personalizadas o Custom Metrics, es necesario realizar configuraciones adicionales para poder realizar escalado en base a estas.
 
-Prometheus
-Prometheus Adapter
-Recording Rules
-Custom API
-Ingress
-Ingres Controller NGINX
+#### Ingress
+
+Si se desea escalar en base al tráfico HTTP es necesario contar con una métrica que refleje las solicitudes recibidas en uno o más servicios. Como standard podría implementarse un endpoint "/metrics", donde cada uno informe la cantidad peticiones recepcionadas. Sin embargo, no sería de utilidad, contar con estos valores por separado, sino, que es requerido un valor uniforme.
+
+Considerando que todas las solicitudes atraviesan un LoadBalancer, sería tentativo que este sea quien provea esta información. Si bien los balanceadores de cargas de Google Cloud Platform disponibilizan dicha métrica, orientar la solución de esta manera, no era transladable a otros proveedores. Por este motivo optamos por resolverlo con Ingress.
+
+Este ultimo es un balanceador de cargas
+
+#### Prometheus
+
+Para poder monitorear nuestros microservicios, necesitamos de un sistema de monitoreo, y cuando de Kubernetes se habla, el standard es Prometheus. Este será el encargado de descubrir y obtener todas las metricas que exponen nuesros servicios y centralizarlas.
+
+Esta funcionalidad es llevada a cabo mediante un DaemonSet, el cual despliega un pod en cada nodo, llamado Prometheus-Node-Exporter, quien agrupa las metricas de los servicios que corre, y las envía al Prometheus Server.
+
+Tomando como ejemplo la métrica de "cantidad de solicitudes http al Entrypoint", ahora, estaría disponible para poder consultarla y graficarla desde un software de visualización como Grafana.
+
+
+#### Prometheus Adapter
+
+Si bien hasta este punto, la métrica mencionada anteriormente se encuentra disponible, no es posible que HPA consulte dicho valor, dado que, este ultimo recurso de Kubernetes, solamente interactúa con las API internas. Existen por lo menos dos de estas ultimás, Resource Metrics API y Custom Metrics API. La primera de estas es utilizada para obtener las metricas de uso de recursos de cada pod, sin embargo, la segunda, posibilita la exposición de métricas personalizadas.
+
+Como se podría deducir, debemos disponibilizar las métricas por las cuales nos interesa realizar un escalado, en dicha Custom Metrics API. Para lograr esta tarea, basta con desplegar el Prometheus Adapter, con la configuracion requerida para obtener las métricas deseadas desde el Prometheus Server.
+
+Hasta este punto, no sería complejo exponer una métrica, si esta se tratara de un valor calculado, almacenado el prometheus server. Las complicaciones surgen, cuando el valor mencionado, se trata de un contador acumulado, como por ejemplo, "cantidad de peticiones http totales", no sería posible realizar un escalado en base a este, dado que no refleja el estado actual del tráfico.
+
+Para lograr esto último, es necesario computar una "tasa" o "rate", que represente la candidad de solicitudes recibidas en X tiempo. Este cálculo puede ser realizado de, al menos, dos maneras: Como Custom Rules en el Prometheus Adapter o como Recording Rules en el Prometheus Server.
+
+#### Custom Rules
+
+En la disponibilización que realiza el Prometheus Adapter hacia la Custom Metrics API, es posible realizar una cuantificación sobre los registros obtenidos. 
+
+Al recuperar una métrica, el Adapter ejecuta la Query configurada para obtener el valor, si esta consulta involucra el calculo, este será realizado cada vez que se solicite dicha métrica.
+
+En Prometheus Server, como se mencionó anteriormente, Ingress disponibiliza la cantidad de mensajes http totales. Para calcular el rate, sería posible escribir una Query en el Adapter, que solicite dicho valor dos veces con intervalo de tiempo X, y con estos datos, computar la tasa cada vez que se consulte el valor de la métrica.
+
+
+#### Recording Rules
+
+El enfoque mencionado anteriormente, si bien, es eficaz, podría mejorarse en cuanto a eficiencia. Sería deseable contar con la métrica ya calculada, al momento de consultar la API. Dado que no existe un servicio que exponga dicho valor, Prometheus Server nos ofrece la posibilidad de definir Recording Rules, las cuales permiten, en base a metricas existentes, calcular una nueva.
+
+De esta manera, en el Adapter se referencia a la métrica creada, reduciendo el numero de operaciones realizadas por este.
+
+Si contamos con una métrica llamada "nginx_requests_total" y queremos realizar una tasa de esta, en un intervalo de 2 minutos, el equivalente en el archivo de Recording Rules sería:
+
+```yaml
+- record: rate_nginx_requests_total
+  expr: rate(nginx_requests_total[2m])
+```
+
+Y para disponibilizarla en el Prometheus Adapter, sería necesario agregar al archivo de configuración:
+
+```yaml
+- seriesQuery: 'rate_nginx_ingress_controller_nginx_process_requests_total'
+  metricsQuery: sum(<<.Series>>{<<.LabelMatchers>>}) by (<<.GroupBy>>)
+```
+
+#### RabbitMQ Queue Depth Autoscaler
+
+RabbitMQ permite una facil integración con Prometheus a través del plugin rabbimq_prometheus. Con este último se habilita la exposición de métricas entre las cuales se encuentra la suma de las profundidaes de todas las colas, o dicho de otra manera, la cantidad total de mensajes encolados.
+
+Dado que los requerimientos del proyecto involucran varias colas, el valor anteriormente mencionado, no es representativo de las necesidades de escalado de cada uno de los microservicios. Para poder ajustar las replicas de manera correcta, e individualmente, es necesario obtener la cantidad de mensajes encolados en cada una de las colas de las que consumen, cada uno de los componentes.
+
+Para lograr este objetivo, en primer lugar fue necesario, habilitar que RabbitMQ exponga la profundidad de cada una de sus colas, con una granularidad por objeto. 
+
+```yaml
+extraConfiguration: 
+  prometheus.return_per_object_metrics = true
+```
+
+En segundo lugar fue necesario configurar las Recording Rules pertinentes y las Series Query en el adapter.
+
+Prometheus Server:
+```yaml
+- record: rabbitmq_queue_messages_cluster_appliers
+  expr: sum(rabbitmq_queue_messages{queue=~".*.cluster-appliers"})
+```
+
+Prometheus Adapter:
+```yaml
+- seriesQuery: 'rabbitmq_queue_messages_cluster_appliers'            
+  metricsQuery: sum(<<.Series>>{<<.LabelMatchers>>}) by (<<.GroupBy>>)
+```
+
+Cabe destacar que en la Recording Rule se utiliza una expresión regular para filtar todas las métricas cuyo nombre finalice con el microservicio en cuestión.
 
 
 ## Logging/Monitoring
