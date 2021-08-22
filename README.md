@@ -449,13 +449,16 @@ Una vez recolectados los logs, Fluent Bit permite configurar uno o más destinos
 
 Se ha definido la utilización de Logstash como destino de los logs recolectados por Fluent Bit, cursándolos mediante la interfaz http. Si bien no se trata de un motor de búsqueda, conforma el paso intermedio antes de alcanzarlo. Logstash permitirá realizar transformaciones sobre el formato de los logs, en pos de uniformizarlos.
 
-El funcionamiento del servicio consiste en la definición de un *pipeline* con las etapas: *input*, *filter* y *output*, que mediante los plugins existentes tomarán datos de las fuentes especificadas, filtrarán/transformarán los logs recibidos y los enviarán a las salidas indicadas. 
-
-El destino de los registros procesados que ha sido utilizado en este proyecto es Elastic Search, que genera índices basados en *templates* para cada origen de datos. Por este motivo, y debido a los identificadores de los labels de Kubernetes, ha sido necesario aplicar una transformación sobre los logs. Concretamente, la nomenclatura anidada mediante puntos causa que Elastic Search indexe como objetos a elementos que no lo son, deviniendo en inconvenientes a la hora de procesar ciertos valores. Las transformaciones aplicadas pueden encontrarse en `Kubernetes/Management/logstash/values.yaml`.
+El funcionamiento del servicio consiste en la definición de un *pipeline* con las etapas: *input*, *filter* y *output*, que mediante los plugins existentes tomarán datos de las fuentes especificadas, filtrarán/transformarán los logs recibidos y los enviarán a las salidas indicadas. El destino, en nuestro caso, será Elastic Search.  
 
 ### Elasticsearch Cluster Mode
 
+Tal lo anticipado, Logstash deposita los logs en Elastic Search. Este último es un motor de almacenamiento, análitica, análisis y búsqueda para todo tipo de datos. 
 
-Kibana
-Grafana
-Prometheus ?
+Para poder garantizar velocidad en el procesamiento de los logs, Elastic Search construye y utiliza índices basados en *templates* para cada origen de datos. La definición puede ser manual, o automática. Esta última es la optada en este proyecto, de forma tal que al recibir el primer log desde Logstash, arma una plantilla con cada una de las claves y tipos de datos de los respectivos valores. Si bien esto trae aparejada la velocidad en la búsqueda y recuperación de la información, en un entorno con logs tan heterógeneos como es el caso de los servicios que hemos desplegados en Kubernetes, surge una nueva dificultad vinculada al chequeo estricto de esquemas, puntualmente en relación a los tipos de datos. 
+
+Por la problemática comentada anteriormente, debido a los identificadores de los labels de Kubernetes, ha sido necesario utilizar Logstash para aplicar una transformación sobre los logs. Concretamente, la nomenclatura anidada mediante puntos causa que Elastic Search indexe como objetos a elementos que no lo son, deviniendo en inconvenientes a la hora de procesar ciertos valores. Las transformaciones aplicadas pueden encontrarse en `Kubernetes/Management/logstash/values.yaml`.
+
+### Kibana y Grafana
+
+Son las herramientas de visualización y formato de datos métricos utilizados por el proyecto. Ambas presentan ventajas y desventajas, por lo que se utilizó la combinación de ambas para obtener lo mejor de "los dos mundos". Kibana, por un lado, fue utilizada para la visualización y búsqueda de datos indexados en Elastic Search, siguiendo la propuesta del Elastic Stack, para no perder las características del Kibana Query Language a la hora de realizar consultas sobre logs. Por otro lado, la utilización de Grafana se orientó a la visualización de métricas extraídas desde Prometheus. Los paneles que componen los dashboards construidos giran en torno a algunas métricas consideradas interesantes para evaluar el estado de la aplicación, entre ellas podemos mencionar la cantidad de peticiones HTTP recibidas por el Entrypoint, los tamaños de las colas de los microservicios, la cantidad de nodos determinados por el *cluster autoscaler* y de pods, determinados por el *horizontal pod autoscaler*, entre otros. 
