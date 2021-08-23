@@ -1,5 +1,10 @@
 rabbitmq:
-  #replicaCount: 3
+  replicaCount: 3
   auth:
     username: guest
     password: guest
+  service:
+    type: LoadBalancer
+    annotations: 
+      networking.gke.io/load-balancer-type: "Internal"
+      external-dns.alpha.kubernetes.io/hostname: redis-service.framework.services.gcp.com.ar.

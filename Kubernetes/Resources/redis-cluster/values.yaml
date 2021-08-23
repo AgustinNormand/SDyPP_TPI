@@ -6,5 +6,4 @@ redis-cluster:
       external-dns.alpha.kubernetes.io/hostname: redis-service.framework.services.gcp.com.ar.
   global:
     redis:
-      password: agusmarian 
-  
+      password: agusmarian
