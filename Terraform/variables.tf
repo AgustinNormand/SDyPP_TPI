@@ -1,13 +1,13 @@
 variable "project_name" {
   description = ""
   type        = string
-  default     = "sdypp-framework-ago"
+  default     = "sdypp-framework-demo"
 }
 
 variable "project_id" {
   description = ""
   type        = string
-  default     = "sdypp-framework-ago"
+  default     = "sdypp-framework-demo"
 }
 
 variable "dns_zone_name" {
