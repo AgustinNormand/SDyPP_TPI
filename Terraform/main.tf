@@ -26,7 +26,7 @@ module "vpc_deployments" {
   subnets = [
     {
       subnet_name   = local.deployments_subnet_name
-      subnet_ip     = "192.168.64.0/20"
+      subnet_ip     = "192.168.16.0/20"
       subnet_region = var.deployments_region
     },
   ]
@@ -35,11 +35,11 @@ module "vpc_deployments" {
     (local.deployments_subnet_name) = [
       {
         range_name    = local.deployments_pods_range_name
-        ip_cidr_range = "192.168.80.0/20"
+        ip_cidr_range = "192.168.32.0/20"
       },
       {
         range_name    = local.deployments_services_range_name
-        ip_cidr_range = "192.168.96.0/20"
+        ip_cidr_range = "192.168.48.0/20"
       },
     ]
   }
