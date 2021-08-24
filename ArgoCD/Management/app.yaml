@@ -12,12 +12,12 @@ spec:
     path: Kubernetes/Management
     repoURL: https://github.com/AgustinNormand/SDyPP_TPI
     targetRevision: main
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-    - CreateNamespace=true
+  #syncPolicy:
+    #automated:
+      #prune: false
+      #selfHeal: false
+    #syncOptions:
+    #- CreateNamespace=true
 
 
     #directory:
