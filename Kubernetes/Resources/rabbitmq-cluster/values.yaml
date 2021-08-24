@@ -9,3 +9,5 @@ rabbitmq:
       networking.gke.io/load-balancer-type: "Internal"
       networking.gke.io/internal-load-balancer-allow-global-access: "true"
       external-dns.alpha.kubernetes.io/hostname: rabbitmq-service.framework.services.gcp.com.ar.
+  clustering:
+    forceBoot: true
