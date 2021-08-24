@@ -73,7 +73,7 @@ variable "deployments_node_locations" {
 variable "management_region" {
   description = ""
   type        = string
-  default     = "us-east1"
+  default     = "us-central1"
 }
 
 #variable "management_zone1" {
@@ -91,13 +91,13 @@ variable "management_region" {
 variable "management_node_locations" {
   description = ""
   type        = string
-  default     = "us-east1-b"
+  default     = "us-central1-b"
 }
 
 variable "resources_region" {
   description = ""
   type        = string
-  default     = "us-west1"
+  default     = "us-central1"
 }
 
 #variable "resources_zone1" {
@@ -115,7 +115,7 @@ variable "resources_region" {
 variable "resources_node_locations" {
   description = ""
   type        = string
-  default     = "us-west1-a"
+  default     = "us-central1-c"
 }
 
 variable "service_account" {
