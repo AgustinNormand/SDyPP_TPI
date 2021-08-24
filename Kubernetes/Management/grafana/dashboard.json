@@ -279,7 +279,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "kube_horizontalpodautoscaler_spec_min_replicas",
+          "expr": "kube_horizontalpodautoscaler_spec_min_replicas{horizontalpodautoscaler=\"entrypoint-autoscaler\"}",
           "interval": "",
           "legendFormat": "",
           "queryType": "randomWalk",
@@ -339,7 +339,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "kube_horizontalpodautoscaler_status_current_replicas",
+          "expr": "kube_horizontalpodautoscaler_status_current_replicas{horizontalpodautoscaler=\"entrypoint-autoscaler\"}",
           "interval": "",
           "legendFormat": "",
           "queryType": "randomWalk",
@@ -399,7 +399,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "kube_horizontalpodautoscaler_spec_max_replicas",
+          "expr": "kube_horizontalpodautoscaler_spec_max_replicas{horizontalpodautoscaler=\"entrypoint-autoscaler\"}",
           "interval": "",
           "legendFormat": "",
           "queryType": "randomWalk",
@@ -893,6 +893,6 @@
   "timepicker": {},
   "timezone": "",
   "title": "Main dashboard",
-  "uid": "ayzrGZ7nz",
-  "version": 10
+  "uid": "mq-g0e77k",
+  "version": 2
 }
