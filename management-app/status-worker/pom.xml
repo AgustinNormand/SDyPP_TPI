@@ -11,7 +11,7 @@
 	<groupId>com.example</groupId>
 	<artifactId>status-worker</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Status worker </name>
+	<name>Status worker</name>
 	<description>Status worker</description>
 	<properties>
 		<java.version>11</java.version>
