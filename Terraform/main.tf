@@ -204,6 +204,7 @@ module "peering" {
   prefix        = "peering"
   local_network = module.vpc_deployments.network_self_link
   peer_network  = module.vpc_resources.network_self_link
+  export_local_custom_routes = true
 }
 
 module "vpc_management" {
@@ -407,7 +408,7 @@ module "gke_deployments" {
       machine_type              = var.machine_type
       node_locations            = var.deployments_node_locations
       min_count                 = 1
-      max_count                 = 4
+      max_count                 = 1
       local_ssd_count           = 0
       disk_size_gb              = 10
       disk_type                 = "pd-standard"
@@ -415,8 +416,8 @@ module "gke_deployments" {
       auto_repair               = true
       auto_upgrade              = true
       service_account           = format("%s@%s.iam.gserviceaccount.com", var.service_account, var.project_id)
-      preemptible               = true
-      initial_node_count        = 4
+      preemptible               = false
+      initial_node_count        = 1
       node_metadata             = "GKE_METADATA_SERVER"
     },
   ]
@@ -505,7 +506,7 @@ module "gke_resources" {
       machine_type              = var.machine_type
       node_locations            = var.resources_node_locations
       min_count                 = 1
-      max_count                 = 3
+      max_count                 = 2
       local_ssd_count           = 0
       disk_size_gb              = 10
       disk_type                 = "pd-standard"
@@ -513,8 +514,8 @@ module "gke_resources" {
       auto_repair               = true
       auto_upgrade              = true
       service_account           = format("%s@%s.iam.gserviceaccount.com", var.service_account, var.project_id)
-      preemptible               = true
-      initial_node_count        = 3
+      preemptible               = false
+      initial_node_count        = 2
       node_metadata             = "GKE_METADATA_SERVER"
     },
   ]
@@ -611,7 +612,7 @@ module "gke_management" {
       auto_repair               = true
       auto_upgrade              = true
       service_account           = format("%s@%s.iam.gserviceaccount.com", var.service_account, var.project_id)
-      preemptible               = true
+      preemptible               = false
       initial_node_count        = 4
       node_metadata             = "GKE_METADATA_SERVER"
     },
