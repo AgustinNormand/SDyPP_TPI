@@ -23,7 +23,7 @@ spec:
           value: agusmarian
         - name: STATUS_SERVICE_URL
           value: http://status-worker-service
-        image: agustinnormand/tpi_entrypoint:c3396d7753a626605ecc10717fcd020f0ee0dd1d
+        image: agustinnormand/tpi_entrypoint:00a83f09b5d28da54cd671b06c69946e0f1e5d1c
         imagePullPolicy: IfNotPresent
         name: entrypoint
         ports:
